@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */; };
+		279700DF2198CAC500359968 /* WhatWasIThinking in Resources */ = {isa = PBXBuildFile; fileRef = 279700DE2198CAC400359968 /* WhatWasIThinking */; };
+		279F86C5219A02B10066D85E /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C4219A02B10066D85E /* DataManager.swift */; };
+		279F86C7219A02EA0066D85E /* LiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C6219A02EA0066D85E /* LiveDataManager.swift */; };
+		279F86C9219A031A0066D85E /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C8219A031A0066D85E /* MockDataManager.swift */; };
+		279F86CB219A034C0066D85E /* DataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86CA219A034C0066D85E /* DataRequestResponse.swift */; };
 		27F0632E219230500045BE68 /* IoG_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F06324219230500045BE68 /* IoG_Infrastructure.framework */; };
 		27F06333219230500045BE68 /* IoG_InfrastructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F06332219230500045BE68 /* IoG_InfrastructureTests.swift */; };
 		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */; };
+		27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +31,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGTestConfigurationManager.swift; sourceTree = "<group>"; };
+		279700DE2198CAC400359968 /* WhatWasIThinking */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = SOURCE_ROOT; };
+		279F86C4219A02B10066D85E /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		279F86C6219A02EA0066D85E /* LiveDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDataManager.swift; sourceTree = "<group>"; };
+		279F86C8219A031A0066D85E /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
+		279F86CA219A034C0066D85E /* DataRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestResponse.swift; sourceTree = "<group>"; };
 		27F06324219230500045BE68 /* IoG_Infrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IoG_Infrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F06327219230500045BE68 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
 		27F06328219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IoG InfrastructureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F06332219230500045BE68 /* IoG_InfrastructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoG_InfrastructureTests.swift; sourceTree = "<group>"; };
 		27F06334219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManager.swift; sourceTree = "<group>"; };
+		27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +87,10 @@
 		27F06326219230500045BE68 /* IoG Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				27F06327219230500045BE68 /* IoG_Infrastructure.h */,
+				279700DE2198CAC400359968 /* WhatWasIThinking */,
+				27F063472196B79B0045BE68 /* Managers */,
 				27F06328219230500045BE68 /* Info.plist */,
+				27F06327219230500045BE68 /* IoG_Infrastructure.h */,
 			);
 			path = "IoG Infrastructure";
 			sourceTree = "<group>";
@@ -80,10 +98,48 @@
 		27F06331219230500045BE68 /* IoG InfrastructureTests */ = {
 			isa = PBXGroup;
 			children = (
-				27F06332219230500045BE68 /* IoG_InfrastructureTests.swift */,
 				27F06334219230500045BE68 /* Info.plist */,
+				279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */,
+				27F06332219230500045BE68 /* IoG_InfrastructureTests.swift */,
 			);
 			path = "IoG InfrastructureTests";
+			sourceTree = "<group>";
+		};
+		27F063442196AC780045BE68 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		27F063452196AC8A0045BE68 /* RemoteData */ = {
+			isa = PBXGroup;
+			children = (
+				279F86C4219A02B10066D85E /* DataManager.swift */,
+				279F86C6219A02EA0066D85E /* LiveDataManager.swift */,
+				279F86C8219A031A0066D85E /* MockDataManager.swift */,
+				279F86CA219A034C0066D85E /* DataRequestResponse.swift */,
+			);
+			path = RemoteData;
+			sourceTree = "<group>";
+		};
+		27F063462196B77E0045BE68 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		27F063472196B79B0045BE68 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				27F063462196B77E0045BE68 /* Configuration */,
+				27F063442196AC780045BE68 /* Persistence */,
+				27F063452196AC8A0045BE68 /* RemoteData */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +204,7 @@
 				TargetAttributes = {
 					27F06323219230500045BE68 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 					27F0632C219230500045BE68 = {
 						CreatedOnToolsVersion = 10.1;
@@ -177,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				279700DF2198CAC500359968 /* WhatWasIThinking in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +252,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */,
+				279F86C9219A031A0066D85E /* MockDataManager.swift in Sources */,
+				279F86CB219A034C0066D85E /* DataRequestResponse.swift in Sources */,
+				279F86C7219A02EA0066D85E /* LiveDataManager.swift in Sources */,
+				279F86C5219A02B10066D85E /* DataManager.swift in Sources */,
+				27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27F06333219230500045BE68 /* IoG_InfrastructureTests.swift in Sources */,
+				279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +406,7 @@
 		27F06339219230500045BE68 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +424,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-Infrastructure";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +433,7 @@
 		27F0633A219230500045BE68 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -391,6 +459,7 @@
 		27F0633C219230500045BE68 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				INFOPLIST_FILE = "IoG InfrastructureTests/Info.plist";
@@ -409,6 +478,7 @@
 		27F0633D219230500045BE68 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				INFOPLIST_FILE = "IoG InfrastructureTests/Info.plist";

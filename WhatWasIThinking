@@ -1,0 +1,43 @@
+This file exists to document the train of thoughts that go into design and implementation decisions.
+
+In-class comments and documentation exist to chronicle how things are.
+
+This file exists to chronicle how things got to be that way. Nothing is ever deleted from this file.
+If a decision that was made turns out to have been a poor decision, the thought process that went
+into the original decision and the "better" subsequent decision remain in the file.
+
+Days/weeks/months/years from now someone, maybe even you yourself, will need to understand why a
+decision was made, or whether or not a design/implementation change should be made.
+
+This file should be your go-to place for understanding the thought process that went into the
+evolution of the system. And you should document your own thoughts and decisions here.
+
+- Eric C.
+
+First major decision that needed to be made, whether to make requests for data from the back end
+be implemented such that the caller included a block to be executed when the request completed, or
+to use a multiple delegate (observer) pattern to notify all interested parties of newly retrieved
+data. Decided to go the latter route. This includes tagging requests with an identifier that
+observers can use to determine if they care about the newly retrieved data. This way, if data is
+relevant to multiple components, each component can independently and immediately act on new data
+retrieval. They won't rely on the initiator of the request to inform them of the new data.
+- Eric C.
+
+Instead of having separate objects for URL requests and responses, we're tying them together in the
+same object. This way, interactions can more easily be cached, or at least persisted for longer than
+the moment retrieved data gets passed to the caller. Also, in some cases requests return data in
+pages. In those cases, we will continue to use the same DataRequestResponse object to manage
+subsequent requests for additional pages of data.
+- Eric C.
+
+Added the request ID, request data, request type and error to the DataManager delegate method as a
+convenience, so delegates can more easily check each response for an ID or type they are waiting for
+or care about, more easily get the response data, and more easily tell if the call succeeded, without
+having to pull all 3 from the DataRequestResponse object.
+- Eric C.
+
+Setting "Immortal" as the lifespan for a PersistenceManager save to memory will not save the data to
+a file or user defaults and ressurect it to memory when the app exits and restarts. Immortal lifespan
+is meaningless for a to-memory save. A session save to memory is also useless if a session persists
+beyond an app exit and restart.
+- Eric C.
