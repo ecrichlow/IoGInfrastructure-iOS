@@ -100,20 +100,40 @@ class IoGPersistenceManager
 			}
 		else if destination == .FileStorage
 			{
-			let destinationPath = NSHomeDirectory()
-			let destPath = URL(fileURLWithPath: destinationPath)
-			let destFile = destPath.appendingPathComponent("Documents").appendingPathComponent(name)
+			let homePathString = NSHomeDirectory()
+			let persistencePathString = homePathString + IoGConfigurationManager.persistenceFolderPath
+			let destFilePathString = persistencePathString + "/" + name
 			let dictionary = savedDataElement as NSDictionary
-			if !FileManager.default.fileExists(atPath: destFile.path)
+			if !FileManager.default.fileExists(atPath: persistencePathString)
 				{
-				dictionary.write(to: destFile, atomically: true)
+				do
+					{
+					try FileManager.init().createDirectory(atPath: persistencePathString, withIntermediateDirectories: true, attributes: nil)
+					}
+				catch
+					{
+					return (false);
+					}
+				}
+			if !FileManager.default.fileExists(atPath: destFilePathString)
+				{
+				do
+					{
+					let destFileURL = URL(fileURLWithPath: destFilePathString)
+					try dictionary.write(to: destFileURL)
+					}
+				catch
+					{
+					return (false);
+					}
 				}
 			else if overwrite
 				{
 				do
 					{
-					try FileManager.default.removeItem(at: destFile)
-					dictionary.write(to: destFile, atomically: true)
+					try FileManager.default.removeItem(atPath: destFilePathString)
+					let destFileURL = URL(fileURLWithPath: destFilePathString)
+					try dictionary.write(to: destFileURL)
 					}
 				catch
 					{
@@ -125,27 +145,49 @@ class IoGPersistenceManager
 				return false
 				}
 			}
-		if let expirationDate = expiration
+		if lifespan == .Session
 			{
-			if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) == nil
+			if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) == nil
 				{
-				let expiringItemEntries = [expirationDate: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type]]]
-				UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+				let sessionItemEntry = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]
+				UserDefaults.standard.set(sessionItemEntry, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
 				}
 			else
 				{
-				var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<Date, [[String: Any]]>
-				if var dateExpiringItemList = expiringItemEntries[expirationDate]
+				var sessionItems = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as! [[String: Any]]
+				sessionItems.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue])
+				UserDefaults.standard.set(sessionItems, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
+				UserDefaults.standard.synchronize()
+				}
+			}
+		else if lifespan == .Expiration
+			{
+			if let expirationDate = expiration
+				{
+				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) == nil
 					{
-					dateExpiringItemList.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type])
-					expiringItemEntries[expirationDate] = dateExpiringItemList
+					let expiringItemEntries = [expirationDate: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]]
+					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
 					}
 				else
 					{
-					expiringItemEntries[expirationDate] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type]]
+					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<Date, [[String: Any]]>
+					if var dateExpiringItemList = expiringItemEntries[expirationDate]
+						{
+						dateExpiringItemList.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue])
+						expiringItemEntries[expirationDate] = dateExpiringItemList
+						}
+					else
+						{
+						expiringItemEntries[expirationDate] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]
+						}
+					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+					UserDefaults.standard.synchronize()
 					}
-				UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
-				UserDefaults.standard.synchronize()
+				}
+			else
+				{
+				return false
 				}
 			}
 		return true
@@ -181,19 +223,35 @@ class IoGPersistenceManager
 			}
 		else if from == .FileStorage
 			{
-			let sourcePath = NSHomeDirectory()
-			let srcPath = URL(fileURLWithPath: sourcePath)
-			let srcFile = srcPath.appendingPathComponent("Documents").appendingPathComponent(name)
-			if !FileManager.default.fileExists(atPath: srcFile.path)
+			let homePathString = NSHomeDirectory()
+			let persistencePathString = homePathString + IoGConfigurationManager.persistenceFolderPath
+			let sourceFilePathString = persistencePathString + "/" + name
+			if !FileManager.default.fileExists(atPath: sourceFilePathString)
 				{
 				return (result: .NotFound, value: nil)
 				}
 			else
 				{
-				if let savedDataElement = NSDictionary.init(contentsOf: srcFile)
+				if let url = URL.init(string: sourceFilePathString)
 					{
-					let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
-					return (result: .Success, value: value)
+					do
+						{
+						let fileURL = URL(fileURLWithPath: url.path)
+						let savedDataElement = try NSDictionary.init(contentsOf: fileURL, error:())
+						if savedDataElement.object(forKey: IoGConfigurationManager.persistencElementValue) != nil
+							{
+							let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
+							return (result: .Success, value: value)
+							}
+						else
+							{
+							return (result: .NotFound, value: nil)
+							}
+						}
+					catch
+						{
+						return (result: .NotFound, value: nil)
+						}
 					}
 				else
 					{
@@ -291,9 +349,13 @@ class IoGPersistenceManager
 					let expiringItemList = expiringItemEntries[nextExpirationDate]
 					for nextItem in expiringItemList!
 						{
-						let source = nextItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
+//						let source = nextItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
+						let source = PersistenceSource(rawValue: nextItem[IoGConfigurationManager.persistenceExpirationItemType] as! Int)
 						let name = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
-						clearValue(name: name, from: source)
+						if let src = source
+							{
+							clearValue(name: name, from: src)
+							}
 						}
 					freshItemEntries.removeValue(forKey: nextExpirationDate)
 					}
@@ -310,12 +372,17 @@ class IoGPersistenceManager
 			let sessionItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as! [[String: Any]]
 			for nextSessionItem in sessionItemEntries
 				{
-				let source = nextSessionItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
+//				let source = nextSessionItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
+				let source = PersistenceSource(rawValue: nextSessionItem[IoGConfigurationManager.persistenceExpirationItemType] as! Int)
 				let name = nextSessionItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
-				clearValue(name: name, from: source)
+				if let src = source
+					{
+					clearValue(name: name, from: src)
+					}
 				}
 			UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementSessionItems)
-			UserDefaults.standard.synchronize()
 			}
+		UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementSessionItems)
+		UserDefaults.standard.synchronize()
 	}
 }

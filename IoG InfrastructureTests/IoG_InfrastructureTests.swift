@@ -27,7 +27,19 @@ class IoG_InfrastructureTests: XCTestCase
     override func tearDown()
     {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+		let homePathString = NSHomeDirectory()
+		let persistencePathString = homePathString + IoGTestConfigurationManager.persistenceFolderPath
         persitenceManager.clearValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+		if FileManager.default.fileExists(atPath: persistencePathString)
+			{
+			do
+				{
+				try FileManager.default.removeItem(atPath: persistencePathString)
+				}
+			catch
+				{
+				}
+			}
         persitenceManager = nil
         persistenceSource = nil
         configurationManager = nil
@@ -36,7 +48,7 @@ class IoG_InfrastructureTests: XCTestCase
 
     func testSaveNumber()
     {
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveNumber = IoGTestConfigurationManager.persistenceTestNumericValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveNumber, type: IoGPersistenceManager.PersistenceDataType.Number, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: false)
 		XCTAssertTrue(saveResult)
@@ -49,7 +61,7 @@ class IoG_InfrastructureTests: XCTestCase
 
     func testSaveString()
     {
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -62,7 +74,7 @@ class IoG_InfrastructureTests: XCTestCase
 
     func testSaveArray()
     {
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.FileStorage
+		persistenceSource = IoGPersistenceManager.PersistenceSource.FileStorage
 		let saveArray = IoGTestConfigurationManager.persistenceTestArrayValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveArray, type: IoGPersistenceManager.PersistenceDataType.Array, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -79,7 +91,7 @@ class IoG_InfrastructureTests: XCTestCase
 
     func testSaveDictionary()
     {
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveDictionary = IoGTestConfigurationManager.persistenceTestDictionaryValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveDictionary, type: IoGPersistenceManager.PersistenceDataType.Dictionary, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: false)
 		XCTAssertTrue(saveResult)
@@ -108,7 +120,7 @@ class IoG_InfrastructureTests: XCTestCase
 
     func testSaveData()
     {
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveDictionary = IoGTestConfigurationManager.persistenceTestDictionaryValue
 		do
 			{
@@ -149,7 +161,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testSaveToMemory()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -162,7 +174,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testSaveToUserDefaults()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -175,7 +187,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testSaveToFile()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.FileStorage
+		persistenceSource = IoGPersistenceManager.PersistenceSource.FileStorage
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -188,7 +200,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testFailRead()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
 		let readResult = readResponse.result
 		let readValue = readResponse.value
@@ -198,7 +210,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testOverwriteSave()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let firstSaveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let secondSaveString = IoGTestConfigurationManager.persistenceTestSecondaryStringValue
 		var saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: firstSaveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
@@ -214,7 +226,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testFailOverwrite()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let firstSaveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let secondSaveString = IoGTestConfigurationManager.persistenceTestSecondaryStringValue
 		var saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: firstSaveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
@@ -230,7 +242,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testClearValueSucceed()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -250,14 +262,14 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testClearValueFail()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let clearResult = persitenceManager.clearValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
 		XCTAssertFalse(clearResult)
 	}
 
 	func testCheckForValuePresent()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -272,7 +284,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testCheckForValueMissing()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let checkResult = persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
 		XCTAssertFalse(checkResult)
 	}
@@ -280,7 +292,7 @@ class IoG_InfrastructureTests: XCTestCase
 	func testImmortalSave()
 	{
 		configurationManager.setSessionActive(state: true)
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -295,7 +307,7 @@ class IoG_InfrastructureTests: XCTestCase
 	func testSessionSave()
 	{
 		configurationManager.setSessionActive(state: true)
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
@@ -306,7 +318,7 @@ class IoG_InfrastructureTests: XCTestCase
 
 	func testExpiringSave()
 	{
-		let persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
 		let expiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.persistenceTestExpiration)
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Expiration, expiration: expiration, overwrite: true)
@@ -315,7 +327,7 @@ class IoG_InfrastructureTests: XCTestCase
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.persistenceTestExpirationCheck, repeats: true)
 			{
 			timer in
-			let checkResult = self.persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+			let checkResult = self.persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: self.persistenceSource)
 			XCTAssertFalse(checkResult)
 			expirationExpectation.fulfill()
 			}

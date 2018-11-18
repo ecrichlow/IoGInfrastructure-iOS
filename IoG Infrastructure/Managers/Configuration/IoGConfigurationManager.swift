@@ -17,6 +17,7 @@ import Foundation
 class IoGConfigurationManager
 {
 	// Persistence Manager
+	static let persistenceFolderPath = "/Documents/IoGPersistence"
 	static let persistencElementValue = "Value"
 	static let persistencElementType = "Type"
 	static let persistencElementSource = "Source"

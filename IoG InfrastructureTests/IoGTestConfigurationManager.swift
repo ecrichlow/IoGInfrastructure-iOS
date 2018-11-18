@@ -11,6 +11,7 @@ import Foundation
 class IoGTestConfigurationManager
 {
 	// Persistence Manager Test Data
+	static let persistenceFolderPath = "/Documents/IoGPersistence"
 	static let persistenceTestSaveName = "TestIdentifier"
 	static let persistenceTestInvalidSaveName = "TestIdentifier"
 	static let persistenceTestNumericValue = 42
