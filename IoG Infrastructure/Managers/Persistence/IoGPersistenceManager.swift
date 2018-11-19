@@ -164,22 +164,25 @@ class IoGPersistenceManager
 			{
 			if let expirationDate = expiration
 				{
+				let dateFormatter = DateFormatter()
+				dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+				let dateString = dateFormatter.string(from: expirationDate)
 				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) == nil
 					{
-					let expiringItemEntries = [expirationDate: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]]
+					let expiringItemEntries = [dateString: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]]
 					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
 					}
 				else
 					{
-					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<Date, [[String: Any]]>
-					if var dateExpiringItemList = expiringItemEntries[expirationDate]
+					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [[String: Any]]>
+					if var dateExpiringItemList = expiringItemEntries[dateString]
 						{
 						dateExpiringItemList.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue])
-						expiringItemEntries[expirationDate] = dateExpiringItemList
+						expiringItemEntries[dateString] = dateExpiringItemList
 						}
 					else
 						{
-						expiringItemEntries[expirationDate] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]
+						expiringItemEntries[dateString] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]
 						}
 					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
 					UserDefaults.standard.synchronize()
@@ -340,23 +343,29 @@ class IoGPersistenceManager
 	{
 		if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
 			{
-			let expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<Date, [[String: Any]]>
+			let expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [[String: Any]]>
 			var freshItemEntries = expiringItemEntries
-			for nextExpirationDate in expiringItemEntries.keys
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+			for nextExpirationDateString in expiringItemEntries.keys
 				{
-				if nextExpirationDate.timeIntervalSinceNow < 0
+				let nextExpirationDate = dateFormatter.date(from: nextExpirationDateString)
+				if let expirationDate = nextExpirationDate
 					{
-					let expiringItemList = expiringItemEntries[nextExpirationDate]
-					for nextItem in expiringItemList!
+					if expirationDate.timeIntervalSinceNow < 0
 						{
-						let source = PersistenceSource(rawValue: nextItem[IoGConfigurationManager.persistenceExpirationItemSource] as! Int)
-						let name = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
-						if let src = source
+						let expiringItemList = expiringItemEntries[nextExpirationDateString]
+						for nextItem in expiringItemList!
 							{
-							clearValue(name: name, from: src)
+							let source = PersistenceSource(rawValue: nextItem[IoGConfigurationManager.persistenceExpirationItemSource] as! Int)
+							let name = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
+							if let src = source
+								{
+								clearValue(name: name, from: src)
+								}
 							}
+						freshItemEntries.removeValue(forKey: nextExpirationDateString)
 						}
-					freshItemEntries.removeValue(forKey: nextExpirationDate)
 					}
 				}
 			UserDefaults.standard.set(freshItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
