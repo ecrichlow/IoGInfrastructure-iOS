@@ -149,13 +149,13 @@ class IoGPersistenceManager
 			{
 			if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) == nil
 				{
-				let sessionItemEntry = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]
+				let sessionItemEntry = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]
 				UserDefaults.standard.set(sessionItemEntry, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
 				}
 			else
 				{
 				var sessionItems = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as! [[String: Any]]
-				sessionItems.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue])
+				sessionItems.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue])
 				UserDefaults.standard.set(sessionItems, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
 				UserDefaults.standard.synchronize()
 				}
@@ -166,7 +166,7 @@ class IoGPersistenceManager
 				{
 				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) == nil
 					{
-					let expiringItemEntries = [expirationDate: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]]
+					let expiringItemEntries = [expirationDate: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]]
 					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
 					}
 				else
@@ -174,12 +174,12 @@ class IoGPersistenceManager
 					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<Date, [[String: Any]]>
 					if var dateExpiringItemList = expiringItemEntries[expirationDate]
 						{
-						dateExpiringItemList.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue])
+						dateExpiringItemList.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue])
 						expiringItemEntries[expirationDate] = dateExpiringItemList
 						}
 					else
 						{
-						expiringItemEntries[expirationDate] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemType: type.rawValue]]
+						expiringItemEntries[expirationDate] = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]
 						}
 					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
 					UserDefaults.standard.synchronize()
@@ -349,8 +349,7 @@ class IoGPersistenceManager
 					let expiringItemList = expiringItemEntries[nextExpirationDate]
 					for nextItem in expiringItemList!
 						{
-//						let source = nextItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
-						let source = PersistenceSource(rawValue: nextItem[IoGConfigurationManager.persistenceExpirationItemType] as! Int)
+						let source = PersistenceSource(rawValue: nextItem[IoGConfigurationManager.persistenceExpirationItemSource] as! Int)
 						let name = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
 						if let src = source
 							{
@@ -372,15 +371,13 @@ class IoGPersistenceManager
 			let sessionItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as! [[String: Any]]
 			for nextSessionItem in sessionItemEntries
 				{
-//				let source = nextSessionItem[IoGConfigurationManager.persistenceExpirationItemType] as! PersistenceSource
-				let source = PersistenceSource(rawValue: nextSessionItem[IoGConfigurationManager.persistenceExpirationItemType] as! Int)
+				let source = PersistenceSource(rawValue: nextSessionItem[IoGConfigurationManager.persistenceExpirationItemSource] as! Int)
 				let name = nextSessionItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
 				if let src = source
 					{
 					clearValue(name: name, from: src)
 					}
 				}
-			UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementSessionItems)
 			}
 		UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementSessionItems)
 		UserDefaults.standard.synchronize()

@@ -30,6 +30,7 @@ class IoG_InfrastructureTests: XCTestCase
 		let homePathString = NSHomeDirectory()
 		let persistencePathString = homePathString + IoGTestConfigurationManager.persistenceFolderPath
         persitenceManager.clearValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+        persitenceManager.removeSessionItems()
 		if FileManager.default.fileExists(atPath: persistencePathString)
 			{
 			do
@@ -118,7 +119,7 @@ class IoG_InfrastructureTests: XCTestCase
 			}
     }
 
-    func testSaveData()
+    func testSaveDataToUserDefaults()
     {
 		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
 		let saveDictionary = IoGTestConfigurationManager.persistenceTestDictionaryValue
@@ -134,23 +135,141 @@ class IoG_InfrastructureTests: XCTestCase
 			}
 		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
 		let readResult = readResponse.result
-		let readValue = readResponse.value as! Data
+		let readValue = readResponse.value
 		do
 			{
-			if let returnedDictionary = try JSONSerialization.jsonObject(with: readValue, options: []) as? [String: String]
+			if let data = readValue as? Data
 				{
-				let keys = returnedDictionary.keys
-				XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
-				XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
-				for nextKey in keys
+				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
+				if let returnedDictionary = jsonDict as? NSDictionary
 					{
-					let originalValue = saveDictionary[nextKey] as! String
-					XCTAssertEqual(returnedDictionary[nextKey], originalValue)
+					let keys = returnedDictionary.allKeys
+					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
+					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
+					for nextKey in keys
+						{
+						let key = nextKey as! String
+						let originalValue = saveDictionary[key]
+						if let value = originalValue as? Int
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
+							}
+						else if let value = originalValue as? String
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! String, value)
+							}
+						}
+					}
+				else
+					{
+					XCTFail()
 					}
 				}
-			else
+			}
+		catch
+			{
+			XCTFail()
+			}
+    }
+
+    func testSaveDataToMemory()
+    {
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		let saveDictionary = IoGTestConfigurationManager.persistenceTestDictionaryValue
+		do
+			{
+			let saveData = try JSONSerialization.data(withJSONObject: saveDictionary, options: [])
+			let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveData, type: IoGPersistenceManager.PersistenceDataType.Data, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
+			XCTAssertTrue(saveResult)
+			}
+		catch
+			{
+			XCTFail()
+			}
+		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+		let readResult = readResponse.result
+		let readValue = readResponse.value
+		do
+			{
+			if let data = readValue as? Data
 				{
-				XCTFail()
+				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
+				if let returnedDictionary = jsonDict as? NSDictionary
+					{
+					let keys = returnedDictionary.allKeys
+					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
+					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
+					for nextKey in keys
+						{
+						let key = nextKey as! String
+						let originalValue = saveDictionary[key]
+						if let value = originalValue as? Int
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
+							}
+						else if let value = originalValue as? String
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! String, value)
+							}
+						}
+					}
+				else
+					{
+					XCTFail()
+					}
+				}
+			}
+		catch
+			{
+			XCTFail()
+			}
+    }
+
+    func testSaveDataToFile()
+    {
+		persistenceSource = IoGPersistenceManager.PersistenceSource.FileStorage
+		let saveDictionary = IoGTestConfigurationManager.persistenceTestDictionaryValue
+		do
+			{
+			let saveData = try JSONSerialization.data(withJSONObject: saveDictionary, options: [])
+			let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveData, type: IoGPersistenceManager.PersistenceDataType.Data, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
+			XCTAssertTrue(saveResult)
+			}
+		catch
+			{
+			XCTFail()
+			}
+		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+		let readResult = readResponse.result
+		let readValue = readResponse.value
+		do
+			{
+			if let data = readValue as? Data
+				{
+				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
+				if let returnedDictionary = jsonDict as? NSDictionary
+					{
+					let keys = returnedDictionary.allKeys
+					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
+					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
+					for nextKey in keys
+						{
+						let key = nextKey as! String
+						let originalValue = saveDictionary[key]
+						if let value = originalValue as? Int
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
+							}
+						else if let value = originalValue as? String
+							{
+							XCTAssertEqual(returnedDictionary[nextKey] as! String, value)
+							}
+						}
+					}
+				else
+					{
+					XCTFail()
+					}
 				}
 			}
 		catch
@@ -309,7 +428,7 @@ class IoG_InfrastructureTests: XCTestCase
 		configurationManager.setSessionActive(state: true)
 		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
 		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
-		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
+		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: true)
 		XCTAssertTrue(saveResult)
 		configurationManager.setSessionActive(state: false)
 		let checkResult = persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)

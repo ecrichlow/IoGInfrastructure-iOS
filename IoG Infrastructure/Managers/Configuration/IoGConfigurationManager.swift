@@ -27,7 +27,7 @@ class IoGConfigurationManager
 	static let persistenceManagementExpiringItems = "ExpiringItems"
 	static let persistenceManagementSessionItems = "SessionItems"
 	static let persistenceExpirationItemName = "ExpiringItemName"
-	static let persistenceExpirationItemType = "ExpiringItemType"
+	static let persistenceExpirationItemSource = "ExpiringItemSource"
 	static let persistenceExpirationItemExpirationDate = "ExpiringItemExpirationDate"
 	static let timerPeriodPersistenceExpirationCheck = 60.0
 
