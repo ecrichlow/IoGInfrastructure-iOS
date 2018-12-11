@@ -1,5 +1,5 @@
 /*******************************************************************************
-* LiveDataManager.swift
+* IogLiveDataManager.swift
 *
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework
@@ -14,42 +14,42 @@
 
 import Foundation
 
-class LiveDataManager : DataManager
+class IoGLiveDataManager : IoGDataManager
 {
 
 	// MARK: Business Logic
 
-	@discardableResult override func transmitRequest(request: URLRequest, type: DataRequestType) -> Int?
+	@discardableResult override func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int?
 	{
 		let reqID = requestID
-		let requestResponse = DataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
+		let requestResponse = IoGDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
 		outstandingRequests[reqID] = requestResponse
 		requestID += 1
 		requestResponse.processRequest()
 		return reqID
 	}
 
-	override func continueMultiPartRequest(multiPartResponse: DataRequestResponse)
+	override func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
 	{
 		multiPartResponse.continueMultiPartRequest()
 	}
 
 	// MARK: Data Request Callback
 
-	func dataRequestResponse(_ response: DataRequestResponse)
+	func dataRequestResponse(_ response: IoGDataRequestResponse)
 	{
 		delegateList.compact()
 		for nextDelegate in delegateList.allObjects
 			{
-			let delegate = nextDelegate as! DataManagerDelegate
+			let delegate = nextDelegate as! IoGDataManagerDelegate
 			let responseData = response.responseData
 			if let responseInfo = response.responseInfo, let err = responseInfo[IoGConfigurationManager.requestResponseKeyError] as? Error
 				{
-				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! DataManager.DataRequestType, responseData: responseData, error: err, response: response)
+				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: err, response: response)
 				}
 			else
 				{
-				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! DataManager.DataRequestType, responseData: responseData, error: nil, response: response)
+				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: nil, response: response)
 				}
 			}
 	}

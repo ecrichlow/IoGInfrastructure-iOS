@@ -32,7 +32,7 @@ class IoGConfigurationManager
 	static let timerPeriodPersistenceExpirationCheck = 60.0
 
 	// Data Manager
-	static let defaultDataManagerType = DataManager.DataManagerType.DataManagerTypeLive
+	static let defaultDataManagerType = IoGDataManager.IoGDataManagerType.IoGDataManagerTypeLive
 	static let defaultRequestTimeoutDelay = 10 as TimeInterval
 	static let defaultRequestNumRetries = 3
 	static let requestResponseKeyRequest = "Request"
@@ -53,6 +53,15 @@ class IoGConfigurationManager
 	static let httpHeaderAppNameKey = "CFBundleExecutable"
 	static let httpHeaderAppMajorVersionKey = "CFBundleShortVersionString"
 	static let httpHeaderAppMinorVersionKey = "CFBundleVersion"
+
+	// Retry Manager
+	static let retryItemFieldLifespan = "Lifespan"
+	static let retryItemFieldRetryMaxCount = "Retries"
+	static let retryItemFieldRetryCurrentCount = "RetryNumber"
+	static let retryItemFieldExpiration = "Expiration"
+	static let retryItemFieldTimeLimit = "TimeLimit"
+	static let retryItemFieldRoutine = "Routine"
+	static let retryItemFieldIdentifier = "Identifier"
 
 	static let sharedManager = IoGConfigurationManager()
 

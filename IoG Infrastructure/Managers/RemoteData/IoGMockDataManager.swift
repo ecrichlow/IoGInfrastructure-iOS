@@ -1,5 +1,5 @@
 /*******************************************************************************
-* MockDataManager.swift
+* IoGMockDataManager.swift
 *
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework
@@ -14,17 +14,17 @@
 
 import Foundation
 
-class MockDataManager : DataManager
+class IoGMockDataManager : IoGDataManager
 {
 
 	// MARK: Business Logic
 
-	@discardableResult override func transmitRequest(request: URLRequest, type: DataRequestType) -> Int?
+	@discardableResult override func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int?
 	{
 		return nil
 	}
 
-	override func continueMultiPartRequest(multiPartResponse: DataRequestResponse)
+	override func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
 	{
 	}
 }

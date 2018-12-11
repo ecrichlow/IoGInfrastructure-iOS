@@ -1,5 +1,5 @@
 /*******************************************************************************
-* DataRequestResponse.swift
+* IoGDataRequestResponse.swift
 *
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework
@@ -15,7 +15,7 @@
 
 import Foundation
 
-class DataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
+class IoGDataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
 {
 
 	private(set) var requestID: Int
@@ -30,7 +30,7 @@ class DataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate
 	private var session : URLSession?
 	private var dataTask : URLSessionDataTask?
 
-	init(withRequestID reqID: Int, type: DataManager.DataRequestType, request: URLRequest, callback: @escaping (DataRequestResponse) -> ())
+	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
 	{
 		requestID = reqID
 		callbackInfo = [IoGConfigurationManager.requestResponseKeyCallback: callback]
@@ -59,7 +59,7 @@ class DataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate
 				}
 			else
 				{
-				let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (DataRequestResponse) -> ()
+				let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 				self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
 				callback(self)
 				}
@@ -92,7 +92,7 @@ class DataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate
 					}
 				else
 					{
-					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (DataRequestResponse) -> ()
+					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 					if var respInfo = self.responseInfo
 						{
 						respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
@@ -170,7 +170,7 @@ class DataRequestResponse : NSObject, URLSessionDelegate, URLSessionTaskDelegate
 
 	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
 	{
-		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (DataRequestResponse) -> ()
+		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 		if let err = error
 			{
 			if var respInfo = self.responseInfo

@@ -41,3 +41,11 @@ a file or user defaults and ressurect it to memory when the app exits and restar
 is meaningless for a to-memory save. A session save to memory is also useless if a session persists
 beyond an app exit and restart.
 - Eric C.
+
+See no sense in making the RetryManager persist through app restarts. So all retry objects only exist
+thorugh the current session.
+- Eric C.
+
+Delegate lists are implemented as NSPointerArrays so we can keep an array of weak references to the
+delegates to prevent retain cycles.
+- Eric C.

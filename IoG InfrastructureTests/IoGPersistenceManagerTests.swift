@@ -9,7 +9,7 @@
 import XCTest
 @testable import IoG_Infrastructure
 
-class IoG_InfrastructureTests: XCTestCase
+class IoGPersistenceManagerTests: XCTestCase
 {
 
 	var configurationManager: IoGConfigurationManager!

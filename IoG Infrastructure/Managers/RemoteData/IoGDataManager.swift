@@ -1,5 +1,5 @@
 /*******************************************************************************
-* DataManager.swift
+* IoGDataManager.swift
 *
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework
@@ -14,56 +14,55 @@
 
 import Foundation
 
-protocol DataManagerDelegate : class
+protocol IoGDataManagerDelegate : class
 {
-	func dataRequestResponseReceived(requestID: Int, requestType: DataManager.DataRequestType, responseData: Data?, error: Error?, response: DataRequestResponse)
+	func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 }
 
-class DataManager
+class IoGDataManager
 {
 
-	enum DataManagerType
+	enum IoGDataManagerType
 	{
-		case DataManagerTypeLive
-		case DataManagerTypeMock
+		case IoGDataManagerTypeLive
+		case IoGDataManagerTypeMock
 	}
 
-	enum DataRequestType
+	enum IoGDataRequestType
 	{
 		case Register
 		case Login
 	}
 
-	private static var sharedManager : DataManager!
+	private static var sharedManager : IoGDataManager!
 
-//	var delegateList : Array<DataManagerDelegate> = Array()
 	var delegateList = NSPointerArray.weakObjects()
-	var outstandingRequests = [Int: DataRequestResponse]()
+	var outstandingRequests = [Int: IoGDataRequestResponse]()
 	var requestID = 0
 
 	// MARK: Class Methods
 
-	class func dataManagerOfType(type: DataManagerType) -> DataManager
+	class func dataManagerOfType(type: IoGDataManagerType) -> IoGDataManager
 	{
 		switch (type)
 			{
-			case .DataManagerTypeLive:
-				if sharedManager == nil || !(sharedManager is LiveDataManager)
+			case .IoGDataManagerTypeLive:
+				if sharedManager == nil || !(sharedManager is IoGLiveDataManager)
 					{
-					sharedManager = LiveDataManager()
+					sharedManager = IoGLiveDataManager()
 					}
-			case .DataManagerTypeMock:
-				if sharedManager == nil || !(sharedManager is MockDataManager)
+			case .IoGDataManagerTypeMock:
+				if sharedManager == nil || !(sharedManager is IoGMockDataManager)
 					{
-					sharedManager = MockDataManager()
+					sharedManager = IoGMockDataManager()
 					}
 			}
 		return sharedManager
 	}
 
-	class func dataManagerOfDefaultType() -> DataManager
+	class func dataManagerOfDefaultType() -> IoGDataManager
 	{
-		return DataManager.dataManagerOfType(type: IoGConfigurationManager.defaultDataManagerType)
+		return IoGDataManager.dataManagerOfType(type: IoGConfigurationManager.defaultDataManagerType)
 	}
 
 	// MARK: Instance Methods
@@ -72,11 +71,11 @@ class DataManager
 	{
 	}
 
-	func registerDelegate(delegate: DataManagerDelegate)
+	func registerDelegate(delegate: IoGDataManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! DataManagerDelegate
+			let del = nextDelegate as! IoGDataManagerDelegate
 			if del === delegate
 				{
 				return
@@ -86,12 +85,12 @@ class DataManager
 		delegateList.addPointer(pointer)
 	}
 
-	func unregisterDelegate(delegate: DataManagerDelegate)
+	func unregisterDelegate(delegate: IoGDataManagerDelegate)
 	{
 		var index = 0
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! DataManagerDelegate
+			let del = nextDelegate as! IoGDataManagerDelegate
 			if del === delegate
 				{
 				break
@@ -106,12 +105,12 @@ class DataManager
 
 	// MARK: "Abstract" Client Methods to be overridden
 
-	@discardableResult func transmitRequest(request: URLRequest, type: DataRequestType) -> Int?
+	@discardableResult func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int?
 	{
 		return nil
 	}
 
-	func continueMultiPartRequest(multiPartResponse: DataRequestResponse)
+	func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
 	{
 	}
 }
