@@ -18,6 +18,7 @@
 		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */; };
 		27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */; };
+		97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		27F06334219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManager.swift; sourceTree = "<group>"; };
 		27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
+		97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGRetryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,8 +140,17 @@
 				27F063462196B77E0045BE68 /* Configuration */,
 				27F063442196AC780045BE68 /* Persistence */,
 				27F063452196AC8A0045BE68 /* RemoteData */,
+				97AD21C721BF6D3200739C6D /* Retry */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		97AD21C721BF6D3200739C6D /* Retry */ = {
+			isa = PBXGroup;
+			children = (
+				97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */,
+			);
+			path = Retry;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */,
+				97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */,
 				279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */,
 				279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */,
 				279F86C7219A02EA0066D85E /* IoGLiveDataManager.swift in Sources */,
