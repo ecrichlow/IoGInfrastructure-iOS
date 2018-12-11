@@ -104,36 +104,36 @@ class IoGRetryManager
 		requestID += 1
 		newRetryEntry[IoGConfigurationManager.retryItemFieldLifespan] = lifespan.rawValue
 		if let max = maxCount
-		{
+			{
 			newRetryEntry[IoGConfigurationManager.retryItemFieldRetryMaxCount] = max
-		}
+			}
 		// If both expiration and timespan values are set, expiration will override timespan
 		if let exp = expiration
-		{
+			{
 			newRetryEntry[IoGConfigurationManager.retryItemFieldExpiration] = exp
-		}
+			}
 		else if let span = timeSpan
-		{
+			{
 			let exp = Date(timeIntervalSinceNow: span)
 			newRetryEntry[IoGConfigurationManager.retryItemFieldTimeLimit] = exp
-		}
+			}
 		newRetryEntry[IoGConfigurationManager.retryItemFieldRoutine] = routine
 		if let max = maxCount
-		{
+			{
 			newRetryEntry[IoGConfigurationManager.retryItemFieldRetryCurrentCount] = 0
 			if max > 1
-			{
+				{
 				Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {timer in self.makeRetryAttempt(timer: timer, requestNumber: request)}
-			}
+				}
 			else
-			{
+				{
 				Timer.scheduledTimer(withTimeInterval: interval, repeats: false) {timer in self.makeRetryAttempt(timer: timer, requestNumber: request)}
+				}
 			}
-		}
 		else
-		{
+			{
 			Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {timer in self.makeRetryAttempt(timer: timer, requestNumber: request)}
-		}
+			}
 		retryStore[request] = newRetryEntry
 		return request
 	}
@@ -161,93 +161,93 @@ class IoGRetryManager
 	func makeRetryAttempt(timer: Timer, requestNumber: Int)
 	{
 		if let retryEntry = retryStore[requestNumber]
-		{
+			{
 			if let exp = retryEntry[IoGConfigurationManager.retryItemFieldExpiration] as? Date		// Expiration limited
-			{
+				{
 				if exp.timeIntervalSinceNow > 0
-				{
+					{
 					if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
-					{
-						retryRoutine(dispositionAttempt)
-					}
-				}
-				else
-				{
-				delegateList.compact()
-				for nextDelegate in delegateList.allObjects
-					{
-					let delegate = nextDelegate as! IoGRetryManagerDelegate
-					delegate.retrySessionCompleted(requestID: requestNumber, result: .Expired)
-					}
-				timer.invalidate()
-				retryStore[requestNumber] = nil
-				}
-			}
-			else if let exp = retryEntry[IoGConfigurationManager.retryItemFieldTimeLimit] as? Date		// Time limited
-			{
-				if exp.timeIntervalSinceNow > 0
-				{
-					if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
-					{
-						retryRoutine(dispositionAttempt)
-					}
-				}
-				else
-				{
-				delegateList.compact()
-				for nextDelegate in delegateList.allObjects
-					{
-					let delegate = nextDelegate as! IoGRetryManagerDelegate
-					delegate.retrySessionCompleted(requestID: requestNumber, result: .TimeLimitExceeded)
-					}
-				timer.invalidate()
-				retryStore[requestNumber] = nil
-				}
-			}
-			else if let count = retryEntry[IoGConfigurationManager.retryItemFieldRetryMaxCount] as? Int		// Count limited
-			{
-				if let lastRetry = retryEntry[IoGConfigurationManager.retryItemFieldRetryCurrentCount] as? Int
-				{
-					if lastRetry < count
-					{
-						if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
 						{
-							retryRoutine(dispositionAttempt)
+						retryRoutine(dispositionAttempt)
 						}
 					}
-					else
+				else
 					{
 					delegateList.compact()
 					for nextDelegate in delegateList.allObjects
 						{
 						let delegate = nextDelegate as! IoGRetryManagerDelegate
-						delegate.retrySessionCompleted(requestID: requestNumber, result: .CountExceeded)
+						delegate.retrySessionCompleted(requestID: requestNumber, result: .Expired)
 						}
 					timer.invalidate()
 					retryStore[requestNumber] = nil
 					}
 				}
-			}
-			else if let _ = retryEntry[IoGRetryManager.retryItemFieldLifespan] as? Int		// Infinite
-			{
-				if let retryRoutine = retryEntry[IoGRetryManager.retryItemFieldRoutine] as? RetryRoutine
+			else if let exp = retryEntry[IoGConfigurationManager.retryItemFieldTimeLimit] as? Date		// Time limited
 				{
+				if exp.timeIntervalSinceNow > 0
+					{
+					if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
+						{
+						retryRoutine(dispositionAttempt)
+						}
+					}
+				else
+					{
+					delegateList.compact()
+					for nextDelegate in delegateList.allObjects
+						{
+						let delegate = nextDelegate as! IoGRetryManagerDelegate
+						delegate.retrySessionCompleted(requestID: requestNumber, result: .TimeLimitExceeded)
+						}
+					timer.invalidate()
+					retryStore[requestNumber] = nil
+					}
+				}
+			else if let count = retryEntry[IoGConfigurationManager.retryItemFieldRetryMaxCount] as? Int		// Count limited
+				{
+				if let lastRetry = retryEntry[IoGConfigurationManager.retryItemFieldRetryCurrentCount] as? Int
+					{
+					if lastRetry < count
+						{
+						if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
+							{
+							retryRoutine(dispositionAttempt)
+							}
+						}
+					else
+						{
+						delegateList.compact()
+						for nextDelegate in delegateList.allObjects
+							{
+							let delegate = nextDelegate as! IoGRetryManagerDelegate
+							delegate.retrySessionCompleted(requestID: requestNumber, result: .CountExceeded)
+							}
+						timer.invalidate()
+						retryStore[requestNumber] = nil
+						}
+					}
+				}
+			else if let _ = retryEntry[IoGRetryManager.retryItemFieldLifespan] as? Int		// Infinite
+				{
+				if let retryRoutine = retryEntry[IoGRetryManager.retryItemFieldRoutine] as? RetryRoutine
+					{
 					retryRoutine(dispositionAttempt)
+					}
 				}
 			}
-		}
 		else
-		{
+			{
 			timer.invalidate()
-		}
+			}
 	}
 
 	func dispositionAttempt(requestNumber: Int, result: Disposition) -> Void
 	{
 		if retryStore[requestNumber] != nil
-		{
-			if result == .Success
 			{
+			if result == .Success
+				{
 				delegateList.compact()
 				for nextDelegate in delegateList.allObjects
 					{
@@ -255,7 +255,7 @@ class IoGRetryManager
 					delegate.retrySessionCompleted(requestID: requestNumber, result: .Success)
 					}
 				retryStore[requestNumber] = nil
+				}
 			}
-		}
 	}
 }
