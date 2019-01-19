@@ -1,5 +1,5 @@
 //
-//  IoG_InfrastructureTests.swift
+//  IoGPersistenceManagerTests.swift
 //  IoG InfrastructureTests
 //
 //  Created by Eric Crichlow on 11/6/18.
@@ -18,7 +18,6 @@ class IoGPersistenceManagerTests: XCTestCase
 
     override func setUp()
     {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         super.setUp()
         configurationManager = IoGConfigurationManager.sharedManager
         persitenceManager = IoGPersistenceManager.sharedManager
@@ -26,7 +25,6 @@ class IoGPersistenceManagerTests: XCTestCase
 
     override func tearDown()
     {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
 		let homePathString = NSHomeDirectory()
 		let persistencePathString = homePathString + IoGTestConfigurationManager.persistenceFolderPath
         persitenceManager.clearValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)

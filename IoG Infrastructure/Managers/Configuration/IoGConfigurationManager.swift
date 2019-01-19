@@ -53,6 +53,14 @@ class IoGConfigurationManager
 	static let httpHeaderAppNameKey = "CFBundleExecutable"
 	static let httpHeaderAppMajorVersionKey = "CFBundleShortVersionString"
 	static let httpHeaderAppMinorVersionKey = "CFBundleVersion"
+	static let mockFastDataRequestResponseTime = 0.1 as TimeInterval
+	static let mockSlowDataRequestResponseTime = 5 as TimeInterval
+	static let mockResponseIndicator1 = "/1"
+	static let mockSlowResponseIndicator = "/3"
+	static let mockSuccessfulCallIndicator = "www.success.com"
+	static let mockFailedCallIndicator = "www.failure.com"
+	static let mockDataResponse1 = "{\"Generation\":\"1\", \"Computers\":[\"Color Computer 2\", \"Color Computer 3\", \"MM/1\"], \"Manufacturer\":null, \"Conventions\":\"Rainbowfest\"}"
+	static let mockDataResponse2 = "{\"Generation\":\"2\", \"Computers\":[\"Mac Performa 6400\", \"Powerbook G4\", \"Power Mac G4\", \"iMac\", \"Macbook Pro\"], \"Manufacturer\":\"Apple\"}"
 
 	// Retry Manager
 	static let retryItemFieldLifespan = "Lifespan"
@@ -72,6 +80,13 @@ class IoGConfigurationManager
 	init()
 	{
 		currentAPIURL = "http://"
+	}
+
+	func getVersion() -> String
+	{
+		let infoDictionary = Bundle.main.infoDictionary
+		let version = infoDictionary!["CFBundleShortVersionString"] as! String
+		return version
 	}
 
 	func setSessionActive(state: Bool)

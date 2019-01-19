@@ -19,12 +19,12 @@ class IoGMockDataManager : IoGDataManager
 
 	// MARK: Business Logic
 
-	@discardableResult override func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int?
+	@discardableResult override func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
-		return nil
-	}
-
-	override func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
-	{
+		let reqID = requestID
+		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
+		requestID += 1
+		requestResponse.processRequest()
+		return reqID
 	}
 }

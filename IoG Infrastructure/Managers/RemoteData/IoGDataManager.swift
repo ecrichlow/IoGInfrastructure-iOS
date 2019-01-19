@@ -103,14 +103,33 @@ class IoGDataManager
 			}
 	}
 
-	// MARK: "Abstract" Client Methods to be overridden
-
-	@discardableResult func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int?
+	@discardableResult func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
-		return nil
+		return 0
 	}
 
 	func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
 	{
+		multiPartResponse.continueMultiPartRequest()
+	}
+
+	// MARK: Data Request Callback
+
+	func dataRequestResponse(_ response: IoGDataRequestResponse)
+	{
+		delegateList.compact()
+		for nextDelegate in delegateList.allObjects
+			{
+			let delegate = nextDelegate as! IoGDataManagerDelegate
+			let responseData = response.responseData
+			if let responseInfo = response.responseInfo, let err = responseInfo[IoGConfigurationManager.requestResponseKeyError] as? Error
+				{
+				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: err, response: response)
+				}
+			else
+				{
+				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: nil, response: response)
+				}
+			}
 	}
 }

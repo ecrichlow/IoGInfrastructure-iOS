@@ -99,6 +99,11 @@ class IoGRetryManager
 
 	@discardableResult func startRetries(interval: TimeInterval, lifespan: RetryLifespan, maxCount: Int?, timeSpan: TimeInterval?, expiration: Date?, routine: @escaping RetryRoutine) -> Int
 	{
+		// Make sure the proper delimiter was passed in for the selected lifespan
+		if lifespan == .ExpirationLimited && expiration == nil || lifespan == .TimeLimited && timeSpan == nil || lifespan == .CountLimited && maxCount == nil
+			{
+			return -1
+			}
 		let request = requestID
 		var newRetryEntry = [String: Any]()
 		requestID += 1
@@ -210,6 +215,11 @@ class IoGRetryManager
 					{
 					if lastRetry < count
 						{
+						if var modEntry = retryStore[requestNumber]
+							{
+							modEntry[IoGConfigurationManager.retryItemFieldRetryCurrentCount] = lastRetry + 1
+							retryStore[requestNumber] = modEntry
+							}
 						if let retryRoutine = retryEntry[IoGConfigurationManager.retryItemFieldRoutine] as? RetryRoutine
 							{
 							retryRoutine(dispositionAttempt)

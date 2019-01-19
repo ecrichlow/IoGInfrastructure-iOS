@@ -18,6 +18,14 @@
 		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */; };
 		27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */; };
+		97738D1121F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */; };
+		97738D1221F2B01C00F7F478 /* IoGMockDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */; };
+		97738D1521F2C80000F7F478 /* IoGDataObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */; };
+		97738D1621F2C80000F7F478 /* IoGDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1421F2C80000F7F478 /* IoGDataObject.swift */; };
+		97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */; };
+		97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */; };
+		97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */; };
+		97738D1F21F2D33400F7F478 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1E21F2D33300F7F478 /* TestComputerObject.swift */; };
 		97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +54,14 @@
 		27F06334219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManager.swift; sourceTree = "<group>"; };
 		27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
+		97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataRequestResponse.swift; sourceTree = "<group>"; };
+		97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGMockDataRequestResponse.swift; sourceTree = "<group>"; };
+		97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObjectManager.swift; sourceTree = "<group>"; };
+		97738D1421F2C80000F7F478 /* IoGDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObject.swift; sourceTree = "<group>"; };
+		97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
+		97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataParsingTests.swift; sourceTree = "<group>"; };
+		97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGRetryManagerTests.swift; sourceTree = "<group>"; };
+		97738D1E21F2D33300F7F478 /* TestComputerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
 		97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGRetryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,9 +116,13 @@
 		27F06331219230500045BE68 /* IoG InfrastructureTests */ = {
 			isa = PBXGroup;
 			children = (
-				27F06334219230500045BE68 /* Info.plist */,
 				279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */,
 				27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */,
+				97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */,
+				97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */,
+				97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */,
+				97738D1D21F2CA6D00F7F478 /* Test Business Objects */,
+				27F06334219230500045BE68 /* Info.plist */,
 			);
 			path = "IoG InfrastructureTests";
 			sourceTree = "<group>";
@@ -122,6 +142,8 @@
 				279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */,
 				279F86C8219A031A0066D85E /* IoGMockDataManager.swift */,
 				279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */,
+				97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */,
+				97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */,
 			);
 			path = RemoteData;
 			sourceTree = "<group>";
@@ -140,9 +162,27 @@
 				27F063462196B77E0045BE68 /* Configuration */,
 				27F063442196AC780045BE68 /* Persistence */,
 				27F063452196AC8A0045BE68 /* RemoteData */,
+				97738D0E21F2AFA400F7F478 /* Data Parsing */,
 				97AD21C721BF6D3200739C6D /* Retry */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		97738D0E21F2AFA400F7F478 /* Data Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				97738D1421F2C80000F7F478 /* IoGDataObject.swift */,
+				97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */,
+			);
+			path = "Data Parsing";
+			sourceTree = "<group>";
+		};
+		97738D1D21F2CA6D00F7F478 /* Test Business Objects */ = {
+			isa = PBXGroup;
+			children = (
+				97738D1E21F2D33300F7F478 /* TestComputerObject.swift */,
+			);
+			path = "Test Business Objects";
 			sourceTree = "<group>";
 		};
 		97AD21C721BF6D3200739C6D /* Retry */ = {
@@ -263,11 +303,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97738D1621F2C80000F7F478 /* IoGDataObject.swift in Sources */,
+				97738D1121F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift in Sources */,
 				27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */,
 				97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */,
+				97738D1521F2C80000F7F478 /* IoGDataObjectManager.swift in Sources */,
 				279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */,
 				279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */,
 				279F86C7219A02EA0066D85E /* IoGLiveDataManager.swift in Sources */,
+				97738D1221F2B01C00F7F478 /* IoGMockDataRequestResponse.swift in Sources */,
 				279F86C5219A02B10066D85E /* IoGDataManager.swift in Sources */,
 				27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */,
 			);
@@ -277,6 +321,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */,
+				97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */,
+				97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */,
+				97738D1F21F2D33400F7F478 /* TestComputerObject.swift in Sources */,
 				27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */,
 				279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */,
 			);

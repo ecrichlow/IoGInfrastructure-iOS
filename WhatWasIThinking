@@ -49,3 +49,10 @@ thorugh the current session.
 Delegate lists are implemented as NSPointerArrays so we can keep an array of weak references to the
 delegates to prevent retain cycles.
 - Eric C.
+
+"Page" based API calls usually rely on the caller to specify the "page" of data they're requesting.
+So the continueMultiPartRequest() method on FMDataRequestResponse relies on the caller to change
+the URL appropriately in order to get the next "page" of data. However, having to dig into the
+requestInfo to manually change the URL isn't the most user friendly way to go about it. In the
+future a method should be added to update the URL.
+- Eric C.
