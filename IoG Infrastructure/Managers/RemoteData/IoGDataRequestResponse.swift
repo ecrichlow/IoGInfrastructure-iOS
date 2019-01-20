@@ -26,7 +26,7 @@ public class IoGDataRequestResponse : NSObject
 	internal var responseInfo : [String: Any]?
 	internal var responseData : Data?
 
-	public init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
+	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
 	{
 		requestID = reqID
 		retryNumber = 0
