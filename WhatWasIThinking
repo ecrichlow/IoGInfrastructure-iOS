@@ -56,3 +56,10 @@ the URL appropriately in order to get the next "page" of data. However, having t
 requestInfo to manually change the URL isn't the most user friendly way to go about it. In the
 future a method should be added to update the URL.
 - Eric C.
+
+The downside of the FMDataRequestType enumeration strategy is that it reuqires either adding
+specialized entries for each project, or a ton of generalized entries that each project has to
+shoehorn its requests into, or each project has to keep a local version of this project and add
+its own values to. Perhaps the architecture needs to be changed to allow for per-project
+customization of this mechanism instead of a hardcoded enumeration.
+- Eric C.
