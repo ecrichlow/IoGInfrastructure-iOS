@@ -14,7 +14,7 @@
 
 import Foundation
 
-class IoGConfigurationManager
+public class IoGConfigurationManager
 {
 	// Persistence Manager
 	static let persistenceFolderPath = "/Documents/IoGPersistence"
@@ -71,7 +71,7 @@ class IoGConfigurationManager
 	static let retryItemFieldRoutine = "Routine"
 	static let retryItemFieldIdentifier = "Identifier"
 
-	static let sharedManager = IoGConfigurationManager()
+	public static let sharedManager = IoGConfigurationManager()
 
 	private var sessionActive = false
 
@@ -82,14 +82,14 @@ class IoGConfigurationManager
 		currentAPIURL = "http://"
 	}
 
-	func getVersion() -> String
+	public func getVersion() -> String
 	{
 		let infoDictionary = Bundle.main.infoDictionary
 		let version = infoDictionary!["CFBundleShortVersionString"] as! String
 		return version
 	}
 
-	func setSessionActive(state: Bool)
+	public func setSessionActive(state: Bool)
 	{
 		sessionActive = state
 		if state == false
@@ -98,22 +98,22 @@ class IoGConfigurationManager
 			}
 	}
 
-	func getSessionActive() -> Bool
+	public func getSessionActive() -> Bool
 	{
 		return sessionActive
 	}
 
-	func setAPIURL(address: String)
+	public func setAPIURL(address: String)
 	{
 		currentAPIURL = address
 	}
 
-	func getAPIURLString() -> String
+	public func getAPIURLString() -> String
 	{
 		return currentAPIURL
 	}
 
-	func getAPIURL() -> URL?
+	public func getAPIURL() -> URL?
 	{
 		return URL(string: currentAPIURL)
 	}

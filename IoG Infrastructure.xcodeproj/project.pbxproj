@@ -13,6 +13,7 @@
 		279F86C7219A02EA0066D85E /* IoGLiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */; };
 		279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C8219A031A0066D85E /* IoGMockDataManager.swift */; };
 		279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */; };
+		27EF591F21F428250037E486 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF591E21F428250037E486 /* TestComputerObject.swift */; };
 		27F0632E219230500045BE68 /* IoG_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F06324219230500045BE68 /* IoG_Infrastructure.framework */; };
 		27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */; };
 		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,7 +26,6 @@
 		97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */; };
 		97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */; };
 		97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */; };
-		97738D1F21F2D33400F7F478 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1E21F2D33300F7F478 /* TestComputerObject.swift */; };
 		97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +46,7 @@
 		279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGLiveDataManager.swift; sourceTree = "<group>"; };
 		279F86C8219A031A0066D85E /* IoGMockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGMockDataManager.swift; sourceTree = "<group>"; };
 		279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataRequestResponse.swift; sourceTree = "<group>"; };
+		27EF591E21F428250037E486 /* TestComputerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
 		27F06324219230500045BE68 /* IoG_Infrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IoG_Infrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F06327219230500045BE68 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
 		27F06328219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
 		97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataParsingTests.swift; sourceTree = "<group>"; };
 		97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGRetryManagerTests.swift; sourceTree = "<group>"; };
-		97738D1E21F2D33300F7F478 /* TestComputerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
 		97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGRetryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27EF591D21F428010037E486 /* Test Business Objects */ = {
+			isa = PBXGroup;
+			children = (
+				27EF591E21F428250037E486 /* TestComputerObject.swift */,
+			);
+			path = "Test Business Objects";
+			sourceTree = "<group>";
+		};
 		27F0631A219230500045BE68 = {
 			isa = PBXGroup;
 			children = (
@@ -121,7 +129,7 @@
 				97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */,
 				97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */,
 				97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */,
-				97738D1D21F2CA6D00F7F478 /* Test Business Objects */,
+				27EF591D21F428010037E486 /* Test Business Objects */,
 				27F06334219230500045BE68 /* Info.plist */,
 			);
 			path = "IoG InfrastructureTests";
@@ -175,14 +183,6 @@
 				97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */,
 			);
 			path = "Data Parsing";
-			sourceTree = "<group>";
-		};
-		97738D1D21F2CA6D00F7F478 /* Test Business Objects */ = {
-			isa = PBXGroup;
-			children = (
-				97738D1E21F2D33300F7F478 /* TestComputerObject.swift */,
-			);
-			path = "Test Business Objects";
 			sourceTree = "<group>";
 		};
 		97AD21C721BF6D3200739C6D /* Retry */ = {
@@ -324,7 +324,7 @@
 				97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */,
 				97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */,
 				97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */,
-				97738D1F21F2D33400F7F478 /* TestComputerObject.swift in Sources */,
+				27EF591F21F428250037E486 /* TestComputerObject.swift in Sources */,
 				27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */,
 				279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */,
 			);

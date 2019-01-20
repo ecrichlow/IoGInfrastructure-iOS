@@ -15,13 +15,13 @@
 
 import Foundation
 
-class IoGDataObject
+public class IoGDataObject
 {
 
 	private var sourceData : String!
 	private var objectDictionary = [String: String]()
 
-	required init(withString source: String)
+	required public init(withString source: String)
 	{
 		sourceData = source
 		let data = Data(source.utf8)
@@ -38,7 +38,7 @@ class IoGDataObject
 			}
 	}
 
-	func getValue(_ key: String) -> String
+	public func getValue(_ key: String) -> String
 	{
 		if let value = objectDictionary[key]
 			{

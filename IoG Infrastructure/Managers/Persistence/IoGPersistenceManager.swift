@@ -15,29 +15,29 @@
 
 import Foundation
 
-class IoGPersistenceManager
+public class IoGPersistenceManager
 {
-	enum PersistenceSource : Int
+	public enum PersistenceSource : Int
 	{
 		case Memory
 		case UserDefaults
 		case FileStorage
 	}
 
-	enum PersistenceProtectionLevel : Int
+	public enum PersistenceProtectionLevel : Int
 	{
 		case Unsecured
 		case Secured
 	}
 
-	enum PersistenceLifespan : Int
+	public enum PersistenceLifespan : Int
 	{
 		case Immortal
 		case Session
 		case Expiration
 	}
 
-	enum PersistenceDataType : Int
+	public enum PersistenceDataType : Int
 	{
 		case Number
 		case String
@@ -46,14 +46,14 @@ class IoGPersistenceManager
 		case Data
 	}
 
-	enum PersistenceReadResultCode : Int
+	public enum PersistenceReadResultCode : Int
 	{
 		case Success
 		case NotFound
 		case Expired
 	}
 
-	static let sharedManager = IoGPersistenceManager()
+	public static let sharedManager = IoGPersistenceManager()
 
 	var memoryStore = [String: Dictionary<String, Any>]()
 
@@ -62,7 +62,7 @@ class IoGPersistenceManager
 		Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.timerPeriodPersistenceExpirationCheck, repeats: true) {timer in self.checkForExpiredItems()}
 	}
 
-	@discardableResult func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool) -> Bool
+	@discardableResult public func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool) -> Bool
 	{
 		var savedDataElement = [String: Any]()
 		savedDataElement[IoGConfigurationManager.persistencElementValue] = value
@@ -196,7 +196,7 @@ class IoGPersistenceManager
 		return true
 	}
 
-	func readValue(name: String, from: PersistenceSource) -> (result: PersistenceReadResultCode, value: Any?)
+	public func readValue(name: String, from: PersistenceSource) -> (result: PersistenceReadResultCode, value: Any?)
 	{
 		if from == .Memory
 			{
@@ -265,7 +265,7 @@ class IoGPersistenceManager
 		return (result: .NotFound, value: nil)
 	}
 
-	func checkForValue(name: String, from: PersistenceSource) -> Bool
+	public func checkForValue(name: String, from: PersistenceSource) -> Bool
 	{
 		if from == .Memory
 			{
@@ -302,7 +302,7 @@ class IoGPersistenceManager
 		return false
 	}
 
-	@discardableResult func clearValue(name: String, from: PersistenceSource) -> Bool
+	@discardableResult public func clearValue(name: String, from: PersistenceSource) -> Bool
 	{
 		if checkForValue(name: name, from: from)
 			{
@@ -339,7 +339,7 @@ class IoGPersistenceManager
 		return false
 	}
 
-	func checkForExpiredItems()
+	public func checkForExpiredItems()
 	{
 		if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
 			{
@@ -373,7 +373,7 @@ class IoGPersistenceManager
 			}
 	}
 
-	func removeSessionItems()
+	public func removeSessionItems()
 	{
 		if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) != nil
 			{

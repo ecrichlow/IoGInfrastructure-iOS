@@ -15,7 +15,7 @@
 
 import Foundation
 
-class IoGDataRequestResponse : NSObject
+public class IoGDataRequestResponse : NSObject
 {
 
 	internal var requestID: Int
@@ -34,15 +34,15 @@ class IoGDataRequestResponse : NSObject
 		requestInfo = [IoGConfigurationManager.requestResponseKeyRequest : request, IoGConfigurationManager.requestResponseKeyRequestType : type]
 	}
 
-	func processRequest()
+	public func processRequest()
 	{
 	}
 
-	func continueMultiPartRequest()
+	public func continueMultiPartRequest()
 	{
 	}
 
-	func didRequestSucceed() -> Bool
+	public func didRequestSucceed() -> Bool
 	{
 		guard let code = statusCode
 			else
