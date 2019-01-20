@@ -14,27 +14,27 @@
 
 import Foundation
 
-protocol IoGDataManagerDelegate : class
+public protocol IoGDataManagerDelegate : class
 {
 	func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 }
 
-class IoGDataManager
+public class IoGDataManager
 {
 
-	enum IoGDataManagerType
+	public enum IoGDataManagerType
 	{
 		case IoGDataManagerTypeLive
 		case IoGDataManagerTypeMock
 	}
 
-	enum IoGDataRequestType
+	public enum IoGDataRequestType
 	{
 		case Register
 		case Login
 	}
 
-	private static var sharedManager : IoGDataManager!
+	public static var sharedManager : IoGDataManager!
 
 	var delegateList = NSPointerArray.weakObjects()
 	var outstandingRequests = [Int: IoGDataRequestResponse]()
@@ -42,7 +42,7 @@ class IoGDataManager
 
 	// MARK: Class Methods
 
-	class func dataManagerOfType(type: IoGDataManagerType) -> IoGDataManager
+	public class func dataManagerOfType(type: IoGDataManagerType) -> IoGDataManager
 	{
 		switch (type)
 			{
@@ -60,7 +60,7 @@ class IoGDataManager
 		return sharedManager
 	}
 
-	class func dataManagerOfDefaultType() -> IoGDataManager
+	public class func dataManagerOfDefaultType() -> IoGDataManager
 	{
 		return IoGDataManager.dataManagerOfType(type: IoGConfigurationManager.defaultDataManagerType)
 	}
@@ -71,7 +71,7 @@ class IoGDataManager
 	{
 	}
 
-	func registerDelegate(delegate: IoGDataManagerDelegate)
+	public func registerDelegate(delegate: IoGDataManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
 			{
@@ -85,7 +85,7 @@ class IoGDataManager
 		delegateList.addPointer(pointer)
 	}
 
-	func unregisterDelegate(delegate: IoGDataManagerDelegate)
+	public func unregisterDelegate(delegate: IoGDataManagerDelegate)
 	{
 		var index = 0
 		for nextDelegate in delegateList.allObjects
@@ -103,12 +103,12 @@ class IoGDataManager
 			}
 	}
 
-	@discardableResult func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
+	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		return 0
 	}
 
-	func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
+	public func continueMultiPartRequest(multiPartResponse: IoGDataRequestResponse)
 	{
 		multiPartResponse.continueMultiPartRequest()
 	}

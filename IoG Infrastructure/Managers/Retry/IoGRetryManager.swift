@@ -14,14 +14,14 @@
 
 import Foundation
 
-protocol IoGRetryManagerDelegate : class
+public protocol IoGRetryManagerDelegate : class
 {
 	func retrySessionCompleted(requestID: Int, result: IoGRetryManager.RetryResult)
 }
 
-class IoGRetryManager
+public class IoGRetryManager
 {
-	enum RetryLifespan : Int
+	public enum RetryLifespan : Int
 	{
 		case Infinite
 		case CountLimited
@@ -29,7 +29,7 @@ class IoGRetryManager
 		case ExpirationLimited
 	}
 
-	enum RetryResult
+	public enum RetryResult
 	{
 		case Success
 		case CountExceeded
@@ -37,7 +37,7 @@ class IoGRetryManager
 		case Expired
 	}
 
-	enum Disposition : Int
+	public enum Disposition : Int
 	{
 		case Success
 		case Failure
@@ -51,9 +51,9 @@ class IoGRetryManager
 	static let retryItemFieldRoutine = "Routine"
 	static let retryItemFieldIdentifier = "Identifier"
 
-	static let sharedManager = IoGRetryManager()
+	public static let sharedManager = IoGRetryManager()
 
-	typealias RetryRoutine = (@escaping (Int, Disposition) -> ()) -> ()
+	public typealias RetryRoutine = (@escaping (Int, Disposition) -> ()) -> ()
 
 	var delegateList = NSPointerArray.weakObjects()
 
@@ -65,7 +65,7 @@ class IoGRetryManager
 	{
 	}
 
-	func registerDelegate(delegate: IoGRetryManagerDelegate)
+	public func registerDelegate(delegate: IoGRetryManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
 			{
@@ -79,7 +79,7 @@ class IoGRetryManager
 		delegateList.addPointer(pointer)
 	}
 
-	func unregisterDelegate(delegate: IoGRetryManagerDelegate)
+	public func unregisterDelegate(delegate: IoGRetryManagerDelegate)
 	{
 		var index = 0
 		for nextDelegate in delegateList.allObjects
@@ -97,7 +97,7 @@ class IoGRetryManager
 			}
 	}
 
-	@discardableResult func startRetries(interval: TimeInterval, lifespan: RetryLifespan, maxCount: Int?, timeSpan: TimeInterval?, expiration: Date?, routine: @escaping RetryRoutine) -> Int
+	@discardableResult public func startRetries(interval: TimeInterval, lifespan: RetryLifespan, maxCount: Int?, timeSpan: TimeInterval?, expiration: Date?, routine: @escaping RetryRoutine) -> Int
 	{
 		// Make sure the proper delimiter was passed in for the selected lifespan
 		if lifespan == .ExpirationLimited && expiration == nil || lifespan == .TimeLimited && timeSpan == nil || lifespan == .CountLimited && maxCount == nil
@@ -143,22 +143,22 @@ class IoGRetryManager
 		return request
 	}
 
-	@discardableResult func startRetries(interval: TimeInterval, routine: @escaping RetryRoutine) -> Int
+	@discardableResult public func startRetries(interval: TimeInterval, routine: @escaping RetryRoutine) -> Int
 	{
 		return startRetries(interval: interval, lifespan: .Infinite, maxCount: nil, timeSpan: nil, expiration: nil, routine: routine)
 	}
 
-	@discardableResult func startRetries(interval: TimeInterval, maxCount: Int, routine: @escaping RetryRoutine) -> Int
+	@discardableResult public func startRetries(interval: TimeInterval, maxCount: Int, routine: @escaping RetryRoutine) -> Int
 	{
 		return startRetries(interval: interval, lifespan: .CountLimited, maxCount: maxCount, timeSpan: nil, expiration: nil, routine: routine)
 	}
 
-	@discardableResult func startRetries(interval: TimeInterval, timeSpan: TimeInterval, routine: @escaping RetryRoutine) -> Int
+	@discardableResult public func startRetries(interval: TimeInterval, timeSpan: TimeInterval, routine: @escaping RetryRoutine) -> Int
 	{
 		return startRetries(interval: interval, lifespan: .TimeLimited, maxCount: nil, timeSpan: timeSpan, expiration: nil, routine: routine)
 	}
 
-	@discardableResult func startRetries(interval: TimeInterval, expiration: Date, routine: @escaping RetryRoutine) -> Int
+	@discardableResult public func startRetries(interval: TimeInterval, expiration: Date, routine: @escaping RetryRoutine) -> Int
 	{
 		return startRetries(interval: interval, lifespan: .ExpirationLimited, maxCount: nil, timeSpan: nil, expiration: expiration, routine: routine)
 	}

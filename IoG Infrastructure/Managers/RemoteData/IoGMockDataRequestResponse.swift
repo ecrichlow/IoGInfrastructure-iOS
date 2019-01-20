@@ -16,15 +16,15 @@
 
 import Foundation
 
-class IoGMockDataRequestResponse : IoGDataRequestResponse
+public class IoGMockDataRequestResponse : IoGDataRequestResponse
 {
 
-	override func processRequest()
+	override public func processRequest()
 	{
 		sendResponse()
 	}
 
-	override func continueMultiPartRequest()
+	override public func continueMultiPartRequest()
 	{
 		self.responseData = nil
 		sendResponse()

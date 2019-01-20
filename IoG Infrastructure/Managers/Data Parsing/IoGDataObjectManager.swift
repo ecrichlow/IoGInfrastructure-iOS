@@ -14,17 +14,17 @@
 
 import Foundation
 
-class IoGDataObjectManager
+public class IoGDataObjectManager
 {
 
-	static let sharedManager = IoGDataObjectManager()
+	public static let sharedManager = IoGDataObjectManager()
 
-	func parseObject<T: IoGDataObject>(objectString: String, toObject: T.Type) -> T
+	public func parseObject<T: IoGDataObject>(objectString: String, toObject: T.Type) -> T
 	{
 		return T.init(withString: objectString)
 	}
 
-	func parseArray<T: IoGDataObject>(arrayString: String, forObject: T.Type) -> [T]
+	public func parseArray<T: IoGDataObject>(arrayString: String, forObject: T.Type) -> [T]
 	{
 		var objectArray = [T]()
 		let data = Data(arrayString.utf8)

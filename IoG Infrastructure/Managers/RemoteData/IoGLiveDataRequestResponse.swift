@@ -16,7 +16,7 @@
 
 import Foundation
 
-class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
+public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
 {
 
 	private(set) var responseHeader : [AnyHashable : Any]?
@@ -24,7 +24,7 @@ class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, U
 	private var session : URLSession?
 	private var dataTask : URLSessionDataTask?
 
-	override func processRequest()
+	override public func processRequest()
 	{
 		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
 		let newSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
@@ -55,7 +55,7 @@ class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, U
 	}
 
 	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
-	override func continueMultiPartRequest()
+	override public func continueMultiPartRequest()
 	{
 		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
 		if let currentSession = session

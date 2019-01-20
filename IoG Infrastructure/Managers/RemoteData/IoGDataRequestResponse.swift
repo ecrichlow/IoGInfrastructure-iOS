@@ -15,7 +15,7 @@
 
 import Foundation
 
-class IoGDataRequestResponse : NSObject
+public class IoGDataRequestResponse : NSObject
 {
 
 	internal var requestID: Int
@@ -26,7 +26,7 @@ class IoGDataRequestResponse : NSObject
 	internal var responseInfo : [String: Any]?
 	internal var responseData : Data?
 
-	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
+	public init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
 	{
 		requestID = reqID
 		retryNumber = 0
@@ -34,15 +34,15 @@ class IoGDataRequestResponse : NSObject
 		requestInfo = [IoGConfigurationManager.requestResponseKeyRequest : request, IoGConfigurationManager.requestResponseKeyRequestType : type]
 	}
 
-	func processRequest()
+	public func processRequest()
 	{
 	}
 
-	func continueMultiPartRequest()
+	public func continueMultiPartRequest()
 	{
 	}
 
-	func didRequestSucceed() -> Bool
+	public func didRequestSucceed() -> Bool
 	{
 		guard let code = statusCode
 			else
@@ -59,7 +59,7 @@ class IoGDataRequestResponse : NSObject
 			}
 	}
 
-	func getRequestInfo() -> [String: Any]
+	public func getRequestInfo() -> [String: Any]
 	{
 		return requestInfo
 	}

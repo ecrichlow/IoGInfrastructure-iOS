@@ -19,7 +19,7 @@ class IoGLiveDataManager : IoGDataManager
 
 	// MARK: Business Logic
 
-	@discardableResult override func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
+	@discardableResult override public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		let reqID = requestID
 		let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
