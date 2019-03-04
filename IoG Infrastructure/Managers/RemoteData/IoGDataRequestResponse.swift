@@ -59,8 +59,23 @@ public class IoGDataRequestResponse : NSObject
 			}
 	}
 
+	public func getRequestID() -> Int
+	{
+		return requestID
+	}
+
 	public func getRequestInfo() -> [String: Any]
 	{
 		return requestInfo
+	}
+
+	public func getResponseInfo() -> [String: Any]?
+	{
+		return responseInfo
+	}
+
+	public func getStatusCode() -> Int?
+	{
+		return statusCode
 	}
 }
