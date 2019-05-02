@@ -163,6 +163,11 @@ public class IoGRetryManager
 		return startRetries(interval: interval, lifespan: .ExpirationLimited, maxCount: nil, timeSpan: nil, expiration: expiration, routine: routine)
 	}
 
+	public func cancelRetries(identifier: Int)
+	{
+		retryStore[identifier] = nil
+	}
+
 	func makeRetryAttempt(timer: Timer, requestNumber: Int)
 	{
 		if let retryEntry = retryStore[requestNumber]

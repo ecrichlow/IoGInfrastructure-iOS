@@ -14,7 +14,7 @@
 
 import Foundation
 
-class IoGLiveDataManager : IoGDataManager
+public class IoGLiveDataManager : IoGDataManager
 {
 
 	// MARK: Business Logic

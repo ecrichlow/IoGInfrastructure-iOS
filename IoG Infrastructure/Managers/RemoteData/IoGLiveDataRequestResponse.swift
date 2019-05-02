@@ -74,7 +74,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				self.retryNumber += 1
 				if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
 					{
-					self.processRequest()
+					self.continueMultiPartRequest()
 					}
 				else
 					{
@@ -97,15 +97,15 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	// MARK: URLSessionDelegate methods
 
-	func urlSession(_: URLSession, didBecomeInvalidWithError: Error?)
+	public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
 	{
 	}
 
-	func urlSessionDidFinishEvents(forBackgroundURLSession: URLSession)
+	public func urlSessionDidFinishEvents(forBackgroundURLSession: URLSession)
 	{
 	}
 
-	func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+	public func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 	{
 		let authMethod = didReceive.protectionSpace.authenticationMethod
 		guard authMethod == NSURLAuthenticationMethodServerTrust
@@ -132,7 +132,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	// MARK: URLSessionTaskDelegate methods
 
-	func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
+	public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
 	{
 		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGLiveDataRequestResponse) -> ()
 		if let err = error
@@ -162,15 +162,22 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 					}
 				}
 			}
+		if let response = task.response as? HTTPURLResponse
+			{
+			let code = response.statusCode
+			let header = response.allHeaderFields
+			self.statusCode = code
+			self.responseHeader = header
+			}
 		callback(self)
 	}
 
-	func urlSession(_: URLSession, task: URLSessionTask, willPerformHTTPRedirection: HTTPURLResponse, newRequest: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
+	public func urlSession(_: URLSession, task: URLSessionTask, willPerformHTTPRedirection: HTTPURLResponse, newRequest: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
 	{
 		completionHandler(nil)
 	}
 
-	func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
+	public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
 	{
 	}
 
@@ -179,7 +186,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 //		let flag = true
 //	}
 
-	func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+	public func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 	{
 		let authMethod = didReceive.protectionSpace.authenticationMethod
 		guard authMethod == NSURLAuthenticationMethodServerTrust
@@ -204,17 +211,18 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 		completionHandler(.cancelAuthenticationChallenge, nil)
 	}
 
-	func urlSession(_: URLSession, taskIsWaitingForConnectivity: URLSessionTask)
+	public func urlSession(_: URLSession, taskIsWaitingForConnectivity: URLSessionTask)
 	{
 	}
 
-	func urlSession(_: URLSession, task: URLSessionTask, didFinishCollecting: URLSessionTaskMetrics)
+	public func urlSession(_: URLSession, task: URLSessionTask, didFinishCollecting: URLSessionTaskMetrics)
 	{
 	}
 
 	// MARK: URLSessionDataTaskDelegate
 
-	func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
+	// TODO: May need to comment this one out
+	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
 	{
 		guard let httpResponse = response as? HTTPURLResponse
 			else
@@ -237,15 +245,15 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
-	func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionDownloadTask)
+	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionDownloadTask)
 	{
 	}
 
-	func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionStreamTask)
+	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionStreamTask)
 	{
 	}
 
-	func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
+	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
 	{
 		if let timer = timeoutTimer
 			{
@@ -255,6 +263,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 		if var existingData = responseData
 			{
 			existingData.append(data)
+			responseData = existingData
 			}
 		else
 			{
