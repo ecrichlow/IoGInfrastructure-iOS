@@ -271,7 +271,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
-	func urlSession(_: URLSession, dataTask: URLSessionDataTask, willCacheResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void)
+	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, willCacheResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void)
 	{
 		completionHandler(nil)
 	}
