@@ -36,7 +36,7 @@ public class IoGDataObjectManager
 				for nextObject in dataArray
 					{
 					let jsonData = try JSONSerialization.data(withJSONObject: nextObject, options: [])
-					if let jsonString = String(data: jsonData, encoding: String.Encoding.ascii)
+					if let jsonString = String(data: jsonData, encoding: String.Encoding.utf8)
 						{
 						objectArray.append(T.init(withString: jsonString))
 						}

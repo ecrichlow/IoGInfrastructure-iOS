@@ -74,7 +74,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				self.retryNumber += 1
 				if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
 					{
-					self.processRequest()
+					self.continueMultiPartRequest()
 					}
 				else
 					{
@@ -97,7 +97,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	// MARK: URLSessionDelegate methods
 
-	public func urlSession(_: URLSession, didBecomeInvalidWithError: Error?)
+	public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
 	{
 	}
 
@@ -162,6 +162,13 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 					}
 				}
 			}
+		if let response = task.response as? HTTPURLResponse
+			{
+			let code = response.statusCode
+			let header = response.allHeaderFields
+			self.statusCode = code
+			self.responseHeader = header
+			}
 		callback(self)
 	}
 
@@ -214,6 +221,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	// MARK: URLSessionDataTaskDelegate
 
+	// TODO: May need to comment this one out
 	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
 	{
 		guard let httpResponse = response as? HTTPURLResponse

@@ -117,14 +117,10 @@ public class IoGPersistenceManager
 				}
 			if !FileManager.default.fileExists(atPath: destFilePathString)
 				{
-				do
+				let destFileURL = URL(fileURLWithPath: destFilePathString)
+				if dictionary.write(to: destFileURL, atomically: true) == false
 					{
-					let destFileURL = URL(fileURLWithPath: destFilePathString)
-					try dictionary.write(to: destFileURL)
-					}
-				catch
-					{
-					return (false);
+					return false
 					}
 				}
 			else if overwrite
@@ -133,7 +129,10 @@ public class IoGPersistenceManager
 					{
 					try FileManager.default.removeItem(atPath: destFilePathString)
 					let destFileURL = URL(fileURLWithPath: destFilePathString)
-					try dictionary.write(to: destFileURL)
+					if dictionary.write(to: destFileURL, atomically: true) == false
+						{
+						return false
+						}
 					}
 				catch
 					{
@@ -166,11 +165,61 @@ public class IoGPersistenceManager
 				{
 				let dateFormatter = DateFormatter()
 				dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+				var dirty = false
+				// First, remove any expiring item already existing for the same name
+				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
+					{
+					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [String]>
+					for nextExpirationDate in expiringItemEntries.keys
+						{
+						if let expirationDate = dateFormatter.date(from: nextExpirationDate)
+							{
+							let expiringItemList = expiringItemEntries[nextExpirationDate]
+							var freshItemList = expiringItemList
+							var entryDirty = false
+							for nextItemIndex in stride(from: expiringItemList!.count-1, through: 0, by: -1)
+								{
+								let nextItem = expiringItemList![nextItemIndex]
+								if nextItem == name
+									{
+									freshItemList!.remove(at: nextItemIndex)
+									entryDirty = true
+									dirty = true
+									}
+								}
+							if entryDirty
+								{
+								if freshItemList!.count == 0
+									{
+									expiringItemEntries.removeValue(forKey: nextExpirationDate)
+									}
+								else
+									{
+									expiringItemEntries[nextExpirationDate] = freshItemList!
+									}
+								}
+							}
+						}
+					if dirty
+						{
+						if expiringItemEntries.count == 0
+							{
+							UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+							}
+						else
+							{
+							UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+							}
+						UserDefaults.standard.synchronize()
+						}
+					}
+				// Then, add the new expiring item
 				let dateString = dateFormatter.string(from: expirationDate)
 				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) == nil
 					{
 					let expiringItemEntries = [dateString: [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]]
 					UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+					UserDefaults.standard.synchronize()
 					}
 				else
 					{
@@ -237,10 +286,9 @@ public class IoGPersistenceManager
 				{
 				if let url = URL.init(string: sourceFilePathString)
 					{
-					do
+					let fileURL = URL(fileURLWithPath: url.path)
+					if let savedDataElement = NSDictionary.init(contentsOf: fileURL)
 						{
-						let fileURL = URL(fileURLWithPath: url.path)
-						let savedDataElement = try NSDictionary.init(contentsOf: fileURL, error:())
 						if savedDataElement.object(forKey: IoGConfigurationManager.persistencElementValue) != nil
 							{
 							let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
@@ -251,7 +299,7 @@ public class IoGPersistenceManager
 							return (result: .NotFound, value: nil)
 							}
 						}
-					catch
+					else
 						{
 						return (result: .NotFound, value: nil)
 						}
@@ -333,6 +381,53 @@ public class IoGPersistenceManager
 						{
 						return false
 						}
+					}
+				}
+			// Then clear any expiring values for the same name
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+			var dirty = false
+			if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
+				{
+				var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [String]>
+				for nextExpirationDate in expiringItemEntries.keys
+					{
+					let expiringItemList = expiringItemEntries[nextExpirationDate]
+					var freshItemList = expiringItemList
+					var entryDirty = false
+					for nextItemIndex in stride(from: expiringItemList!.count-1, through: 0, by: -1)
+						{
+						let nextItem = expiringItemList![nextItemIndex]
+						if nextItem == name
+							{
+							freshItemList!.remove(at: nextItemIndex)
+							entryDirty = true
+							dirty = true
+							}
+						}
+					if entryDirty
+						{
+						if freshItemList!.count == 0
+							{
+							expiringItemEntries.removeValue(forKey: nextExpirationDate)
+							}
+						else
+							{
+							expiringItemEntries[nextExpirationDate] = freshItemList!
+							}
+						}
+					}
+				if dirty
+					{
+					if expiringItemEntries.count == 0
+						{
+						UserDefaults.standard.removeObject(forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+						}
+					else
+						{
+						UserDefaults.standard.set(expiringItemEntries, forKey: IoGConfigurationManager.persistenceManagementExpiringItems)
+						}
+					UserDefaults.standard.synchronize()
 					}
 				}
 			}

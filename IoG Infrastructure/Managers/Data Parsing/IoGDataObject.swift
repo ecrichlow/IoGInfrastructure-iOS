@@ -15,7 +15,7 @@
 
 import Foundation
 
-public class IoGDataObject
+open class IoGDataObject
 {
 
 	private var sourceData : String!
