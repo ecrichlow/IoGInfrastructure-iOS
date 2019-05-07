@@ -19,7 +19,7 @@ public class IoGDataObject
 {
 
 	private var sourceData : String!
-	private var objectDictionary = [String: String]()
+	private var objectDictionary = [String: Any]()
 
 	required public init(withString source: String)
 	{
@@ -30,7 +30,7 @@ public class IoGDataObject
 			let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
 			if let dataDictionary = jsonDict as? NSDictionary
 				{
-				objectDictionary = dataDictionary as! [String: String]
+				objectDictionary = dataDictionary as! [String: Any]
 				}
 			}
 		catch
@@ -38,7 +38,7 @@ public class IoGDataObject
 			}
 	}
 
-	public func getValue(_ key: String) -> String
+	public func getValue(_ key: String) -> Any
 	{
 		if let value = objectDictionary[key]
 			{
