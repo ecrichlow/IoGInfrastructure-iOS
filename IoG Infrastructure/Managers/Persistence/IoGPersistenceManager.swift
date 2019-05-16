@@ -150,6 +150,7 @@ public class IoGPersistenceManager
 				{
 				let sessionItemEntry = [[IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue]]
 				UserDefaults.standard.set(sessionItemEntry, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
+				UserDefaults.standard.synchronize()
 				}
 			else
 				{

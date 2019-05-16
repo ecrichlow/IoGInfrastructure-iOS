@@ -100,7 +100,7 @@ public class IoGRetryManager
 	@discardableResult public func startRetries(interval: TimeInterval, lifespan: RetryLifespan, maxCount: Int?, timeSpan: TimeInterval?, expiration: Date?, routine: @escaping RetryRoutine) -> Int
 	{
 		// Make sure the proper delimiter was passed in for the selected lifespan
-		if lifespan == .ExpirationLimited && expiration == nil || lifespan == .TimeLimited && timeSpan == nil || lifespan == .CountLimited && maxCount == nil
+		if (lifespan == .ExpirationLimited && expiration == nil) || (lifespan == .TimeLimited && timeSpan == nil) || (lifespan == .CountLimited && maxCount == nil)
 			{
 			return -1
 			}
