@@ -169,7 +169,7 @@ public class IoGPersistenceManager
 				// First, remove any expiring item already existing for the same name
 				if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
 					{
-					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [String]>
+					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [[String: Any]]>
 					for nextExpirationDate in expiringItemEntries.keys
 						{
 						if let expirationDate = dateFormatter.date(from: nextExpirationDate)
@@ -180,7 +180,8 @@ public class IoGPersistenceManager
 							for nextItemIndex in stride(from: expiringItemList!.count-1, through: 0, by: -1)
 								{
 								let nextItem = expiringItemList![nextItemIndex]
-								if nextItem == name
+								let nextItemName = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
+								if nextItemName == name
 									{
 									freshItemList!.remove(at: nextItemIndex)
 									entryDirty = true
@@ -389,7 +390,7 @@ public class IoGPersistenceManager
 			var dirty = false
 			if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
 				{
-				var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [String]>
+				var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [[String: Any]]>
 				for nextExpirationDate in expiringItemEntries.keys
 					{
 					let expiringItemList = expiringItemEntries[nextExpirationDate]
@@ -398,7 +399,8 @@ public class IoGPersistenceManager
 					for nextItemIndex in stride(from: expiringItemList!.count-1, through: 0, by: -1)
 						{
 						let nextItem = expiringItemList![nextItemIndex]
-						if nextItem == name
+						let nextItemName = nextItem[IoGConfigurationManager.persistenceExpirationItemName] as! String
+						if nextItemName == name
 							{
 							freshItemList!.remove(at: nextItemIndex)
 							entryDirty = true

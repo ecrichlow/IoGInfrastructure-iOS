@@ -174,7 +174,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	public func urlSession(_: URLSession, task: URLSessionTask, willPerformHTTPRedirection: HTTPURLResponse, newRequest: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
 	{
-		completionHandler(nil)
+		completionHandler(newRequest)
 	}
 
 	public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)

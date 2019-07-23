@@ -75,7 +75,8 @@ class IoGDataParsingTests: XCTestCase
 	func testRetrieveUnlabeledProperty()
 	{
 		let computer = IoGDataObjectManager.sharedManager.parseObject(objectString: IoGTestConfigurationManager.parsingObjectData, toObject: TestComputerObject.self)
+		let year = computer.getValue("year") as! String
 		XCTAssertNotNil(computer)
-		XCTAssertEqual(computer.getValue("year"), "1980")
+		XCTAssertEqual(year, "1980")
 	}
 }

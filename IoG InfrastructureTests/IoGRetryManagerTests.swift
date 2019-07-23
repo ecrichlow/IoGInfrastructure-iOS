@@ -45,7 +45,7 @@ class IoGRetryManagerTests: XCTestCase, IoGRetryManagerDelegate
 	func testExpiringRetrySuccess()
 	{
 		let expiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.retryTestExpiration)
-		let preExpiration = Date.init().addingTimeInterval((IoGTestConfigurationManager.retryTestExpiration - IoGTestConfigurationManager.preExpiration))
+		let preExpiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.preExpiration)
 		let successExpectation = expectation(description: "Retry succeeded")
 		let callbackExpectation = expectation(description: "Callback delay achieved")
 		var decoyRetryCount = 0
@@ -131,7 +131,7 @@ class IoGRetryManagerTests: XCTestCase, IoGRetryManagerDelegate
 
 	func testTimeLimitedRetrySuccess()
 	{
-		let preExpiration = Date.init().addingTimeInterval((IoGTestConfigurationManager.retryTestExpiration - IoGTestConfigurationManager.preExpiration))
+		let preExpiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.preExpiration)
 		let successExpectation = expectation(description: "Retry succeeded")
 		let callbackExpectation = expectation(description: "Callback delay achieved")
 		var decoyRetryCount = 0

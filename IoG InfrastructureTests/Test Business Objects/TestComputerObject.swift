@@ -15,14 +15,14 @@ class TestComputerObject : IoGDataObject
 	{
 		get
 		{
-			return getValue("model")
+			return getValue("model") as! String
 		}
 	}
 	var processor : String
 	{
 		get
 		{
-			return getValue("processor")
+			return getValue("processor") as! String
 		}
 	}
 
