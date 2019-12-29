@@ -6,7 +6,7 @@
 *						This file contains the manager for memory, User Defaults
 *						and file storage
 * Author:			Eric Crichlow
-* Version:			2.0
+* Version:			1.1
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	05/05/18		*	EGC	*	File creation date

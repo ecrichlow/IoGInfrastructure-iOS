@@ -1,13 +1,13 @@
 //
 //  TestComputerObject.swift
-//  FMInfrastructureTests
+//  IoGInfrastructureTests
 //
 //  Created by Eric Crichlow on 1/16/19.
 //  Copyright © 2018 Infusions of Grandeur. All rights reserved.
 //
 
 import Foundation
-@testable import IoG_Infrastructure
+@testable import IoGInfrastructure
 
 class TestComputerObject : IoGDataObject
 {

@@ -14,7 +14,7 @@
 		279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C8219A031A0066D85E /* IoGMockDataManager.swift */; };
 		279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */; };
 		27EF591F21F428250037E486 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF591E21F428250037E486 /* TestComputerObject.swift */; };
-		27F0632E219230500045BE68 /* IoG_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F06324219230500045BE68 /* IoG_Infrastructure.framework */; };
+		27F0632E219230500045BE68 /* IoGInfrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F06324219230500045BE68 /* IoGInfrastructure.framework */; };
 		27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */; };
 		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */; };
@@ -47,7 +47,7 @@
 		279F86C8219A031A0066D85E /* IoGMockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGMockDataManager.swift; sourceTree = "<group>"; };
 		279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataRequestResponse.swift; sourceTree = "<group>"; };
 		27EF591E21F428250037E486 /* TestComputerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
-		27F06324219230500045BE68 /* IoG_Infrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IoG_Infrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27F06324219230500045BE68 /* IoGInfrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IoGInfrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F06327219230500045BE68 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
 		27F06328219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IoG InfrastructureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27F0632E219230500045BE68 /* IoG_Infrastructure.framework in Frameworks */,
+				27F0632E219230500045BE68 /* IoGInfrastructure.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +104,7 @@
 		27F06325219230500045BE68 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				27F06324219230500045BE68 /* IoG_Infrastructure.framework */,
+				27F06324219230500045BE68 /* IoGInfrastructure.framework */,
 				27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */,
 			);
 			name = Products;
@@ -222,7 +222,7 @@
 			);
 			name = "IoG Infrastructure";
 			productName = "IoG Infrastructure";
-			productReference = 27F06324219230500045BE68 /* IoG_Infrastructure.framework */;
+			productReference = 27F06324219230500045BE68 /* IoGInfrastructure.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		27F0632C219230500045BE68 /* IoG InfrastructureTests */ = {
@@ -469,6 +469,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -481,8 +482,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-Infrastructure";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
+				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -496,6 +498,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -508,8 +511,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-Infrastructure";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
+				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

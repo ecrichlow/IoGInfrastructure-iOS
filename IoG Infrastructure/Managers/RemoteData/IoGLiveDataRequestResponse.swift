@@ -181,11 +181,6 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 	{
 	}
 
-//	func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Void)
-//	{
-//		let flag = true
-//	}
-
 	public func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 	{
 		let authMethod = didReceive.protectionSpace.authenticationMethod

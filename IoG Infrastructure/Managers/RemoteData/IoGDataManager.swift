@@ -32,6 +32,12 @@ public class IoGDataManager
 	{
 		case Register
 		case Login
+		case Logout
+		case ResetPassword
+		case UserInfo
+		case UpdateUserInfo
+		case Features
+		case Version
 	}
 
 	public static var sharedManager : IoGDataManager!

@@ -6,7 +6,7 @@
 *						This file contains the manager for scheduling failed
 *						workflows to be attempted again
 * Author:			Eric Crichlow
-* Version:			2.0
+* Version:			1.1
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	11/26/18		*	EGC	*	File creation date

@@ -14,6 +14,7 @@ evolution of the system. And you should document your own thoughts and decisions
 
 - Eric C.
 
+
 First major decision that needed to be made, whether to make requests for data from the back end
 be implemented such that the caller included a block to be executed when the request completed, or
 to use a multiple delegate (observer) pattern to notify all interested parties of newly retrieved
@@ -51,13 +52,13 @@ delegates to prevent retain cycles.
 - Eric C.
 
 "Page" based API calls usually rely on the caller to specify the "page" of data they're requesting.
-So the continueMultiPartRequest() method on FMDataRequestResponse relies on the caller to change
+So the continueMultiPartRequest() method on IoGDataRequestResponse relies on the caller to change
 the URL appropriately in order to get the next "page" of data. However, having to dig into the
 requestInfo to manually change the URL isn't the most user friendly way to go about it. In the
 future a method should be added to update the URL.
 - Eric C.
 
-The downside of the FMDataRequestType enumeration strategy is that it reuqires either adding
+The downside of the IoGDataRequestType enumeration strategy is that it reuqires either adding
 specialized entries for each project, or a ton of generalized entries that each project has to
 shoehorn its requests into, or each project has to keep a local version of this project and add
 its own values to. Perhaps the architecture needs to be changed to allow for per-project
