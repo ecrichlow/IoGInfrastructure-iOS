@@ -43,28 +43,28 @@ This is the class that manages delayed and repeated execution of a block of code
 Note, the project in its current configuration doesn't build a framework that supports both the Simulator and actual hardware. So, you can either embed this project as a subproject of your app project, or, if you want to include this project as a framework, you need to run the following script at the root of this project's folder to get the framework properly configured:
 
 	#!/bin/sh
-CONFIGURATION=release
-BUILD_DIR=/Users/<username>/Library/Developer/Xcode/DerivedData/path to project derived data>/Build/Products
-BUILD_ROOT=/Users/<username>/Library/Developer/Xcode/DerivedData/<path to project derived data>/Build/Products
-SDKROOT=iphoneos12.1
-TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
-UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal
-# make sure the output directory exists
-mkdir -p "${UNIVERSAL_OUTPUTFOLDER}"
-# Step 1. Build Device and Simulator versions
-xcodebuild -target "IoGInfrastructure" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
-xcodebuild -target "IoGInfrastructure" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
-# Step 2. Copy the framework structure (from iphoneos build) to the universal folder
-cp -R "${BUILD_DIR}/${CONFIGURATION}-iphoneos/IoGInfrastructure.framework" "${UNIVERSAL_OUTPUTFOLDER}/"
-# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory
-SIMULATOR_SWIFT_MODULES_DIR="${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/IoGInfrastructure.framework/Modules/IoGInfrastructure.swiftmodule/."
-if [ -d "${SIMULATOR_SWIFT_MODULES_DIR}" ]; then
-cp -R "${SIMULATOR_SWIFT_MODULES_DIR}" "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework/Modules/IoGInfrastructureswiftmodule"
-fi
-# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory
-lipo -create -output "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework/IoGInfrastructure" "${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/F IoGInfrastructure.framework/IoGInfrastructure" "${BUILD_DIR}/${CONFIGURATION}-iphoneos/IoGInfrastructure.framework/IoGInfrastructure"
-# Step 5. Convenience step to copy the framework to the project's directory
-cp -R "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework" "${PROJECT_DIR}"
+	CONFIGURATION=release
+	BUILD_DIR=/Users/<username>/Library/Developer/Xcode/DerivedData/path to project derived data>/Build/Products
+	BUILD_ROOT=/Users/<username>/Library/Developer/Xcode/DerivedData/<path to project derived data>/Build/Products
+	SDKROOT=iphoneos12.1
+	TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+	UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal
+	# make sure the output directory exists
+	mkdir -p "${UNIVERSAL_OUTPUTFOLDER}"
+	# Step 1. Build Device and Simulator versions
+	xcodebuild -target "IoGInfrastructure" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
+	xcodebuild -target "IoGInfrastructure" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
+	# Step 2. Copy the framework structure (from iphoneos build) to the universal folder
+	cp -R "${BUILD_DIR}/${CONFIGURATION}-iphoneos/IoGInfrastructure.framework" "${UNIVERSAL_OUTPUTFOLDER}/"
+	# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory
+	SIMULATOR_SWIFT_MODULES_DIR="${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/IoGInfrastructure.framework/Modules/IoGInfrastructure.swiftmodule/."
+	if [ -d "${SIMULATOR_SWIFT_MODULES_DIR}" ]; then
+	cp -R "${SIMULATOR_SWIFT_MODULES_DIR}" "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework/Modules/IoGInfrastructureswiftmodule"
+	fi
+	# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory
+	lipo -create -output "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework/IoGInfrastructure" "${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/F IoGInfrastructure.framework/IoGInfrastructure" "${BUILD_DIR}/${CONFIGURATION}-iphoneos/IoGInfrastructure.framework/IoGInfrastructure"
+	# Step 5. Convenience step to copy the framework to the project's directory
+	cp -R "${UNIVERSAL_OUTPUTFOLDER}/IoGInfrastructure.framework" "${PROJECT_DIR}"
 
 Then, expand the IogInfrastructure.framework file, drill down to the "Modules" folder, and move every file from the "IoGInfrastructureswiftmodule" folder into the "IogInfrastructure.swiftmodule" folder and delete the "IoGInfrastructureswiftmodule" folder.
 
