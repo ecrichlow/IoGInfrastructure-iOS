@@ -83,9 +83,9 @@ Of note, the IoGDataManager and IoGRetryManager classes support broadcasting res
 
 ## Known Issues
 
-	* IoGPersistenceManager doesn't yet support securely (encrypted) storing data.
+* IoGPersistenceManager doesn't yet support securely (encrypted) storing data.
 
-	* The project doesn't build a framework that is ready to support both Simulator and actual device on iOS.
+* The project doesn't build a framework that is ready to support both Simulator and actual device on iOS.
 
 ## Support
 
