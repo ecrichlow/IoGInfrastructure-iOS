@@ -1,4 +1,5 @@
-/*******************************************************************************
+/*
+********************************************************************************
 * IoGDataObjectManager.swift
 *
 * Title:			IoG Infrastructure
@@ -10,7 +11,9 @@
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	01/15/19		*	EGC	*	File creation date
-*******************************************************************************/
+*	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
+********************************************************************************
+*/
 
 import Foundation
 
@@ -31,7 +34,7 @@ public class IoGDataObjectManager
 		do
 			{
 			let jsonArray = try JSONSerialization.jsonObject(with: data, options: [])
-			if let dataArray = jsonArray as? NSArray
+			if let dataArray = jsonArray as? [Codable]
 				{
 				for nextObject in dataArray
 					{

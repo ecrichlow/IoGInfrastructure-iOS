@@ -64,3 +64,16 @@ shoehorn its requests into, or each project has to keep a local version of this 
 its own values to. Perhaps the architecture needs to be changed to allow for per-project
 customization of this mechanism instead of a hardcoded enumeration.
 - Eric C.
+
+Was needlessly using legacy NSArray and NSDictionary classes. Took those out, except one case
+where NSDictionary is being used for its "write" method, which isn't supported by Dictionary. Also
+getting rid of force unwrapping, even where they're preceeded by a nil check that makes them safe.
+It just looks bad for code to have force unwrapping in it at all.
+- Eric C.
+
+It seems some Swift devs look poorly on model objects that don't support conform to Codable, so
+I'm making the addition to IoGDataObject to make it conform to Codable, which now limits the
+values it can store to elements that also conform to Codable. Don't expect this will be a problem
+for most use cases.
+- Eric C.
+

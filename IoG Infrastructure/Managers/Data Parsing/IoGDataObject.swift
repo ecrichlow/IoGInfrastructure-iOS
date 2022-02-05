@@ -1,4 +1,5 @@
-/*******************************************************************************
+/*
+********************************************************************************
 * IoGDataObject.swift
 *
 * Title:			IoG Infrastructure
@@ -11,7 +12,9 @@
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	01/15/19		*	EGC	*	File creation date
-*******************************************************************************/
+*	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
+********************************************************************************
+*/
 
 import Foundation
 
@@ -19,7 +22,7 @@ open class IoGDataObject
 {
 
 	private var sourceData : String!
-	private var objectDictionary = [String: Any]()
+	private var objectDictionary = [String: Codable]()
 
 	required public init(withString source: String)
 	{
@@ -28,9 +31,9 @@ open class IoGDataObject
 		do
 			{
 			let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
-			if let dataDictionary = jsonDict as? NSDictionary
+			if let dataDictionary = jsonDict as? [String: Codable]
 				{
-				objectDictionary = dataDictionary as! [String: Any]
+				objectDictionary = dataDictionary
 				}
 			}
 		catch
@@ -38,7 +41,7 @@ open class IoGDataObject
 			}
 	}
 
-	public func getValue(_ key: String) -> Any
+	public func getValue(_ key: String) -> Codable
 	{
 		if let value = objectDictionary[key]
 			{

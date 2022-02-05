@@ -139,15 +139,14 @@ class IoGPersistenceManagerTests: XCTestCase
 			if let data = readValue as? Data
 				{
 				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
-				if let returnedDictionary = jsonDict as? NSDictionary
+				if let returnedDictionary = jsonDict as? [String: Any]
 					{
-					let keys = returnedDictionary.allKeys
+					let keys = returnedDictionary.keys
 					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
 					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
 					for nextKey in keys
 						{
-						let key = nextKey as! String
-						let originalValue = saveDictionary[key]
+						let originalValue = saveDictionary[nextKey]
 						if let value = originalValue as? Int
 							{
 							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
@@ -192,15 +191,14 @@ class IoGPersistenceManagerTests: XCTestCase
 			if let data = readValue as? Data
 				{
 				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
-				if let returnedDictionary = jsonDict as? NSDictionary
+				if let returnedDictionary = jsonDict as? [String: Any]
 					{
-					let keys = returnedDictionary.allKeys
+					let keys = returnedDictionary.keys
 					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
 					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
 					for nextKey in keys
 						{
-						let key = nextKey as! String
-						let originalValue = saveDictionary[key]
+						let originalValue = saveDictionary[nextKey]
 						if let value = originalValue as? Int
 							{
 							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
@@ -245,15 +243,14 @@ class IoGPersistenceManagerTests: XCTestCase
 			if let data = readValue as? Data
 				{
 				let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
-				if let returnedDictionary = jsonDict as? NSDictionary
+				if let returnedDictionary = jsonDict as? [String: Any]
 					{
-					let keys = returnedDictionary.allKeys
+					let keys = returnedDictionary.keys
 					XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
 					XCTAssertEqual(returnedDictionary.count, saveDictionary.count)
 					for nextKey in keys
 						{
-						let key = nextKey as! String
-						let originalValue = saveDictionary[key]
+						let originalValue = saveDictionary[nextKey]
 						if let value = originalValue as? Int
 							{
 							XCTAssertEqual(returnedDictionary[nextKey] as! Int, value)
