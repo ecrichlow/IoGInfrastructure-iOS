@@ -173,7 +173,7 @@ public class IoGPersistenceManager
 					var expiringItemEntries = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) as! Dictionary<String, [[String: Any]]>
 					for nextExpirationDate in expiringItemEntries.keys
 						{
-						if let expirationDate = dateFormatter.date(from: nextExpirationDate)
+						if let _ = dateFormatter.date(from: nextExpirationDate)
 							{
 							let expiringItemList = expiringItemEntries[nextExpirationDate]
 							var freshItemList = expiringItemList
@@ -257,7 +257,7 @@ public class IoGPersistenceManager
 				}
 			else
 				{
-				let savedDataElement = memoryStore[name] as! Dictionary<String, Any>
+				let savedDataElement = memoryStore[name]!
 				let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
 				return (result: .Success, value: value)
 				}

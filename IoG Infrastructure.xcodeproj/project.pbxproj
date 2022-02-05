@@ -255,10 +255,11 @@
 				TargetAttributes = {
 					27F06323219230500045BE68 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1140;
 					};
 					27F0632C219230500045BE68 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1140;
 					};
 				};
 			};
@@ -268,6 +269,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 27F0631A219230500045BE68;
 			productRefGroup = 27F06325219230500045BE68 /* Products */;
@@ -487,7 +489,7 @@
 				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -515,7 +517,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
 				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -534,7 +536,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-InfrastructureTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -553,7 +555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-InfrastructureTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
