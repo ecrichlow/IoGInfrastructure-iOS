@@ -11,6 +11,7 @@
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	05/05/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for multiple API URLs
 ********************************************************************************
 */
 
@@ -77,11 +78,14 @@ public class IoGConfigurationManager
 
 	private var sessionActive = false
 
-	private var currentAPIURL : String
+// 02-16-22 - EGC - Deprecated single API URL in favor of an array of supported URLs
+//	private var currentAPIURL : String
+	private var APIURLs = [String]()
 
 	init()
 	{
-		currentAPIURL = "http://"
+// 02-16-22 - EGC - Deprecated single API URL in favor of an array of supported URLs
+//		currentAPIURL = "http://"
 	}
 
 	public func getVersion() -> String
@@ -111,6 +115,8 @@ public class IoGConfigurationManager
 		return sessionActive
 	}
 
+// 02-16-22 - EGC - Deprecated single API URL in favor of an array of supported URLs
+/*
 	public func setAPIURL(address: String)
 	{
 		currentAPIURL = address
@@ -124,6 +130,29 @@ public class IoGConfigurationManager
 	public func getAPIURL() -> URL?
 	{
 		return URL(string: currentAPIURL)
+	}
+*/
+	public func addAPIURL(address: String)
+	{
+		APIURLs.append(address)
+	}
+
+	public func getAPIURLStrings() -> [String]
+	{
+		return APIURLs
+	}
+
+	public func getAPIURLs() -> [URL]
+	{
+		var urlList = [URL]()
+		for nextURLString in APIURLs
+			{
+			if let url = URL(string: nextURLString)
+				{
+				urlList.append(url)
+				}
+			}
+		return urlList
 	}
 
 }

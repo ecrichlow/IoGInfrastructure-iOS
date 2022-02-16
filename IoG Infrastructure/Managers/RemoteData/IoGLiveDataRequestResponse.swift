@@ -13,6 +13,7 @@
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	11/19/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for multiple API URLs
 ********************************************************************************
 */
 
@@ -117,9 +118,10 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				return
 				}
 		let hostToValidate = didReceive.protectionSpace.host
-		if let apiURL = IoGConfigurationManager.sharedManager.getAPIURL()
+		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
+		for nextURL in apiURLs
 			{
-			if apiURL.absoluteString.contains(hostToValidate)
+			if nextURL.absoluteString.contains(hostToValidate)
 				{
 				if let serverTrust = didReceive.protectionSpace.serverTrust
 					{
@@ -193,9 +195,10 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				return
 				}
 		let hostToValidate = didReceive.protectionSpace.host
-		if let apiURL = IoGConfigurationManager.sharedManager.getAPIURL()
+		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
+		for nextURL in apiURLs
 			{
-			if apiURL.absoluteString.contains(hostToValidate)
+			if nextURL.absoluteString.contains(hostToValidate)
 				{
 				if let serverTrust = didReceive.protectionSpace.serverTrust
 					{
