@@ -87,8 +87,14 @@ public class IoGConfigurationManager
 	public func getVersion() -> String
 	{
 		let infoDictionary = Bundle.main.infoDictionary
-		let version = infoDictionary!["CFBundleShortVersionString"] as! String
-		return version
+		if let version = infoDictionary!["CFBundleShortVersionString"] as? String
+			{
+			return version
+			}
+		else
+			{
+			return "Unknown"
+			}
 	}
 
 	public func setSessionActive(state: Bool)

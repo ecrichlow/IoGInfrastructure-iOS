@@ -156,10 +156,13 @@ public class IoGPersistenceManager
 				}
 			else
 				{
-				var sessionItems = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as! [[String: Any]]
-				sessionItems.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue])
-				UserDefaults.standard.set(sessionItems, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
-				UserDefaults.standard.synchronize()
+				if let items = UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) as? [[String: Any]]
+					{
+					var sessionItems = items
+					sessionItems.append([IoGConfigurationManager.persistenceExpirationItemName: name, IoGConfigurationManager.persistenceExpirationItemSource: destination.rawValue])
+					UserDefaults.standard.set(sessionItems, forKey: IoGConfigurationManager.persistenceManagementSessionItems)
+					UserDefaults.standard.synchronize()
+					}
 				}
 			}
 		else if lifespan == .Expiration
