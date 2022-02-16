@@ -8,10 +8,11 @@
 *						a URL request (possibly multiple requests for multi-page
 *						data) and the resulting response data
 * Author:			Eric Crichlow
-* Version:			1.0
+* Version:			2.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	10/03/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for custom request type
 ********************************************************************************
 */
 
@@ -21,12 +22,13 @@ public class IoGDataRequestResponse : NSObject
 {
 
 	internal var requestID: Int
-	internal var callbackInfo : [String: Any]
-	internal var requestInfo : [String: Any]
-	internal var retryNumber : Int
-	internal var statusCode : Int?
-	internal var responseInfo : [String: Any]?
-	internal var responseData : Data?
+	internal var callbackInfo: [String: Any]
+	internal var requestInfo: [String: Any]
+	internal var retryNumber: Int
+	internal var statusCode: Int?
+	internal var responseInfo: [String: Any]?
+	internal var responseData: Data?
+	internal var customRequestType: CustomDataRequestType?
 
 	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
 	{
@@ -79,5 +81,15 @@ public class IoGDataRequestResponse : NSObject
 	public func getStatusCode() -> Int?
 	{
 		return statusCode
+	}
+
+	public func getCustomRequestType() -> CustomDataRequestType?
+	{
+		return customRequestType
+	}
+
+	public func setCustomRequestType(customType: CustomDataRequestType)
+	{
+		customRequestType = customType
 	}
 }

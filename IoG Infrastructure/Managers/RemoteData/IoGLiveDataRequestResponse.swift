@@ -9,7 +9,7 @@
 *						requests for multi-page data) and the resulting response
 *						data
 * Author:			Eric Crichlow
-* Version:			1.0
+* Version:			2.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	11/19/18		*	EGC	*	File creation date

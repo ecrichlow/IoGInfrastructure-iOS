@@ -7,10 +7,11 @@
 *						This file contains the base class for the manager for
 *						retrieving remote data
 * Author:			Eric Crichlow
-* Version:			1.0
+* Version:			2.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	09/27/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for custom request type
 ********************************************************************************
 */
 
@@ -20,6 +21,8 @@ public protocol IoGDataManagerDelegate : class
 {
 	func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 }
+
+public typealias CustomDataRequestType = String
 
 public class IoGDataManager
 {
@@ -32,6 +35,7 @@ public class IoGDataManager
 
 	public enum IoGDataRequestType
 	{
+		case Custom
 		case Register
 		case Login
 		case Logout
@@ -112,6 +116,11 @@ public class IoGDataManager
 	}
 
 	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
+	{
+		return 0
+	}
+
+	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		return 0
 	}
