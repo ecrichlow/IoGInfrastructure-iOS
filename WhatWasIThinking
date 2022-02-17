@@ -77,3 +77,6 @@ values it can store to elements that also conform to Codable. Don't expect this 
 for most use cases.
 - Eric C.
 
+PersistenceManager supports saving all kinds of objects. But we're only supporting secure saving of
+String objects.
+- Eric C.

@@ -7,11 +7,12 @@
 *						This file contains the manager for framework
 *						configuration
 * Author:			Eric Crichlow
-* Version:			1.0
+* Version:			2.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	05/05/18		*	EGC	*	File creation date
-*	02/16/22		*	EGC	*	Added support for multiple API URLs
+*	02/16/22		*	EGC	*	Added support for multiple API URLs and secure
+*								storage
 ********************************************************************************
 */
 
@@ -73,6 +74,10 @@ public class IoGConfigurationManager
 	static let retryItemFieldTimeLimit = "TimeLimit"
 	static let retryItemFieldRoutine = "Routine"
 	static let retryItemFieldIdentifier = "Identifier"
+
+	// Encryption Manager
+	static let privateKeyIdentifier = "com.iog.rsakeypair"
+	static let rsaKeySize = 2048
 
 	public static let sharedManager = IoGConfigurationManager()
 

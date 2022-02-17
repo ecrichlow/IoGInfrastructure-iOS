@@ -7,11 +7,12 @@
 *						This file contains the manager for memory, User Defaults
 *						and file storage
 * Author:			Eric Crichlow
-* Version:			1.1
+* Version:			2.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	05/05/18		*	EGC	*	File creation date
 *	11/06/18		*	EGC	*	Addition of file support
+*	02/16/22		*	EGC	*	Added support for secure storage
 ********************************************************************************
 */
 
@@ -53,6 +54,8 @@ public class IoGPersistenceManager
 		case Success
 		case NotFound
 		case Expired
+// 02-17-22 - EGC - Added case to cover secure storage retrieval failures
+		case ProtectionError
 	}
 
 	public static let sharedManager = IoGPersistenceManager()
@@ -67,7 +70,28 @@ public class IoGPersistenceManager
 	@discardableResult public func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool) -> Bool
 	{
 		var savedDataElement = [String: Any]()
-		savedDataElement[IoGConfigurationManager.persistencElementValue] = value
+		if protection == .Secured
+			{
+			if let plainString = value as? String
+				{
+				if let encryptedEncodedString = EncryptionKeyManager.sharedManager.encryptAndEncodeString(string: plainString)
+					{
+					savedDataElement[IoGConfigurationManager.persistencElementValue] = encryptedEncodedString
+					}
+				else
+					{
+					return false
+					}
+				}
+			else
+				{
+				return false
+				}
+			}
+		else
+			{
+			savedDataElement[IoGConfigurationManager.persistencElementValue] = value
+			}
 		savedDataElement[IoGConfigurationManager.persistencElementType] = type.rawValue
 		savedDataElement[IoGConfigurationManager.persistencElementSource] = destination.rawValue
 		savedDataElement[IoGConfigurationManager.persistencElementProtection] = protection.rawValue
@@ -264,7 +288,36 @@ public class IoGPersistenceManager
 				{
 				let savedDataElement = memoryStore[name]!
 				let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
-				return (result: .Success, value: value)
+// 02-17-22 - EGC - Added support for encryption
+				if let protection = savedDataElement[IoGConfigurationManager.persistencElementProtection] as? Int
+					{
+					if protection == PersistenceProtectionLevel.Secured.rawValue
+						{
+						if let encodedString = value as? String
+							{
+							if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+								{
+								return (result: .Success, value: decodedString)
+								}
+							else
+								{
+								return (result: .ProtectionError, value: value)
+								}
+							}
+						else
+							{
+							return (result: .ProtectionError, value: value)
+							}
+						}
+					else
+						{
+						return (result: .Success, value: value)
+						}
+					}
+				else
+					{
+					return (result: .ProtectionError, value: value)
+					}
 				}
 			}
 		else if from == .UserDefaults
@@ -277,7 +330,36 @@ public class IoGPersistenceManager
 				{
 				let savedDataElement = UserDefaults.standard.object(forKey: name) as! Dictionary<String, Any>
 				let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
-				return (result: .Success, value: value)
+// 02-17-22 - EGC - Added support for encryption
+				if let protection = savedDataElement[IoGConfigurationManager.persistencElementProtection] as? Int
+					{
+					if protection == PersistenceProtectionLevel.Secured.rawValue
+						{
+						if let encodedString = value as? String
+							{
+							if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+								{
+								return (result: .Success, value: decodedString)
+								}
+							else
+								{
+								return (result: .ProtectionError, value: value)
+								}
+							}
+						else
+							{
+							return (result: .ProtectionError, value: value)
+							}
+						}
+					else
+						{
+						return (result: .Success, value: value)
+						}
+					}
+				else
+					{
+					return (result: .ProtectionError, value: value)
+					}
 				}
 			}
 		else if from == .FileStorage
@@ -299,7 +381,36 @@ public class IoGPersistenceManager
 						if savedDataElement.object(forKey: IoGConfigurationManager.persistencElementValue) != nil
 							{
 							let value = savedDataElement[IoGConfigurationManager.persistencElementValue]
-							return (result: .Success, value: value)
+// 02-17-22 - EGC - Added support for encryption
+							if let protection = savedDataElement[IoGConfigurationManager.persistencElementProtection] as? Int
+								{
+								if protection == PersistenceProtectionLevel.Secured.rawValue
+									{
+									if let encodedString = value as? String
+										{
+										if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+											{
+											return (result: .Success, value: decodedString)
+											}
+										else
+											{
+											return (result: .ProtectionError, value: value)
+											}
+										}
+									else
+										{
+										return (result: .ProtectionError, value: value)
+										}
+									}
+								else
+									{
+									return (result: .Success, value: value)
+									}
+								}
+							else
+								{
+								return (result: .ProtectionError, value: value)
+								}
 							}
 						else
 							{

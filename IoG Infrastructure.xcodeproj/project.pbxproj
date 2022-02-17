@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2751201527BE2CD100C03175 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */; };
 		279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */; };
 		279700DF2198CAC500359968 /* WhatWasIThinking in Resources */ = {isa = PBXBuildFile; fileRef = 279700DE2198CAC400359968 /* WhatWasIThinking */; };
 		279F86C5219A02B10066D85E /* IoGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C4219A02B10066D85E /* IoGDataManager.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
 		279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGTestConfigurationManager.swift; sourceTree = "<group>"; };
 		279700DE2198CAC400359968 /* WhatWasIThinking */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = SOURCE_ROOT; };
 		279F86C4219A02B10066D85E /* IoGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManager.swift; sourceTree = "<group>"; };
@@ -84,6 +86,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2751201327BE2C7300C03175 /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
 		27EF591D21F428010037E486 /* Test Business Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +182,7 @@
 				27F063452196AC8A0045BE68 /* RemoteData */,
 				97738D0E21F2AFA400F7F478 /* Data Parsing */,
 				97AD21C721BF6D3200739C6D /* Retry */,
+				2751201327BE2C7300C03175 /* Encryption */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -309,6 +320,7 @@
 				97738D1121F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift in Sources */,
 				27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */,
 				97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */,
+				2751201527BE2CD100C03175 /* EncryptionKeyManager.swift in Sources */,
 				97738D1521F2C80000F7F478 /* IoGDataObjectManager.swift in Sources */,
 				279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */,
 				279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */,
