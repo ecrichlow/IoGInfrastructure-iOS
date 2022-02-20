@@ -1,10 +1,17 @@
-//
-//  IoGDataManagerTests.swift
-//  IoG InfrastructureTests
-//
-//  Created by Eric Crichlow on 1/12/19.
-//  Copyright © 2018 Infusions of Grandeur. All rights reserved.
-//
+/*
+********************************************************************************
+* IoGDataManagerTests.swift
+*
+* Title:			IoG Infrastructure
+* Description:		IoG Mobile App Infrastructure Framework
+*						This file contains the DataManager tests
+* Author:			Eric Crichlow
+* Version:			2.0
+* Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
+********************************************************************************
+*	01/12/19		*	EGC	*	File creation date
+********************************************************************************
+*/
 
 import XCTest
 @testable import IoGInfrastructure

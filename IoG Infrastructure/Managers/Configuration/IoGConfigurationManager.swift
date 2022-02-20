@@ -17,6 +17,7 @@
 */
 
 import Foundation
+import CryptoKit
 
 public class IoGConfigurationManager
 {
@@ -76,8 +77,8 @@ public class IoGConfigurationManager
 	static let retryItemFieldIdentifier = "Identifier"
 
 	// Encryption Manager
-	static let privateKeyIdentifier = "com.iog.rsakeypair"
-	static let rsaKeySize = 2048
+	static let symmetricKeySize = SymmetricKeySize.bits256
+	static let symmetricKeyIdentifier = "com.iog.symmetrickey"
 
 	public static let sharedManager = IoGConfigurationManager()
 

@@ -15,6 +15,7 @@
 
 import Foundation
 import Security
+import CryptoKit
 
 internal class EncryptionKeyManager
 {
@@ -25,113 +26,88 @@ internal class EncryptionKeyManager
 	{
 	}
 
-	private func getPublicKey() -> SecKey?
+	private func createSymmetricKey() -> SymmetricKey
 	{
-		if let privateKey = getPrivateKey()
+		let key = SymmetricKey(size: IoGConfigurationManager.symmetricKeySize)
+		let keyString = key.withUnsafeBytes {Data(Array($0)).base64EncodedString()}
+		IoGPersistenceManager.sharedManager.saveValue(name: IoGConfigurationManager.symmetricKeyIdentifier, value: keyString, type: IoGPersistenceManager.PersistenceDataType.String, destination: IoGPersistenceManager.PersistenceSource.UserDefaults, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: true)
+		return key
+	}
+
+	private func getKey() -> SymmetricKey
+	{
+		if IoGPersistenceManager.sharedManager.checkForValue(name: IoGConfigurationManager.symmetricKeyIdentifier, from: IoGPersistenceManager.PersistenceSource.UserDefaults)
 			{
-			if let publicKey = SecKeyCopyPublicKey(privateKey)
+			let readResponse = IoGPersistenceManager.sharedManager.readValue(name: IoGConfigurationManager.symmetricKeyIdentifier, from: IoGPersistenceManager.PersistenceSource.UserDefaults)
+			let readResult = readResponse.result
+			if readResult == IoGPersistenceManager.PersistenceReadResultCode.Success
 				{
-				return (publicKey)
-				}
-			else
-				{
-				if let private_key = getPrivateKey()
+				if let encodedKey = readResponse.value as? String
 					{
-					return SecKeyCopyPublicKey(private_key)
+					if let keyData = Data(base64Encoded: encodedKey)
+						{
+						let key = SymmetricKey(data: keyData)
+						return key
+						}
+					else
+						{
+						return createSymmetricKey()
+						}
 					}
 				else
 					{
-					return nil
+					return createSymmetricKey()
 					}
 				}
+			else
+				{
+				return createSymmetricKey()
+				}
 			}
 		else
 			{
-			if let private_key = getPrivateKey()
-				{
-				return SecKeyCopyPublicKey(private_key)
-				}
-			else
-				{
-				return nil
-				}
+			return createSymmetricKey()
 			}
-	}
-
-	private func getPrivateKey() -> SecKey?
-	{
-		let getquery: [String: Any] = [kSecClass as String: kSecClassKey, kSecAttrApplicationTag as String: IoGConfigurationManager.privateKeyIdentifier, kSecAttrKeyType as String: kSecAttrKeyTypeRSA, kSecReturnRef as String: true]
-		var item: CFTypeRef?
-		let status = SecItemCopyMatching(getquery as CFDictionary, &item)
-		if status == errSecSuccess
-			{
-			let privateKey = item as! SecKey
-			return privateKey
-			}
-		else
-			{
-			let keyPair = createKeypair()
-			if let private_key = keyPair.privateKey
-				{
-				return private_key
-				}
-			else
-				{
-				return nil
-				}
-			}
-	}
-
-	private func createKeypair() -> (publicKey: SecKey?, privateKey: SecKey?)
-    {
-		let tag = IoGConfigurationManager.privateKeyIdentifier.data(using: .utf8)!
-		let attributes: [String: Any] = [kSecAttrKeyType as String: kSecAttrKeyTypeRSA, kSecAttrKeySizeInBits as String: IoGConfigurationManager.rsaKeySize, kSecPrivateKeyAttrs as String:[kSecAttrIsPermanent as String: true, kSecAttrApplicationTag as String: tag]]
-		var error: Unmanaged<CFError>?
-		if let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error)
-			{
-			if let publicKey = SecKeyCopyPublicKey(privateKey)
-				{
-				return (publicKey, privateKey)
-				}
-			}
-		return (nil, nil)
 	}
 
 	public func encryptAndEncodeString(string: String) -> String?
 	{
-		guard let publicKey = getPublicKey()
+		let key = getKey()
+		do
+			{
+			if let data = string.data(using: .utf8)
+				{
+				let encryptedBoxData = try ChaChaPoly.seal(data, using: key)
+				return encryptedBoxData.combined.base64EncodedString()
+				}
 			else
 				{
 				return nil
 				}
-		let buffer = [UInt8](string.utf8)
-
-		var keySize   = SecKeyGetBlockSize(publicKey)
-		var keyBuffer = [UInt8](repeating: 0, count: keySize)
-
-		guard SecKeyEncrypt(publicKey, SecPadding.PKCS1, buffer, buffer.count, &keyBuffer, &keySize) == errSecSuccess
-		else
+			}
+		catch
 			{
 			return nil
 			}
-		return Data(bytes: keyBuffer, count: keySize).base64EncodedString()
 	}
 
 	public func decodeAndDecryptString(encodedString: String) -> String?
 	{
-		if let privateKey = getPrivateKey()
+		let key = getKey()
+		if let encryptedData = Data(base64Encoded: encodedString, options: .ignoreUnknownCharacters)
 			{
-			var error: Unmanaged<CFError>? = nil
-			let encryptedData = Data(base64Encoded: encodedString)! as CFData
-			if let decryptedData = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionPKCS1, encryptedData, &error)
+			do
 				{
-				if let decodedString = String(data: decryptedData as Data, encoding: .utf8)
-					{
-					return decodedString
-					}
+				let sealedBox = try ChaChaPoly.SealedBox(combined: encryptedData)
+				let decryptedData = try ChaChaPoly.open(sealedBox, using: key)
+				let decryptedString = String(data: decryptedData, encoding: .utf8)
+				return decryptedString
+				}
+			catch
+				{
+				return nil
 				}
 			}
-
 		return nil
 	}
 }

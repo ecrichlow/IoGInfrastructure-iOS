@@ -1,10 +1,19 @@
-//
-//  IoGTestConfigurationManager.swift
-//  IoG InfrastructureTests
-//
-//  Created by Eric Crichlow on 11/11/18.
-//  Copyright © 2018 Infusions of Grandeur. All rights reserved.
-//
+/*
+********************************************************************************
+* IoGTestConfigurationManager.swift
+*
+* Title:			IoG Infrastructure
+* Description:		IoG Mobile App Infrastructure Framework
+*						This file contains the manager for test configuration
+* Author:			Eric Crichlow
+* Version:			2.0
+* Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
+********************************************************************************
+*	11/11/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for encryption tests and version 2
+*								enhancement tests
+********************************************************************************
+*/
 
 import Foundation
 
@@ -43,6 +52,7 @@ class IoGTestConfigurationManager
 	static let successURL1Slow = "http://www.success.com/3"
 	static let failureURL1 = "http://www.failure.com/1"
 	static let failureURLSlow = "http://www.failure.com/2"
+	static let secondaryURL = "http://www.alternate.com"
 	static let dataRequestFastResponseCheck = 0.5 as TimeInterval
 	static let dataRequestSlowResponseCheck = 7 as TimeInterval
 	static let dataTestExpirationCheckTimeout = 10 as TimeInterval

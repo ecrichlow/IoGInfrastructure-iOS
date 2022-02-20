@@ -80,3 +80,7 @@ for most use cases.
 PersistenceManager supports saving all kinds of objects. But we're only supporting secure saving of
 String objects.
 - Eric C.
+
+Was thinking completely wrong about encryption on first swing, implementing asymmetric RSA encryption
+when what I really needed was symmetric encryption.
+- Eric C.

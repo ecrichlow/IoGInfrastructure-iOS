@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2751201527BE2CD100C03175 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */; };
+		2751201827C03A3800C03175 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2751201727C03A3800C03175 /* CryptoKit.framework */; };
 		279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */; };
 		279700DF2198CAC500359968 /* WhatWasIThinking in Resources */ = {isa = PBXBuildFile; fileRef = 279700DE2198CAC400359968 /* WhatWasIThinking */; };
 		279F86C5219A02B10066D85E /* IoGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C4219A02B10066D85E /* IoGDataManager.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
+		2751201727C03A3800C03175 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
 		279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGTestConfigurationManager.swift; sourceTree = "<group>"; };
 		279700DE2198CAC400359968 /* WhatWasIThinking */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = SOURCE_ROOT; };
 		279F86C4219A02B10066D85E /* IoGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManager.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2751201827C03A3800C03175 /* CryptoKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +97,14 @@
 			path = Encryption;
 			sourceTree = "<group>";
 		};
+		2751201627C03A3800C03175 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2751201727C03A3800C03175 /* CryptoKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		27EF591D21F428010037E486 /* Test Business Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +119,7 @@
 				27F06326219230500045BE68 /* IoG Infrastructure */,
 				27F06331219230500045BE68 /* IoG InfrastructureTests */,
 				27F06325219230500045BE68 /* Products */,
+				2751201627C03A3800C03175 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -407,7 +419,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -465,7 +477,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -483,7 +495,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -496,7 +508,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
 				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;
@@ -512,7 +524,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 97J36M7BW8;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -525,7 +537,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
 				PRODUCT_NAME = IoGInfrastructure;
 				SKIP_INSTALL = YES;

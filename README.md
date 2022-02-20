@@ -1,6 +1,6 @@
 # IoGInfrastructure
 
-v1.1 (c) 2018 Infusions of Grandeur - Written By: Eric Crichlow
+v2.0 (c) 2018 Infusions of Grandeur - Written By: Eric Crichlow
 
 ## Background
 
@@ -13,6 +13,7 @@ Two reasons. One, most of the existing frameworks are extremely big, one might e
 ## History
 
 Version 1.1 :	Initial public release
+Version 2.0 :	Adds secure storage, multiple API Base URLs, custom data request types and Codable IoGDataObject; Changed from Foundation collection objects to Swift native collection objects; Cleaned up warnings 
 
 ## Classes
 
@@ -83,7 +84,7 @@ Of note, the IoGDataManager and IoGRetryManager classes support broadcasting res
 
 ## Known Issues
 
-* IoGPersistenceManager doesn't yet support securely (encrypted) storing data.
+* IoGPersistenceManager can only securely (encrypted) store strings.
 
 * The project doesn't build a framework that is ready to support both Simulator and actual device on iOS.
 

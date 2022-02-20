@@ -1,10 +1,17 @@
-//
-//  IoGDataParsingTests.swift
-//  IoG InfrastructureTests
-//
-//  Created by Eric Crichlow on 1/16/19.
-//  Copyright © 2018 Infusions of Grandeur. All rights reserved.
-//
+/*
+********************************************************************************
+* IoGDataParsingTests.swift
+*
+* Title:			IoG Infrastructure
+* Description:		IoG Mobile App Infrastructure Framework
+*						This file contains the Data Parsing tests
+* Author:			Eric Crichlow
+* Version:			2.0
+* Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
+********************************************************************************
+*	01/16/19		*	EGC	*	File creation date
+********************************************************************************
+*/
 
 import XCTest
 @testable import IoGInfrastructure

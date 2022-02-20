@@ -1,10 +1,18 @@
-//
-//  IoGPersistenceManagerTests.swift
-//  IoG InfrastructureTests
-//
-//  Created by Eric Crichlow on 11/6/18.
-//  Copyright © 2018 Infusions of Grandeur. All rights reserved.
-//
+/*
+********************************************************************************
+* IoGPersistenceManagerTests.swift
+*
+* Title:			IoG Infrastructure
+* Description:		IoG Mobile App Infrastructure Framework
+*						This file contains the PersistenceManager tests
+* Author:			Eric Crichlow
+* Version:			2.0
+* Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
+********************************************************************************
+*	11/06/18		*	EGC	*	File creation date
+*	02/16/22		*	EGC	*	Added support for encryption tests
+********************************************************************************
+*/
 
 import XCTest
 @testable import IoGInfrastructure
@@ -438,7 +446,7 @@ class IoGPersistenceManagerTests: XCTestCase
 		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Expiration, expiration: expiration, overwrite: true)
 		XCTAssertTrue(saveResult)
 		let expirationExpectation = expectation(description: "Expiration time achieved")
-		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.persistenceTestExpirationCheck, repeats: true)
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.persistenceTestExpirationCheck, repeats: false)
 			{
 			timer in
 			let checkResult = self.persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: self.persistenceSource)
@@ -446,5 +454,58 @@ class IoGPersistenceManagerTests: XCTestCase
 			expirationExpectation.fulfill()
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.persistenceTestExpirationCheckTimeout, handler: nil)
+    }
+
+// 02-17-22 - EGC - On Android found that having a save expire and then save a new value with the sme identifier didn't work
+	func testExpiringSaveAndReuseIdentifier()
+	{
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		var saveString = IoGTestConfigurationManager.persistenceTestStringValue
+		var expiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.persistenceTestExpiration)
+		var saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Expiration, expiration: expiration, overwrite: true)
+		XCTAssertTrue(saveResult)
+		let expirationExpectation = expectation(description: "First expiration time achieved")
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.persistenceTestExpirationCheck, repeats: false)
+			{
+			timer in
+			let checkResult = self.persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: self.persistenceSource)
+			XCTAssertFalse(checkResult)
+			expirationExpectation.fulfill()
+			}
+		waitForExpectations(timeout: IoGTestConfigurationManager.persistenceTestExpirationCheckTimeout, handler: nil)
+		saveString = IoGTestConfigurationManager.persistenceTestSecondaryStringValue
+		expiration = Date.init().addingTimeInterval(IoGTestConfigurationManager.persistenceTestExpiration)
+		saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Unsecured, lifespan: IoGPersistenceManager.PersistenceLifespan.Expiration, expiration: expiration, overwrite: true)
+		XCTAssertTrue(saveResult)
+		let secondExpirationExpectation = expectation(description: "Second expiration time achieved")
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.persistenceTestExpirationCheck, repeats: false)
+			{
+			timer in
+			let checkResult = self.persitenceManager.checkForValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: self.persistenceSource)
+			XCTAssertFalse(checkResult)
+			secondExpirationExpectation.fulfill()
+			}
+		waitForExpectations(timeout: IoGTestConfigurationManager.persistenceTestExpirationCheckTimeout, handler: nil)
+    }
+
+	func testSecureSaveFail()
+	{
+		persistenceSource = IoGPersistenceManager.PersistenceSource.Memory
+		let saveNumber = IoGTestConfigurationManager.persistenceTestNumericValue
+		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveNumber, type: IoGPersistenceManager.PersistenceDataType.Number, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Secured, lifespan: IoGPersistenceManager.PersistenceLifespan.Immortal, expiration: nil, overwrite: false)
+		XCTAssertFalse(saveResult)
+    }
+
+	func testSecureSaveSucceed()
+	{
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
+		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Secured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: true)
+		XCTAssertTrue(saveResult)
+		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+		let readResult = readResponse.result
+		let readValue = readResponse.value as! String
+		XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
+		XCTAssertEqual(readValue, saveString)
     }
 }

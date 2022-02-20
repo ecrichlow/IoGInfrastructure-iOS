@@ -1,10 +1,17 @@
-//
-//  IoGRetryManagerTests.swift
-//  IoG InfrastructureTests
-//
-//  Created by Eric Crichlow on 12/10/18.
-//  Copyright © 2018 Infusions of Grandeur. All rights reserved.
-//
+/*
+********************************************************************************
+* IoGRetryManagerTests.swift
+*
+* Title:			IoG Infrastructure
+* Description:		IoG Mobile App Infrastructure Framework
+*						This file contains the RetryManager tests
+* Author:			Eric Crichlow
+* Version:			2.0
+* Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
+********************************************************************************
+*	12/10/18		*	EGC	*	File creation date
+********************************************************************************
+*/
 
 import XCTest
 @testable import IoGInfrastructure
