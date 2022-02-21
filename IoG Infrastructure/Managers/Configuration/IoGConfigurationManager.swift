@@ -80,6 +80,9 @@ public class IoGConfigurationManager
 	static let symmetricKeySize = SymmetricKeySize.bits256
 	static let symmetricKeyIdentifier = "com.iog.symmetrickey"
 
+	// Data Object Manager
+	static let dataParsingRawStringKey = "rawString"
+
 	public static let sharedManager = IoGConfigurationManager()
 
 	private var sessionActive = false

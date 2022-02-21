@@ -34,7 +34,7 @@ public class IoGDataObjectManager
 		do
 			{
 			let jsonArray = try JSONSerialization.jsonObject(with: data, options: [])
-			if let dataArray = jsonArray as? [Codable]
+			if let dataArray = jsonArray as? [Any]
 				{
 				for nextObject in dataArray
 					{

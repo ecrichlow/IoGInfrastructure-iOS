@@ -37,4 +37,9 @@ class TestComputerObject : IoGDataObject
 	{
 		super.init(withString: source)
 	}
+
+	required init(from decoder: Decoder) throws
+	{
+		try super .init(from: decoder)
+	}
 }

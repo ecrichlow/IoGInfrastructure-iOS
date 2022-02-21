@@ -84,3 +84,9 @@ String objects.
 Was thinking completely wrong about encryption on first swing, implementing asymmetric RSA encryption
 when what I really needed was symmetric encryption.
 - Eric C.
+
+Frameworks don't have access to the Keychain as they can't add entitlements. So we can't securely
+store the symmetric key we create for encryption. We're therefore encoding it and saving it,
+insecurely, in UserDefaults. Since this isn't particularly secure, it makes sense to give clients
+the option of passing in their own SymmetricKey for encryption and decryption.
+- Eric C.

@@ -14,7 +14,6 @@
 */
 
 import Foundation
-import Security
 import CryptoKit
 
 internal class EncryptionKeyManager
@@ -26,7 +25,7 @@ internal class EncryptionKeyManager
 	{
 	}
 
-	private func createSymmetricKey() -> SymmetricKey
+	private static func createSymmetricKey() -> SymmetricKey
 	{
 		let key = SymmetricKey(size: IoGConfigurationManager.symmetricKeySize)
 		let keyString = key.withUnsafeBytes {Data(Array($0)).base64EncodedString()}
@@ -34,7 +33,7 @@ internal class EncryptionKeyManager
 		return key
 	}
 
-	private func getKey() -> SymmetricKey
+	private static func getKey() -> SymmetricKey
 	{
 		if IoGPersistenceManager.sharedManager.checkForValue(name: IoGConfigurationManager.symmetricKeyIdentifier, from: IoGPersistenceManager.PersistenceSource.UserDefaults)
 			{
@@ -70,9 +69,8 @@ internal class EncryptionKeyManager
 			}
 	}
 
-	public func encryptAndEncodeString(string: String) -> String?
+	public func encryptAndEncodeString(string: String, key: SymmetricKey = getKey()) -> String?
 	{
-		let key = getKey()
 		do
 			{
 			if let data = string.data(using: .utf8)
@@ -91,9 +89,8 @@ internal class EncryptionKeyManager
 			}
 	}
 
-	public func decodeAndDecryptString(encodedString: String) -> String?
+	public func decodeAndDecryptString(encodedString: String, key: SymmetricKey = getKey()) -> String?
 	{
-		let key = getKey()
 		if let encryptedData = Data(base64Encoded: encodedString, options: .ignoreUnknownCharacters)
 			{
 			do

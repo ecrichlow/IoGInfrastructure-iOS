@@ -15,6 +15,7 @@
 */
 
 import XCTest
+import CryptoKit
 @testable import IoGInfrastructure
 
 class IoGPersistenceManagerTests: XCTestCase
@@ -29,6 +30,8 @@ class IoGPersistenceManagerTests: XCTestCase
         super.setUp()
         configurationManager = IoGConfigurationManager.sharedManager
         persitenceManager = IoGPersistenceManager.sharedManager
+		UserDefaults.standard.removeObject(forKey: IoGTestConfigurationManager.persistenceTestSaveName)
+		UserDefaults.standard.synchronize()
     }
 
     override func tearDown()
@@ -508,4 +511,32 @@ class IoGPersistenceManagerTests: XCTestCase
 		XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
 		XCTAssertEqual(readValue, saveString)
     }
+
+	func testSecureSaveWithCustomKeyFail()
+	{
+		let key = SymmetricKey(size: IoGConfigurationManager.symmetricKeySize)
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
+		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Secured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: true, key: key)
+		XCTAssertTrue(saveResult)
+		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource)
+		let readResult = readResponse.result
+		let readValue = readResponse.value as! String
+		XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.ProtectionError)
+		XCTAssertNotEqual(readValue, saveString)
+	}
+
+	func testSecureSaveWithCustomKeySucceed()
+	{
+		let key = SymmetricKey(size: IoGConfigurationManager.symmetricKeySize)
+		persistenceSource = IoGPersistenceManager.PersistenceSource.UserDefaults
+		let saveString = IoGTestConfigurationManager.persistenceTestStringValue
+		let saveResult = persitenceManager.saveValue(name: IoGTestConfigurationManager.persistenceTestSaveName, value: saveString, type: IoGPersistenceManager.PersistenceDataType.String, destination: persistenceSource, protection: IoGPersistenceManager.PersistenceProtectionLevel.Secured, lifespan: IoGPersistenceManager.PersistenceLifespan.Session, expiration: nil, overwrite: true, key: key)
+		XCTAssertTrue(saveResult)
+		let readResponse = persitenceManager.readValue(name: IoGTestConfigurationManager.persistenceTestSaveName, from: persistenceSource, key: key)
+		let readResult = readResponse.result
+		let readValue = readResponse.value as! String
+		XCTAssertEqual(readResult, IoGPersistenceManager.PersistenceReadResultCode.Success)
+		XCTAssertEqual(readValue, saveString)
+	}
 }

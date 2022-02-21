@@ -17,6 +17,7 @@
 */
 
 import Foundation
+import CryptoKit
 
 public class IoGPersistenceManager
 {
@@ -67,20 +68,34 @@ public class IoGPersistenceManager
 		Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.timerPeriodPersistenceExpirationCheck, repeats: true) {timer in self.checkForExpiredItems()}
 	}
 
-	@discardableResult public func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool) -> Bool
+	@discardableResult public func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool, key: SymmetricKey? = nil) -> Bool
 	{
 		var savedDataElement = [String: Any]()
 		if protection == .Secured
 			{
 			if let plainString = value as? String
 				{
-				if let encryptedEncodedString = EncryptionKeyManager.sharedManager.encryptAndEncodeString(string: plainString)
+				if let symmetricKey = key
 					{
-					savedDataElement[IoGConfigurationManager.persistencElementValue] = encryptedEncodedString
+					if let encryptedEncodedString = EncryptionKeyManager.sharedManager.encryptAndEncodeString(string: plainString, key: symmetricKey)
+						{
+						savedDataElement[IoGConfigurationManager.persistencElementValue] = encryptedEncodedString
+						}
+					else
+						{
+						return false
+						}
 					}
 				else
 					{
-					return false
+					if let encryptedEncodedString = EncryptionKeyManager.sharedManager.encryptAndEncodeString(string: plainString)
+						{
+						savedDataElement[IoGConfigurationManager.persistencElementValue] = encryptedEncodedString
+						}
+					else
+						{
+						return false
+						}
 					}
 				}
 			else
@@ -276,7 +291,7 @@ public class IoGPersistenceManager
 		return true
 	}
 
-	public func readValue(name: String, from: PersistenceSource) -> (result: PersistenceReadResultCode, value: Any?)
+	public func readValue(name: String, from: PersistenceSource, key: SymmetricKey? = nil) -> (result: PersistenceReadResultCode, value: Any?)
 	{
 		if from == .Memory
 			{
@@ -295,13 +310,27 @@ public class IoGPersistenceManager
 						{
 						if let encodedString = value as? String
 							{
-							if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+							if let symmetricKey = key
 								{
-								return (result: .Success, value: decodedString)
+								if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString, key: symmetricKey)
+									{
+									return (result: .Success, value: decodedString)
+									}
+								else
+									{
+									return (result: .ProtectionError, value: value)
+									}
 								}
 							else
 								{
-								return (result: .ProtectionError, value: value)
+								if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+									{
+									return (result: .Success, value: decodedString)
+									}
+								else
+									{
+									return (result: .ProtectionError, value: value)
+									}
 								}
 							}
 						else
@@ -337,13 +366,27 @@ public class IoGPersistenceManager
 						{
 						if let encodedString = value as? String
 							{
-							if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+							if let symmetricKey = key
 								{
-								return (result: .Success, value: decodedString)
+								if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString, key: symmetricKey)
+									{
+									return (result: .Success, value: decodedString)
+									}
+								else
+									{
+									return (result: .ProtectionError, value: value)
+									}
 								}
 							else
 								{
-								return (result: .ProtectionError, value: value)
+								if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+									{
+									return (result: .Success, value: decodedString)
+									}
+								else
+									{
+									return (result: .ProtectionError, value: value)
+									}
 								}
 							}
 						else
@@ -388,13 +431,27 @@ public class IoGPersistenceManager
 									{
 									if let encodedString = value as? String
 										{
-										if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+										if let symmetricKey = key
 											{
-											return (result: .Success, value: decodedString)
+											if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString, key: symmetricKey)
+												{
+												return (result: .Success, value: decodedString)
+												}
+											else
+												{
+												return (result: .ProtectionError, value: value)
+												}
 											}
 										else
 											{
-											return (result: .ProtectionError, value: value)
+											if let decodedString = EncryptionKeyManager.sharedManager.decodeAndDecryptString(encodedString: encodedString)
+												{
+												return (result: .Success, value: decodedString)
+												}
+											else
+												{
+												return (result: .ProtectionError, value: value)
+												}
 											}
 										}
 									else

@@ -61,6 +61,9 @@ class IoGTestConfigurationManager
 	static let parsingObjectData = "{\"model\":\"TRS-80 Color Computer 2\", \"processor\":\"6809\", \"year\":\"1980\"}"
 	static let parsingObjectArrayData = "[{\"model\":\"TRS-80 Color Computer 2\", \"processor\":\"6809\", \"year\":\"1980\"}, {\"model\":\"TRS-80 Color Computer 3\", \"processor\":\"68B09E\", \"year\":\"1986\"}, {\"model\":\"MM/1\", \"processor\":\"68070\", \"year\":\"1990\"}]"
 
+	// Encryption
+	static let stringToEncrypt = "Test encryption string"
+
 	static let sharedManager = IoGTestConfigurationManager()
 
 	init()
