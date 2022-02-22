@@ -56,6 +56,7 @@ class IoGTestConfigurationManager
 	static let dataRequestFastResponseCheck = 0.5 as TimeInterval
 	static let dataRequestSlowResponseCheck = 7 as TimeInterval
 	static let dataTestExpirationCheckTimeout = 10 as TimeInterval
+	static let dataRequestCustomType = "CustomTypeTestX"
 
 	// Data Parsing
 	static let parsingObjectData = "{\"model\":\"TRS-80 Color Computer 2\", \"processor\":\"6809\", \"year\":\"1980\"}"

@@ -370,6 +370,70 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
 	}
 
+	func testSuccessfulCustomDataTypeRetrieval()
+	{
+		let callbackExpectation = expectation(description: "Callback invoked")
+		IoGDataManager.dataManagerOfType(type: IoGDataManager.IoGDataManagerType.IoGDataManagerTypeMock).transmitRequest(request: URLRequest(url: URL(string: IoGTestConfigurationManager.successURL1)!), type: .Custom, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType)
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
+			{
+			timer in
+			if let calledBack = self.callbackInvoked
+				{
+				if calledBack
+					{
+					if let requestResponse = self.callbackResponse
+						{
+						XCTAssertEqual (requestResponse.getCustomRequestType(),IoGTestConfigurationManager.dataRequestCustomType)
+						if let data = self.returnedData
+							{
+							if let returnedString = String(data: data, encoding: .utf8)
+								{
+								if returnedString != IoGConfigurationManager.mockDataResponse1
+									{
+									XCTFail()
+									}
+								}
+							}
+						}
+					}
+				callbackExpectation.fulfill()
+				}
+			}
+		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
+	}
+
+	func testFailedCustomDataTypeRetrieval()
+	{
+		let callbackExpectation = expectation(description: "Callback invoked")
+		IoGDataManager.dataManagerOfType(type: IoGDataManager.IoGDataManagerType.IoGDataManagerTypeMock).transmitRequest(request: URLRequest(url: URL(string: IoGTestConfigurationManager.successURL1)!), type: .Custom)
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
+			{
+			timer in
+			if let calledBack = self.callbackInvoked
+				{
+				if calledBack
+					{
+					if let requestResponse = self.callbackResponse
+						{
+						XCTAssertNotEqual (requestResponse.getCustomRequestType(),IoGTestConfigurationManager.dataRequestCustomType)
+						if let data = self.returnedData
+							{
+							if let returnedString = String(data: data, encoding: .utf8)
+								{
+								if returnedString != IoGConfigurationManager.mockDataResponse1
+									{
+									XCTFail()
+									}
+								}
+							}
+						}
+					}
+				callbackExpectation.fulfill()
+				}
+			}
+		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
+	}
+
 	// Data Manager Delegate method(s)
 
 	func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
