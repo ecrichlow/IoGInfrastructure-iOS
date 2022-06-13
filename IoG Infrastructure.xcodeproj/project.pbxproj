@@ -3,392 +3,458 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoG InfrastructurePackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_40 /* Build configuration list for PBXAggregateTarget "IoG InfrastructurePackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_43 /* PBXTargetDependency */,
+			);
+			name = "IoG InfrastructurePackageTests";
+			productName = "IoG InfrastructurePackageTests";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		2751201527BE2CD100C03175 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */; };
-		2751201827C03A3800C03175 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2751201727C03A3800C03175 /* CryptoKit.framework */; };
-		2751201A27C23CE000C03175 /* EncryptionKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2751201927C23CE000C03175 /* EncryptionKeyManagerTests.swift */; };
-		279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */; };
-		279700DF2198CAC500359968 /* WhatWasIThinking in Resources */ = {isa = PBXBuildFile; fileRef = 279700DE2198CAC400359968 /* WhatWasIThinking */; };
-		279F86C5219A02B10066D85E /* IoGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C4219A02B10066D85E /* IoGDataManager.swift */; };
-		279F86C7219A02EA0066D85E /* IoGLiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */; };
-		279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86C8219A031A0066D85E /* IoGMockDataManager.swift */; };
-		279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */; };
-		27EF591F21F428250037E486 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF591E21F428250037E486 /* TestComputerObject.swift */; };
-		27F0632E219230500045BE68 /* IoGInfrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F06324219230500045BE68 /* IoGInfrastructure.framework */; };
-		27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */; };
-		27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F06327219230500045BE68 /* IoG_Infrastructure.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */; };
-		27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */; };
-		97738D1121F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */; };
-		97738D1221F2B01C00F7F478 /* IoGMockDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */; };
-		97738D1521F2C80000F7F478 /* IoGDataObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */; };
-		97738D1621F2C80000F7F478 /* IoGDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1421F2C80000F7F478 /* IoGDataObject.swift */; };
-		97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */; };
-		97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */; };
-		97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */; };
-		97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */; };
+		8E76F5DB285712740043F6B5 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */; };
+		8E76F5DC285712740043F6B5 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */; };
+		8E76F5DD285712740043F6B5 /* IoGDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CC285712740043F6B5 /* IoGDataObject.swift */; };
+		8E76F5DE285712740043F6B5 /* IoGDataObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CD285712740043F6B5 /* IoGDataObjectManager.swift */; };
+		8E76F5DF285712740043F6B5 /* IoGRetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CF285712740043F6B5 /* IoGRetryManager.swift */; };
+		8E76F5E0285712740043F6B5 /* IoGPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D1285712740043F6B5 /* IoGPersistenceManager.swift */; };
+		8E76F5E1285712740043F6B5 /* IoGDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D3285712740043F6B5 /* IoGDataRequestResponse.swift */; };
+		8E76F5E2285712740043F6B5 /* IoGMockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D4285712740043F6B5 /* IoGMockDataManager.swift */; };
+		8E76F5E3285712740043F6B5 /* IoGMockDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D5285712740043F6B5 /* IoGMockDataRequestResponse.swift */; };
+		8E76F5E4285712740043F6B5 /* IoGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D6285712740043F6B5 /* IoGDataManager.swift */; };
+		8E76F5E5285712740043F6B5 /* IoGLiveDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */; };
+		8E76F5E6285712740043F6B5 /* IoGLiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */; };
+		OBJ_38 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_49 /* EncryptionKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* EncryptionKeyManagerTests.swift */; };
+		OBJ_50 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* IoGDataManagerTests.swift */; };
+		OBJ_51 /* IoGDataParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* IoGDataParsingTests.swift */; };
+		OBJ_52 /* IoGPersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* IoGPersistenceManagerTests.swift */; };
+		OBJ_53 /* IoGRetryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* IoGRetryManagerTests.swift */; };
+		OBJ_54 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* IoGTestConfigurationManager.swift */; };
+		OBJ_55 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* TestComputerObject.swift */; };
+		OBJ_57 /* IoG_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		27F0632F219230500045BE68 /* PBXContainerItemProxy */ = {
+		8E76F5C3285710EB0043F6B5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 27F0631B219230500045BE68 /* Project object */;
+			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 27F06323219230500045BE68;
+			remoteGlobalIDString = "iog infrastructure::IoGInfrastructureTests";
+			remoteInfo = IoGInfrastructureTests;
+		};
+		8E76F5C4285710EB0043F6B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "iog infrastructure::IoG Infrastructure";
 			remoteInfo = "IoG Infrastructure";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
-		2751201727C03A3800C03175 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
-		2751201927C23CE000C03175 /* EncryptionKeyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManagerTests.swift; sourceTree = "<group>"; };
-		279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGTestConfigurationManager.swift; sourceTree = "<group>"; };
-		279700DE2198CAC400359968 /* WhatWasIThinking */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = SOURCE_ROOT; };
-		279F86C4219A02B10066D85E /* IoGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManager.swift; sourceTree = "<group>"; };
-		279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGLiveDataManager.swift; sourceTree = "<group>"; };
-		279F86C8219A031A0066D85E /* IoGMockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGMockDataManager.swift; sourceTree = "<group>"; };
-		279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataRequestResponse.swift; sourceTree = "<group>"; };
-		27EF591E21F428250037E486 /* TestComputerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
-		27F06324219230500045BE68 /* IoGInfrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IoGInfrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		27F06327219230500045BE68 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
-		27F06328219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IoG InfrastructureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManagerTests.swift; sourceTree = "<group>"; };
-		27F06334219230500045BE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManager.swift; sourceTree = "<group>"; };
-		27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
-		97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataRequestResponse.swift; sourceTree = "<group>"; };
-		97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGMockDataRequestResponse.swift; sourceTree = "<group>"; };
-		97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObjectManager.swift; sourceTree = "<group>"; };
-		97738D1421F2C80000F7F478 /* IoGDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObject.swift; sourceTree = "<group>"; };
-		97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
-		97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataParsingTests.swift; sourceTree = "<group>"; };
-		97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGRetryManagerTests.swift; sourceTree = "<group>"; };
-		97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGRetryManager.swift; sourceTree = "<group>"; };
+		8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
+		8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
+		8E76F5CC285712740043F6B5 /* IoGDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObject.swift; sourceTree = "<group>"; };
+		8E76F5CD285712740043F6B5 /* IoGDataObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObjectManager.swift; sourceTree = "<group>"; };
+		8E76F5CF285712740043F6B5 /* IoGRetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGRetryManager.swift; sourceTree = "<group>"; };
+		8E76F5D1285712740043F6B5 /* IoGPersistenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManager.swift; sourceTree = "<group>"; };
+		8E76F5D3285712740043F6B5 /* IoGDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataRequestResponse.swift; sourceTree = "<group>"; };
+		8E76F5D4285712740043F6B5 /* IoGMockDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGMockDataManager.swift; sourceTree = "<group>"; };
+		8E76F5D5285712740043F6B5 /* IoGMockDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGMockDataRequestResponse.swift; sourceTree = "<group>"; };
+		8E76F5D6285712740043F6B5 /* IoGDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataManager.swift; sourceTree = "<group>"; };
+		8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataRequestResponse.swift; sourceTree = "<group>"; };
+		8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataManager.swift; sourceTree = "<group>"; };
+		8E76F5D9285712740043F6B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E76F5DA285712740043F6B5 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
+		OBJ_12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		OBJ_13 /* EncryptionKeyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManagerTests.swift; sourceTree = "<group>"; };
+		OBJ_14 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
+		OBJ_15 /* IoGDataParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataParsingTests.swift; sourceTree = "<group>"; };
+		OBJ_16 /* IoGPersistenceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGPersistenceManagerTests.swift; sourceTree = "<group>"; };
+		OBJ_17 /* IoGRetryManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGRetryManagerTests.swift; sourceTree = "<group>"; };
+		OBJ_18 /* IoGTestConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGTestConfigurationManager.swift; sourceTree = "<group>"; };
+		OBJ_20 /* TestComputerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestComputerObject.swift; sourceTree = "<group>"; };
+		OBJ_24 /* WhatWasIThinking */ = {isa = PBXFileReference; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = "<group>"; };
+		OBJ_25 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		"iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IoG_Infrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = IoGInfrastructureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		27F06321219230500045BE68 /* Frameworks */ = {
+		OBJ_32 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				2751201827C03A3800C03175 /* CryptoKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27F0632A219230500045BE68 /* Frameworks */ = {
+		OBJ_56 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				27F0632E219230500045BE68 /* IoGInfrastructure.framework in Frameworks */,
+				OBJ_57 /* IoG_Infrastructure.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2751201327BE2C7300C03175 /* Encryption */ = {
+		8E76F5C5285712740043F6B5 /* IoGInfrastructurePackage */ = {
 			isa = PBXGroup;
 			children = (
-				2751201427BE2CD100C03175 /* EncryptionKeyManager.swift */,
+				8E76F5C6285712740043F6B5 /* Managers */,
+				8E76F5D9285712740043F6B5 /* Info.plist */,
+				8E76F5DA285712740043F6B5 /* IoG_Infrastructure.h */,
 			);
-			path = Encryption;
+			name = IoGInfrastructurePackage;
+			path = Source/IoGInfrastructurePackage;
 			sourceTree = "<group>";
 		};
-		2751201627C03A3800C03175 /* Frameworks */ = {
+		8E76F5C6285712740043F6B5 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				2751201727C03A3800C03175 /* CryptoKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		27EF591D21F428010037E486 /* Test Business Objects */ = {
-			isa = PBXGroup;
-			children = (
-				27EF591E21F428250037E486 /* TestComputerObject.swift */,
-			);
-			path = "Test Business Objects";
-			sourceTree = "<group>";
-		};
-		27F0631A219230500045BE68 = {
-			isa = PBXGroup;
-			children = (
-				27F06326219230500045BE68 /* IoG Infrastructure */,
-				27F06331219230500045BE68 /* IoG InfrastructureTests */,
-				27F06325219230500045BE68 /* Products */,
-				2751201627C03A3800C03175 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		27F06325219230500045BE68 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				27F06324219230500045BE68 /* IoGInfrastructure.framework */,
-				27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		27F06326219230500045BE68 /* IoG Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				279700DE2198CAC400359968 /* WhatWasIThinking */,
-				27F063472196B79B0045BE68 /* Managers */,
-				27F06328219230500045BE68 /* Info.plist */,
-				27F06327219230500045BE68 /* IoG_Infrastructure.h */,
-			);
-			path = "IoG Infrastructure";
-			sourceTree = "<group>";
-		};
-		27F06331219230500045BE68 /* IoG InfrastructureTests */ = {
-			isa = PBXGroup;
-			children = (
-				279700D421980EAD00359968 /* IoGTestConfigurationManager.swift */,
-				27F06332219230500045BE68 /* IoGPersistenceManagerTests.swift */,
-				97738D1921F2CA2700F7F478 /* IoGRetryManagerTests.swift */,
-				97738D1721F2CA2700F7F478 /* IoGDataManagerTests.swift */,
-				97738D1821F2CA2700F7F478 /* IoGDataParsingTests.swift */,
-				2751201927C23CE000C03175 /* EncryptionKeyManagerTests.swift */,
-				27EF591D21F428010037E486 /* Test Business Objects */,
-				27F06334219230500045BE68 /* Info.plist */,
-			);
-			path = "IoG InfrastructureTests";
-			sourceTree = "<group>";
-		};
-		27F063442196AC780045BE68 /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				27F0633E2196A9170045BE68 /* IoGPersistenceManager.swift */,
-			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-		27F063452196AC8A0045BE68 /* RemoteData */ = {
-			isa = PBXGroup;
-			children = (
-				279F86C4219A02B10066D85E /* IoGDataManager.swift */,
-				279F86C6219A02EA0066D85E /* IoGLiveDataManager.swift */,
-				279F86C8219A031A0066D85E /* IoGMockDataManager.swift */,
-				279F86CA219A034C0066D85E /* IoGDataRequestResponse.swift */,
-				97738D0F21F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift */,
-				97738D1021F2B01C00F7F478 /* IoGMockDataRequestResponse.swift */,
-			);
-			path = RemoteData;
-			sourceTree = "<group>";
-		};
-		27F063462196B77E0045BE68 /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				27F063412196AAD80045BE68 /* IoGConfigurationManager.swift */,
-			);
-			path = Configuration;
-			sourceTree = "<group>";
-		};
-		27F063472196B79B0045BE68 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				27F063462196B77E0045BE68 /* Configuration */,
-				27F063442196AC780045BE68 /* Persistence */,
-				27F063452196AC8A0045BE68 /* RemoteData */,
-				97738D0E21F2AFA400F7F478 /* Data Parsing */,
-				97AD21C721BF6D3200739C6D /* Retry */,
-				2751201327BE2C7300C03175 /* Encryption */,
+				8E76F5C7285712740043F6B5 /* Encryption */,
+				8E76F5C9285712740043F6B5 /* Configuration */,
+				8E76F5CB285712740043F6B5 /* Data Parsing */,
+				8E76F5CE285712740043F6B5 /* Retry */,
+				8E76F5D0285712740043F6B5 /* Persistence */,
+				8E76F5D2285712740043F6B5 /* RemoteData */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		97738D0E21F2AFA400F7F478 /* Data Parsing */ = {
+		8E76F5C7285712740043F6B5 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
-				97738D1421F2C80000F7F478 /* IoGDataObject.swift */,
-				97738D1321F2C80000F7F478 /* IoGDataObjectManager.swift */,
+				8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
+		8E76F5C9285712740043F6B5 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		8E76F5CB285712740043F6B5 /* Data Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				8E76F5CC285712740043F6B5 /* IoGDataObject.swift */,
+				8E76F5CD285712740043F6B5 /* IoGDataObjectManager.swift */,
 			);
 			path = "Data Parsing";
 			sourceTree = "<group>";
 		};
-		97AD21C721BF6D3200739C6D /* Retry */ = {
+		8E76F5CE285712740043F6B5 /* Retry */ = {
 			isa = PBXGroup;
 			children = (
-				97AD21C821BF6D6F00739C6D /* IoGRetryManager.swift */,
+				8E76F5CF285712740043F6B5 /* IoGRetryManager.swift */,
 			);
 			path = Retry;
 			sourceTree = "<group>";
 		};
+		8E76F5D0285712740043F6B5 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				8E76F5D1285712740043F6B5 /* IoGPersistenceManager.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		8E76F5D2285712740043F6B5 /* RemoteData */ = {
+			isa = PBXGroup;
+			children = (
+				8E76F5D3285712740043F6B5 /* IoGDataRequestResponse.swift */,
+				8E76F5D4285712740043F6B5 /* IoGMockDataManager.swift */,
+				8E76F5D5285712740043F6B5 /* IoGMockDataRequestResponse.swift */,
+				8E76F5D6285712740043F6B5 /* IoGDataManager.swift */,
+				8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */,
+				8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */,
+			);
+			path = RemoteData;
+			sourceTree = "<group>";
+		};
+		OBJ_10 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_11 /* IoGInfrastructureTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_11 /* IoGInfrastructureTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_12 /* Info.plist */,
+				OBJ_13 /* EncryptionKeyManagerTests.swift */,
+				OBJ_14 /* IoGDataManagerTests.swift */,
+				OBJ_15 /* IoGDataParsingTests.swift */,
+				OBJ_16 /* IoGPersistenceManagerTests.swift */,
+				OBJ_17 /* IoGRetryManagerTests.swift */,
+				OBJ_18 /* IoGTestConfigurationManager.swift */,
+				OBJ_19 /* Test Business Objects */,
+			);
+			name = IoGInfrastructureTests;
+			path = Tests/IoGInfrastructureTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_19 /* Test Business Objects */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* TestComputerObject.swift */,
+			);
+			path = "Test Business Objects";
+			sourceTree = "<group>";
+		};
+		OBJ_21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */,
+				"iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_10 /* Tests */,
+				OBJ_21 /* Products */,
+				OBJ_24 /* WhatWasIThinking */,
+				OBJ_25 /* README.md */,
+			);
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8E76F5C5285712740043F6B5 /* IoGInfrastructurePackage */,
+			);
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		27F0631F219230500045BE68 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27F06335219230500045BE68 /* IoG_Infrastructure.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		27F06323219230500045BE68 /* IoG Infrastructure */ = {
+		"iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27F06338219230500045BE68 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */;
+			buildConfigurationList = OBJ_27 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */;
 			buildPhases = (
-				27F0631F219230500045BE68 /* Headers */,
-				27F06320219230500045BE68 /* Sources */,
-				27F06321219230500045BE68 /* Frameworks */,
-				27F06322219230500045BE68 /* Resources */,
+				OBJ_30 /* Sources */,
+				OBJ_32 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "IoG Infrastructure";
-			productName = "IoG Infrastructure";
-			productReference = 27F06324219230500045BE68 /* IoGInfrastructure.framework */;
+			productName = IoG_Infrastructure;
+			productReference = "iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		27F0632C219230500045BE68 /* IoG InfrastructureTests */ = {
+		"iog infrastructure::IoGInfrastructureTests" /* IoGInfrastructureTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27F0633B219230500045BE68 /* Build configuration list for PBXNativeTarget "IoG InfrastructureTests" */;
+			buildConfigurationList = OBJ_45 /* Build configuration list for PBXNativeTarget "IoGInfrastructureTests" */;
 			buildPhases = (
-				27F06329219230500045BE68 /* Sources */,
-				27F0632A219230500045BE68 /* Frameworks */,
-				27F0632B219230500045BE68 /* Resources */,
+				OBJ_48 /* Sources */,
+				OBJ_56 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				27F06330219230500045BE68 /* PBXTargetDependency */,
+				OBJ_58 /* PBXTargetDependency */,
 			);
-			name = "IoG InfrastructureTests";
-			productName = "IoG InfrastructureTests";
-			productReference = 27F0632D219230500045BE68 /* IoG InfrastructureTests.xctest */;
+			name = IoGInfrastructureTests;
+			productName = IoGInfrastructureTests;
+			productReference = "iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		"iog infrastructure::SwiftPMPackageDescription" /* IoG InfrastructurePackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_34 /* Build configuration list for PBXNativeTarget "IoG InfrastructurePackageDescription" */;
+			buildPhases = (
+				OBJ_37 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "IoG InfrastructurePackageDescription";
+			productName = "IoG InfrastructurePackageDescription";
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		27F0631B219230500045BE68 /* Project object */ = {
+		OBJ_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
-				ORGANIZATIONNAME = "Infusions of Grandeur";
-				TargetAttributes = {
-					27F06323219230500045BE68 = {
-						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1140;
-					};
-					27F0632C219230500045BE68 = {
-						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1140;
-					};
-				};
+				LastSwiftMigration = 9999;
+				LastUpgradeCheck = 1340;
 			};
-			buildConfigurationList = 27F0631E219230500045BE68 /* Build configuration list for PBXProject "IoG Infrastructure" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "IoG Infrastructure" */;
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
-			mainGroup = 27F0631A219230500045BE68;
-			productRefGroup = 27F06325219230500045BE68 /* Products */;
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_21 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				27F06323219230500045BE68 /* IoG Infrastructure */,
-				27F0632C219230500045BE68 /* IoG InfrastructureTests */,
+				"iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */,
+				"iog infrastructure::SwiftPMPackageDescription" /* IoG InfrastructurePackageDescription */,
+				"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoG InfrastructurePackageTests */,
+				"iog infrastructure::IoGInfrastructureTests" /* IoGInfrastructureTests */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		27F06322219230500045BE68 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				279700DF2198CAC500359968 /* WhatWasIThinking in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27F0632B219230500045BE68 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		27F06320219230500045BE68 /* Sources */ = {
+		OBJ_30 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				97738D1621F2C80000F7F478 /* IoGDataObject.swift in Sources */,
-				97738D1121F2B01C00F7F478 /* IoGLiveDataRequestResponse.swift in Sources */,
-				27F063422196AAD80045BE68 /* IoGConfigurationManager.swift in Sources */,
-				97AD21C921BF6D6F00739C6D /* IoGRetryManager.swift in Sources */,
-				2751201527BE2CD100C03175 /* EncryptionKeyManager.swift in Sources */,
-				97738D1521F2C80000F7F478 /* IoGDataObjectManager.swift in Sources */,
-				279F86C9219A031A0066D85E /* IoGMockDataManager.swift in Sources */,
-				279F86CB219A034C0066D85E /* IoGDataRequestResponse.swift in Sources */,
-				279F86C7219A02EA0066D85E /* IoGLiveDataManager.swift in Sources */,
-				97738D1221F2B01C00F7F478 /* IoGMockDataRequestResponse.swift in Sources */,
-				279F86C5219A02B10066D85E /* IoGDataManager.swift in Sources */,
-				27F0633F2196A9170045BE68 /* IoGPersistenceManager.swift in Sources */,
+				8E76F5E5285712740043F6B5 /* IoGLiveDataRequestResponse.swift in Sources */,
+				8E76F5E2285712740043F6B5 /* IoGMockDataManager.swift in Sources */,
+				8E76F5E1285712740043F6B5 /* IoGDataRequestResponse.swift in Sources */,
+				8E76F5DF285712740043F6B5 /* IoGRetryManager.swift in Sources */,
+				8E76F5E6285712740043F6B5 /* IoGLiveDataManager.swift in Sources */,
+				8E76F5DC285712740043F6B5 /* IoGConfigurationManager.swift in Sources */,
+				8E76F5DB285712740043F6B5 /* EncryptionKeyManager.swift in Sources */,
+				8E76F5E4285712740043F6B5 /* IoGDataManager.swift in Sources */,
+				8E76F5DD285712740043F6B5 /* IoGDataObject.swift in Sources */,
+				8E76F5E3285712740043F6B5 /* IoGMockDataRequestResponse.swift in Sources */,
+				8E76F5DE285712740043F6B5 /* IoGDataObjectManager.swift in Sources */,
+				8E76F5E0285712740043F6B5 /* IoGPersistenceManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27F06329219230500045BE68 /* Sources */ = {
+		OBJ_37 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				97738D1C21F2CA2700F7F478 /* IoGRetryManagerTests.swift in Sources */,
-				97738D1B21F2CA2700F7F478 /* IoGDataParsingTests.swift in Sources */,
-				97738D1A21F2CA2700F7F478 /* IoGDataManagerTests.swift in Sources */,
-				27EF591F21F428250037E486 /* TestComputerObject.swift in Sources */,
-				27F06333219230500045BE68 /* IoGPersistenceManagerTests.swift in Sources */,
-				2751201A27C23CE000C03175 /* EncryptionKeyManagerTests.swift in Sources */,
-				279700D521980EAD00359968 /* IoGTestConfigurationManager.swift in Sources */,
+				OBJ_38 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_49 /* EncryptionKeyManagerTests.swift in Sources */,
+				OBJ_50 /* IoGDataManagerTests.swift in Sources */,
+				OBJ_51 /* IoGDataParsingTests.swift in Sources */,
+				OBJ_52 /* IoGPersistenceManagerTests.swift in Sources */,
+				OBJ_53 /* IoGRetryManagerTests.swift in Sources */,
+				OBJ_54 /* IoGTestConfigurationManager.swift in Sources */,
+				OBJ_55 /* TestComputerObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		27F06330219230500045BE68 /* PBXTargetDependency */ = {
+		OBJ_43 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 27F06323219230500045BE68 /* IoG Infrastructure */;
-			targetProxy = 27F0632F219230500045BE68 /* PBXContainerItemProxy */;
+			target = "iog infrastructure::IoGInfrastructureTests" /* IoGInfrastructureTests */;
+			targetProxy = 8E76F5C3285710EB0043F6B5 /* PBXContainerItemProxy */;
+		};
+		OBJ_58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */;
+			targetProxy = 8E76F5C4285710EB0043F6B5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		27F06336219230500045BE68 /* Debug */ = {
+		OBJ_28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoG_Infrastructure_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "IoG-Infrastructure";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = "IoG Infrastructure";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoG_Infrastructure_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "IoG-Infrastructure";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = "IoG Infrastructure";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -396,63 +462,74 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "$(AVAILABLE_PLATFORMS)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
-		27F06337219230500045BE68 /* Release */ = {
+		OBJ_35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				LD = /usr/bin/true;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/ManifestAPI -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -package-description-version 5.6.0";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		OBJ_36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/ManifestAPI -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -package-description-version 5.6.0";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -460,165 +537,156 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "$(AVAILABLE_PLATFORMS)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
-		27F06339219230500045BE68 /* Debug */ = {
+		OBJ_41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 97J36M7BW8;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "IoG Infrastructure/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
-				PRODUCT_NAME = IoGInfrastructure;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		27F0633A219230500045BE68 /* Release */ = {
+		OBJ_42 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 97J36M7BW8;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "IoG Infrastructure/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infusionsofgrandeur.IoGInfrastructure;
-				PRODUCT_NAME = IoGInfrastructure;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		27F0633C219230500045BE68 /* Debug */ = {
+		OBJ_46 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97J36M7BW8;
-				INFOPLIST_FILE = "IoG InfrastructureTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
+				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-InfrastructureTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoGInfrastructureTests_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_NAME = IoGInfrastructureTests;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
-		27F0633D219230500045BE68 /* Release */ = {
+		OBJ_47 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97J36M7BW8;
-				INFOPLIST_FILE = "IoG InfrastructureTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
+				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infusionsofgrandeur.IoG-InfrastructureTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoGInfrastructureTests_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_NAME = IoGInfrastructureTests;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		27F0631E219230500045BE68 /* Build configuration list for PBXProject "IoG Infrastructure" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "IoG Infrastructure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				27F06336219230500045BE68 /* Debug */,
-				27F06337219230500045BE68 /* Release */,
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		27F06338219230500045BE68 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */ = {
+		OBJ_27 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				27F06339219230500045BE68 /* Debug */,
-				27F0633A219230500045BE68 /* Release */,
+				OBJ_28 /* Debug */,
+				OBJ_29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		27F0633B219230500045BE68 /* Build configuration list for PBXNativeTarget "IoG InfrastructureTests" */ = {
+		OBJ_34 /* Build configuration list for PBXNativeTarget "IoG InfrastructurePackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				27F0633C219230500045BE68 /* Debug */,
-				27F0633D219230500045BE68 /* Release */,
+				OBJ_35 /* Debug */,
+				OBJ_36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_40 /* Build configuration list for PBXAggregateTarget "IoG InfrastructurePackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_41 /* Debug */,
+				OBJ_42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_45 /* Build configuration list for PBXNativeTarget "IoGInfrastructureTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_46 /* Debug */,
+				OBJ_47 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 27F0631B219230500045BE68 /* Project object */;
+	rootObject = OBJ_1 /* Project object */;
 }
