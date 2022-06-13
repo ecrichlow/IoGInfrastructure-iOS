@@ -17,7 +17,7 @@
 
 import Foundation
 
-public protocol IoGDataManagerDelegate : class
+public protocol IoGDataManagerDelegate : AnyObject
 {
 	func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 }

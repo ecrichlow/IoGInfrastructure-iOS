@@ -16,7 +16,7 @@
 
 import Foundation
 
-public protocol IoGRetryManagerDelegate : class
+public protocol IoGRetryManagerDelegate : AnyObject
 {
 	func retrySessionCompleted(requestID: Int, result: IoGRetryManager.RetryResult)
 }
