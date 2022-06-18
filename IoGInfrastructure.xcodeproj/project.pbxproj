@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoG InfrastructurePackageTests */ = {
+		"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoGInfrastructurePackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_40 /* Build configuration list for PBXAggregateTarget "IoG InfrastructurePackageTests" */;
+			buildConfigurationList = OBJ_40 /* Build configuration list for PBXAggregateTarget "IoGInfrastructurePackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
 				OBJ_43 /* PBXTargetDependency */,
 			);
-			name = "IoG InfrastructurePackageTests";
+			name = IoGInfrastructurePackageTests;
 			productName = "IoG InfrastructurePackageTests";
 		};
 /* End PBXAggregateTarget section */
@@ -41,7 +41,7 @@
 		OBJ_53 /* IoGRetryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* IoGRetryManagerTests.swift */; };
 		OBJ_54 /* IoGTestConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* IoGTestConfigurationManager.swift */; };
 		OBJ_55 /* TestComputerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* TestComputerObject.swift */; };
-		OBJ_57 /* IoG_Infrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */; };
+		OBJ_57 /* IoGInfrastructure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "iog infrastructure::IoG Infrastructure::Product" /* IoGInfrastructure.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +75,7 @@
 		8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataRequestResponse.swift; sourceTree = "<group>"; };
 		8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataManager.swift; sourceTree = "<group>"; };
 		8E76F5D9285712740043F6B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8E76F5DA285712740043F6B5 /* IoG_Infrastructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoG_Infrastructure.h; sourceTree = "<group>"; };
+		8E76F5DA285712740043F6B5 /* IoGInfrastructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoGInfrastructure.h; sourceTree = "<group>"; };
 		OBJ_12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		OBJ_13 /* EncryptionKeyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManagerTests.swift; sourceTree = "<group>"; };
 		OBJ_14 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 		OBJ_24 /* WhatWasIThinking */ = {isa = PBXFileReference; lastKnownFileType = text; path = WhatWasIThinking; sourceTree = "<group>"; };
 		OBJ_25 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		"iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IoG_Infrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"iog infrastructure::IoG Infrastructure::Product" /* IoGInfrastructure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IoGInfrastructure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = IoGInfrastructureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_57 /* IoG_Infrastructure.framework in Frameworks */,
+				OBJ_57 /* IoGInfrastructure.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +115,7 @@
 			children = (
 				8E76F5C6285712740043F6B5 /* Managers */,
 				8E76F5D9285712740043F6B5 /* Info.plist */,
-				8E76F5DA285712740043F6B5 /* IoG_Infrastructure.h */,
+				8E76F5DA285712740043F6B5 /* IoGInfrastructure.h */,
 			);
 			name = IoGInfrastructurePackage;
 			path = Source/IoGInfrastructurePackage;
@@ -223,7 +223,7 @@
 		OBJ_21 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */,
+				"iog infrastructure::IoG Infrastructure::Product" /* IoGInfrastructure.framework */,
 				"iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */,
 			);
 			name = Products;
@@ -252,9 +252,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		"iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */ = {
+		"iog infrastructure::IoG Infrastructure" /* IoGInfrastructure */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_27 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */;
+			buildConfigurationList = OBJ_27 /* Build configuration list for PBXNativeTarget "IoGInfrastructure" */;
 			buildPhases = (
 				OBJ_30 /* Sources */,
 				OBJ_32 /* Frameworks */,
@@ -263,9 +263,9 @@
 			);
 			dependencies = (
 			);
-			name = "IoG Infrastructure";
+			name = IoGInfrastructure;
 			productName = IoG_Infrastructure;
-			productReference = "iog infrastructure::IoG Infrastructure::Product" /* IoG_Infrastructure.framework */;
+			productReference = "iog infrastructure::IoG Infrastructure::Product" /* IoGInfrastructure.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		"iog infrastructure::IoGInfrastructureTests" /* IoGInfrastructureTests */ = {
@@ -285,9 +285,9 @@
 			productReference = "iog infrastructure::IoGInfrastructureTests::Product" /* IoGInfrastructureTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		"iog infrastructure::SwiftPMPackageDescription" /* IoG InfrastructurePackageDescription */ = {
+		"iog infrastructure::SwiftPMPackageDescription" /* IoGInfrastructurePackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_34 /* Build configuration list for PBXNativeTarget "IoG InfrastructurePackageDescription" */;
+			buildConfigurationList = OBJ_34 /* Build configuration list for PBXNativeTarget "IoGInfrastructurePackageDescription" */;
 			buildPhases = (
 				OBJ_37 /* Sources */,
 			);
@@ -295,7 +295,7 @@
 			);
 			dependencies = (
 			);
-			name = "IoG InfrastructurePackageDescription";
+			name = IoGInfrastructurePackageDescription;
 			productName = "IoG InfrastructurePackageDescription";
 			productType = "com.apple.product-type.framework";
 		};
@@ -308,7 +308,7 @@
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 1340;
 			};
-			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "IoG Infrastructure" */;
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "IoGInfrastructure" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -321,9 +321,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				"iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */,
-				"iog infrastructure::SwiftPMPackageDescription" /* IoG InfrastructurePackageDescription */,
-				"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoG InfrastructurePackageTests */,
+				"iog infrastructure::IoG Infrastructure" /* IoGInfrastructure */,
+				"iog infrastructure::SwiftPMPackageDescription" /* IoGInfrastructurePackageDescription */,
+				"iog infrastructure::IoG InfrastructurePackageTests::ProductTarget" /* IoGInfrastructurePackageTests */,
 				"iog infrastructure::IoGInfrastructureTests" /* IoGInfrastructureTests */,
 			);
 		};
@@ -381,7 +381,7 @@
 		};
 		OBJ_58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "iog infrastructure::IoG Infrastructure" /* IoG Infrastructure */;
+			target = "iog infrastructure::IoG Infrastructure" /* IoGInfrastructure */;
 			targetProxy = 8E76F5C4285710EB0043F6B5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -398,20 +398,20 @@
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoG_Infrastructure_Info.plist";
+				INFOPLIST_FILE = IoGInfrastructure.xcodeproj/IoG_Infrastructure_Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "IoG-Infrastructure";
+				PRODUCT_BUNDLE_IDENTIFIER = IoGInfrastructure;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGET_NAME = "IoG Infrastructure";
+				TARGET_NAME = IoGInfrastructure;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -428,20 +428,20 @@
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoG_Infrastructure_Info.plist";
+				INFOPLIST_FILE = IoGInfrastructure.xcodeproj/IoG_Infrastructure_Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "IoG-Infrastructure";
+				PRODUCT_BUNDLE_IDENTIFIER = IoGInfrastructure;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				TARGET_NAME = "IoG Infrastructure";
+				TARGET_NAME = IoGInfrastructure;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -511,6 +511,7 @@
 				LD = /usr/bin/true;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/ManifestAPI -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -package-description-version 5.6.0";
+				PRODUCT_NAME = IoGInfrastructurePackageDescription;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -521,6 +522,7 @@
 				LD = /usr/bin/true;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/ManifestAPI -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -package-description-version 5.6.0";
+				PRODUCT_NAME = IoGInfrastructurePackageDescription;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -582,12 +584,14 @@
 		OBJ_41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = IoGInfrastructurePackageTests;
 			};
 			name = Debug;
 		};
 		OBJ_42 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = IoGInfrastructurePackageTests;
 			};
 			name = Release;
 		};
@@ -603,7 +607,7 @@
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoGInfrastructureTests_Info.plist";
+				INFOPLIST_FILE = IoGInfrastructure.xcodeproj/IoGInfrastructureTests_Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
@@ -630,7 +634,7 @@
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "IoG Infrastructure.xcodeproj/IoGInfrastructureTests_Info.plist";
+				INFOPLIST_FILE = IoGInfrastructure.xcodeproj/IoGInfrastructureTests_Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
@@ -648,7 +652,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_2 /* Build configuration list for PBXProject "IoG Infrastructure" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "IoGInfrastructure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJ_3 /* Debug */,
@@ -657,7 +661,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_27 /* Build configuration list for PBXNativeTarget "IoG Infrastructure" */ = {
+		OBJ_27 /* Build configuration list for PBXNativeTarget "IoGInfrastructure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJ_28 /* Debug */,
@@ -666,7 +670,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_34 /* Build configuration list for PBXNativeTarget "IoG InfrastructurePackageDescription" */ = {
+		OBJ_34 /* Build configuration list for PBXNativeTarget "IoGInfrastructurePackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJ_35 /* Debug */,
@@ -675,7 +679,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_40 /* Build configuration list for PBXAggregateTarget "IoG InfrastructurePackageTests" */ = {
+		OBJ_40 /* Build configuration list for PBXAggregateTarget "IoGInfrastructurePackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJ_41 /* Debug */,

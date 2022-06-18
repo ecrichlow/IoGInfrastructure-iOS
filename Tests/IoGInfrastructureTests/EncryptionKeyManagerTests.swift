@@ -15,7 +15,7 @@
 
 import XCTest
 import CryptoKit
-@testable import IoG_Infrastructure
+@testable import IoGInfrastructure
 
 class EncryptionKeyManagerTests: XCTestCase
 {

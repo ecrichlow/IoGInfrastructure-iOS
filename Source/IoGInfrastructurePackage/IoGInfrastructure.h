@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 //! Project version number for IoG_Infrastructure.
-FOUNDATION_EXPORT double IoG_InfrastructureVersionNumber;
+FOUNDATION_EXPORT double IoGInfrastructureVersionNumber;
 
 //! Project version string for IoG_Infrastructure.
-FOUNDATION_EXPORT const unsigned char IoG_InfrastructureVersionString[];
+FOUNDATION_EXPORT const unsigned char IoGInfrastructureVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <IoG_Infrastructure/PublicHeader.h>
 

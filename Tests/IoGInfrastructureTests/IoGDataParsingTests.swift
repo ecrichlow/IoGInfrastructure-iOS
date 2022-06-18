@@ -14,7 +14,7 @@
 */
 
 import XCTest
-@testable import IoG_Infrastructure
+@testable import IoGInfrastructure
 
 class IoGDataParsingTests: XCTestCase
 {

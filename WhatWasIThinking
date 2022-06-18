@@ -90,3 +90,8 @@ store the symmetric key we create for encryption. We're therefore encoding it an
 insecurely, in UserDefaults. Since this isn't particularly secure, it makes sense to give clients
 the option of passing in their own SymmetricKey for encryption and decryption.
 - Eric C.
+
+Decided it best to switch this from a framework project to a Swift Package so it could be distributed
+via the Swift Package Manager, which would eliminate the problem with having to run a script to
+generate a framework with modules for all of the proper architectures.
+- Eric C.

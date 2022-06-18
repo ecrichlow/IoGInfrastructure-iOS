@@ -16,7 +16,7 @@
 
 import XCTest
 import CryptoKit
-@testable import IoG_Infrastructure
+@testable import IoGInfrastructure
 
 class IoGPersistenceManagerTests: XCTestCase
 {
