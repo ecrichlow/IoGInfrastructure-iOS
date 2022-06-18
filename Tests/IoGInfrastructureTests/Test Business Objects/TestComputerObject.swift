@@ -14,7 +14,7 @@
 */
 
 import Foundation
-@testable import IoGInfrastructure
+@testable import IoG_Infrastructure
 
 class TestComputerObject : IoGDataObject
 {

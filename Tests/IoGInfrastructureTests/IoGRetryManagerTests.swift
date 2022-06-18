@@ -14,7 +14,7 @@
 */
 
 import XCTest
-@testable import IoGInfrastructure
+@testable import IoG_Infrastructure
 
 class IoGRetryManagerTests: XCTestCase, IoGRetryManagerDelegate
 {
