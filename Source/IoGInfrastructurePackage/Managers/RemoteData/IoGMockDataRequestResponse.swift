@@ -18,11 +18,12 @@
 
 import Foundation
 
-public class IoGMockDataRequestResponse : IoGDataRequestResponse
+internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 {
 
 	override public func processRequest()
 	{
+		start = Date()
 		sendResponse()
 	}
 
@@ -67,6 +68,7 @@ public class IoGMockDataRequestResponse : IoGDataRequestResponse
 					}
 				self.responseData = resp
 				}
+				self.end = Date()
 			callback(self)
 			}
 	}

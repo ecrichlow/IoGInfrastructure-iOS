@@ -95,3 +95,6 @@ Decided it best to switch this from a framework project to a Swift Package so it
 via the Swift Package Manager, which would eliminate the problem with having to run a script to
 generate a framework with modules for all of the proper architectures.
 - Eric C.
+
+Never added tests for encoding and decoding IoGDataObject instances. Need to do so.
+- Eric C.

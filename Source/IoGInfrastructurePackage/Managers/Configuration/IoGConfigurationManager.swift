@@ -13,12 +13,14 @@
 *	05/05/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for multiple API URLs and secure
 *								storage
+*	06/18/22		*	EGC	*	Added DocC support
 ********************************************************************************
 */
 
 import Foundation
 import CryptoKit
 
+/// Singleton class that controls the configuration of the IoG Infrastructure Framework.
 public class IoGConfigurationManager
 {
 	// Persistence Manager
@@ -83,6 +85,7 @@ public class IoGConfigurationManager
 	// Data Object Manager
 	static let dataParsingRawStringKey = "rawString"
 
+	/// Returns the shared Configuration Manager instance.
 	public static let sharedManager = IoGConfigurationManager()
 
 	private var sessionActive = false
@@ -91,12 +94,16 @@ public class IoGConfigurationManager
 //	private var currentAPIURL : String
 	private var APIURLs = [String]()
 
+	/// Default Initializer
 	init()
 	{
 // 02-16-22 - EGC - Deprecated single API URL in favor of an array of supported URLs
 //		currentAPIURL = "http://"
 	}
 
+	/// Check the version of IoGInfrastructure in use in the application
+	///
+	///  - Returns: The version number of the framework in use
 	public func getVersion() -> String
 	{
 		let infoDictionary = Bundle.main.infoDictionary
@@ -110,6 +117,15 @@ public class IoGConfigurationManager
 			}
 	}
 
+	/// Toggle the state of the session
+	///
+	/// The Persistence Manager has an option to set the lifetime of a stored value to end when the session ends.
+	/// This method is used to set the state of the session.
+	///
+	/// > Note: The default state of the session is off
+	///
+	///  - Parameters:
+	///		- state: The new state of the session
 	public func setSessionActive(state: Bool)
 	{
 		sessionActive = state
@@ -119,6 +135,9 @@ public class IoGConfigurationManager
 			}
 	}
 
+	/// Check the session state
+	///
+	/// - Returns: The current state of the session
 	public func getSessionActive() -> Bool
 	{
 		return sessionActive
@@ -141,16 +160,30 @@ public class IoGConfigurationManager
 		return URL(string: currentAPIURL)
 	}
 */
+
+	/// Adds a base URL to the list of supported base URLs
+	///
+	/// Server authentication can request verification of the server being accessed. Only requests from servers with addresses listed
+	/// in the saved list of API URLs are authenticated.
+	///
+	/// - Parameters:
+	/// 	- address: The base URL to add to the authorized list, as a string
 	public func addAPIURL(address: String)
 	{
 		APIURLs.append(address)
 	}
 
+	/// Retrieve the list of supported base URLs
+	///
+	/// - Returns: a list of strings that make up the list of registered base URLs
 	public func getAPIURLStrings() -> [String]
 	{
 		return APIURLs
 	}
 
+	/// Retrieve the list of supported base URLs
+	///
+	/// - Returns: a list of URLs that make up the list of registered base URLs
 	public func getAPIURLs() -> [URL]
 	{
 		var urlList = [URL]()

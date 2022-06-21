@@ -13,34 +13,51 @@
 *	05/05/18		*	EGC	*	File creation date
 *	11/06/18		*	EGC	*	Addition of file support
 *	02/16/22		*	EGC	*	Added support for secure storage
+*	06/18/22		*	EGC	*	Added DocC support
 ********************************************************************************
 */
 
 import Foundation
 import CryptoKit
 
+/// Singleton class that manages storage in memory, in User Defaults, or in a file
+///
+/// > Note: Secure storage only applies to string values
 public class IoGPersistenceManager
 {
+
+	/// Location of the data storage
 	public enum PersistenceSource : Int
 	{
+		/// Data to be stored in memory, does not persist beyond application shutdown
 		case Memory
+		/// Data to be stored in User Defaults, susceptible to app actions that affect the application's User Defaults space
 		case UserDefaults
+		/// Data to be stored in a file, in the application's private file storage area
 		case FileStorage
 	}
 
+	/// Designation of whether or not data is encrupted
 	public enum PersistenceProtectionLevel : Int
 	{
+		/// Data is stored unencrypted
 		case Unsecured
+		/// Data is stored encrypted
 		case Secured
 	}
 
+	/// Designation of the length of time data is stored
 	public enum PersistenceLifespan : Int
 	{
+		/// Data is stored for the lifetime of the application
 		case Immortal
+		/// Data is deleted once the session is ended
 		case Session
+		/// Data is deleted at a specified time
 		case Expiration
 	}
 
+	/// Designates the type of data stored in a given record
 	public enum PersistenceDataType : Int
 	{
 		case Number
@@ -50,15 +67,21 @@ public class IoGPersistenceManager
 		case Data
 	}
 
+	/// Denotes the result of a data read request
 	public enum PersistenceReadResultCode : Int
 	{
+		/// Data was read successfully
 		case Success
+		/// No data was found corresponding to the requested name
 		case NotFound
-		case Expired
+// 06-18-22 - EGC - Removing "expired" as a potential result, as there is no way of determining that an expired item ever existed
+//		case Expired
 // 02-17-22 - EGC - Added case to cover secure storage retrieval failures
+		/// Decryption of secured data failed
 		case ProtectionError
 	}
 
+	/// Returns the shared Persistence Manager instance.
 	public static let sharedManager = IoGPersistenceManager()
 
 	var memoryStore = [String: Dictionary<String, Any>]()
@@ -68,6 +91,20 @@ public class IoGPersistenceManager
 		Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.timerPeriodPersistenceExpirationCheck, repeats: true) {timer in self.checkForExpiredItems()}
 	}
 
+	/// Store a value to storage
+	///
+	///  - Parameters:
+	///  	- name: Key name to store value under
+	///  	- value: Data to be stored
+	///  	- type: The Foundation or Swift Standard Library type of the data to be stored
+	///  	- destination: The location of the data to be stored
+	///  	- protection: Designates whether the data is secured or unsecured
+	///  	- lifespan: Designates when and if the data is deleted
+	///  	- expiration: If the lifespan is Expiration bound, the time at which the data should expire and be deleted
+	///  	- overwrite: If a record with the given name already exists, whether or not to overwrite it with the new data
+	///  	- key: If using a custom symmetric key instead of the default key created by IoGInfrastructure, the key to encrypt the secured data with
+	///
+	///  - Returns: Whether or not the save operation was successful
 	@discardableResult public func saveValue(name: String, value: Any, type: PersistenceDataType, destination: PersistenceSource, protection: PersistenceProtectionLevel, lifespan: PersistenceLifespan, expiration: Date?, overwrite: Bool, key: SymmetricKey? = nil) -> Bool
 	{
 		var savedDataElement = [String: Any]()
@@ -291,6 +328,14 @@ public class IoGPersistenceManager
 		return true
 	}
 
+	/// Read a value from storage
+	///
+	///  - Parameters:
+	///  	- name: Key name that the value is stored under
+	///  	- from: The location of the data to be retrieved
+	///  	- key: If using a custom symmetric key instead of the default key created by IoGInfrastructure, the key to decrypt the secured data with
+	///
+	///  - Returns: The result of the read attempt and, if successful, the retrieved value
 	public func readValue(name: String, from: PersistenceSource, key: SymmetricKey? = nil) -> (result: PersistenceReadResultCode, value: Any?)
 	{
 		if from == .Memory
@@ -488,6 +533,13 @@ public class IoGPersistenceManager
 		return (result: .NotFound, value: nil)
 	}
 
+	/// Check for the existence of a value in storage
+	///
+	///  - Parameters:
+	///  	- name: Key name that the value is stored under
+	///  	- from: The location of the data to be searched for
+	///
+	///  - Returns: Whether or not a value was found for the given key name
 	public func checkForValue(name: String, from: PersistenceSource) -> Bool
 	{
 		if from == .Memory
@@ -525,6 +577,13 @@ public class IoGPersistenceManager
 		return false
 	}
 
+	/// Delete a value from storage
+	///
+	///  - Parameters:
+	///  	- name: Key name that the value is stored under
+	///  	- from: The location of the data to be searched for
+	///
+	///  - Returns: Whether or not the value was deleted
 	@discardableResult public func clearValue(name: String, from: PersistenceSource) -> Bool
 	{
 		if checkForValue(name: name, from: from)
@@ -610,7 +669,7 @@ public class IoGPersistenceManager
 		return false
 	}
 
-	public func checkForExpiredItems()
+	private func checkForExpiredItems()
 	{
 		if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementExpiringItems) != nil
 			{
@@ -644,7 +703,7 @@ public class IoGPersistenceManager
 			}
 	}
 
-	public func removeSessionItems()
+	internal func removeSessionItems()
 	{
 		if UserDefaults.standard.object(forKey: IoGConfigurationManager.persistenceManagementSessionItems) != nil
 			{

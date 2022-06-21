@@ -13,11 +13,33 @@
 ********************************************************************************
 *	01/15/19		*	EGC	*	File creation date
 *	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
+*	06/18/22		*	EGC	*	Added DocC support
 ********************************************************************************
 */
 
 import Foundation
 
+/// The class that clients of the Data Manager subclass to define the business objects inflated by JSON strings
+/// returned from calls to a back end.
+///
+/// Subclasses should add a var for each expected property in the format:
+/// ``` swift
+/// var title : String
+/// {
+/// 	get
+/// 	{
+/// 		if let content = getValue("title") as? String
+/// 		{
+/// 			return content
+/// 		}
+/// 		else
+/// 		{
+/// 			return ""
+/// 		}
+/// 	}
+/// }
+/// ```
+///  Or return nil if the var is an optional and the value isn't found.
 open class IoGDataObject: Codable
 {
 
@@ -64,12 +86,19 @@ open class IoGDataObject: Codable
 			}
 	}
 
+	/// Encode necessary elements of the class
 	public func encode(to encoder: Encoder) throws
 	{
 		var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sourceData, forKey: .rawString)
 	}
 
+	/// Retrieve a value from the source data for a given key
+	///
+	///  - Parameters:
+	///  	- key: The key for the desired value to retrieve
+	///
+	/// - Returns: The value associated with the requested key
 	public func getValue(_ key: String) -> Any
 	{
 		if let value = objectDictionary[key]

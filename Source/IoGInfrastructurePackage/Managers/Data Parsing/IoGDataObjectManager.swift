@@ -12,21 +12,26 @@
 ********************************************************************************
 *	01/15/19		*	EGC	*	File creation date
 *	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
+*	06/18/22		*	EGC	*	Added DocC support
 ********************************************************************************
 */
 
 import Foundation
 
+/// Singleton class that generates IoGDataObject instances and arrays from supplied JSON string
 public class IoGDataObjectManager
 {
 
+	/// Returns the shared Data Object Manager instance.
 	public static let sharedManager = IoGDataObjectManager()
 
+	/// Parses JSON string for a single JSON object and returns an instance of the provided type, which must be a subclass of IoGDataObject
 	public func parseObject<T: IoGDataObject>(objectString: String, toObject: T.Type) -> T
 	{
 		return T.init(withString: objectString)
 	}
 
+	/// Parses JSON string for an array of JSON objects and returns an array of the provided type, which must be a subclass of IoGDataObject
 	public func parseArray<T: IoGDataObject>(arrayString: String, forObject: T.Type) -> [T]
 	{
 		var objectArray = [T]()

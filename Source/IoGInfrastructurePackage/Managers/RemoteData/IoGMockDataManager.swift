@@ -17,12 +17,12 @@
 
 import Foundation
 
-class IoGMockDataManager : IoGDataManager
+internal class IoGMockDataManager : IoGDataManager
 {
 
 	// MARK: Business Logic
 
-	@discardableResult override public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
+	@discardableResult override internal func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		let reqID = requestID
 		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
@@ -31,10 +31,10 @@ class IoGMockDataManager : IoGDataManager
 		return reqID
 	}
 
-	@discardableResult override public func transmitRequest(request: URLRequest, type: IoGDataRequestType, customTypeIdentifier: CustomDataRequestType) -> Int
+	@discardableResult override internal func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		let reqID = requestID
-		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
+		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: .Custom, request: request, callback: dataRequestResponse)
 		requestResponse.setCustomRequestType(customType: customTypeIdentifier)
 		requestID += 1
 		requestResponse.processRequest()

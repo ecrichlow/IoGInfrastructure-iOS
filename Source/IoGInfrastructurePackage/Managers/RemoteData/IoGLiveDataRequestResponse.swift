@@ -14,11 +14,14 @@
 ********************************************************************************
 *	11/19/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for multiple API URLs
+*	06/19/22		*	EGC	*	Added DocC support
 ********************************************************************************
 */
 
 import Foundation
 
+/// The "live" subclass of IoGDataRequestResponse that encapsulates a URL request and response, which
+/// IoGDataManagerDelegate classes can query to get raw data about the transaction
 public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
 {
 
@@ -27,7 +30,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 	private var session : URLSession?
 	private var dataTask : URLSessionDataTask?
 
-	override public func processRequest()
+	override internal func processRequest()
 	{
 		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
 		let newSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
@@ -49,16 +52,18 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			else
 				{
 				let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+				self.end = Date()
 				self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
 				callback(self)
 				}
 			}
 		session = newSession
+		start = Date()
 		newDataTask.resume()
 	}
 
 	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
-	override public func continueMultiPartRequest()
+	override internal func continueMultiPartRequest()
 	{
 		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
 		if let currentSession = session
@@ -82,6 +87,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				else
 					{
 					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+					self.end = Date()
 					if var respInfo = self.responseInfo
 						{
 						respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
@@ -94,6 +100,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 					callback(self)
 					}
 				}
+			start = Date()
 			newDataTask.resume()
 			}
 	}
@@ -138,6 +145,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
 	{
+		end = Date()
 		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 		if let err = error
 			{

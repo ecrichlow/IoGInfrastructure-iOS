@@ -373,7 +373,7 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 	func testSuccessfulCustomDataTypeRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		IoGDataManager.dataManagerOfType(type: IoGDataManager.IoGDataManagerType.IoGDataManagerTypeMock).transmitRequest(request: URLRequest(url: URL(string: IoGTestConfigurationManager.successURL1)!), type: .Custom, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType)
+		IoGDataManager.dataManagerOfType(type: IoGDataManager.IoGDataManagerType.IoGDataManagerTypeMock).transmitRequest(request: URLRequest(url: URL(string: IoGTestConfigurationManager.successURL1)!), customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
 			timer in

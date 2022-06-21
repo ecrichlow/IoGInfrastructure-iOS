@@ -6,7 +6,7 @@
 * Description:		IoG Mobile App Infrastructure Framework
 *						This file contains the manager for Encryption functions
 * Author:			Eric Crichlow
-* Version:			1.0
+* Version:			2.0
 * Copyright:		(c) 2022 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	02/16/22		*	EGC	*	File creation date

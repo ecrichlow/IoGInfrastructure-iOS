@@ -14,7 +14,14 @@ Two reasons. One, most of the existing frameworks are extremely big, one might e
 
 Version 1.1 :	Initial public release
 Version 2.0 :	Adds secure storage, multiple API Base URLs, custom data request types and Codable IoGDataObject; Changed from Foundation collection objects to Swift native collection objects; Cleaned up warnings 
-Version 3.0 :	Changing to a Swift Package Manager project; adding support for GraphQL; adding support for DocC
+Version 3.0 :	Changing to a Swift Package Manager project; adding support for GraphQL; added support for DocC
+
+## Platforms
+
+iOS 13.0
+MacOS 10.10
+tvOS 13.0
+watchOS 7.0
 
 ## Classes
 
@@ -38,24 +45,19 @@ This is the class that handles business object class inflation. It takes JSON da
 
 This is the class that manages delayed and repeated execution of a block of code, allowing the caller to determine when the workflow has completed and retry attempts are no longer necessary.
 
-## Usage
-
-* iOS
+## Installation
 
 Install using Xcode "Add Packages..." file menu option
 
-* Android
-
-Select File -> Project Structure, select the "New Module" icon under "Modules", and select "Import .JAR/.AAR Package". Choose the .aar created by building this project.
+## Usage
 
 As for utilizing the classes contained in this project, the easiest way to learn how to use them is by looking at the unit test classes. They give great detail as to how to perform each function.
 
 Of note, the IoGDataManager and IoGRetryManager classes support broadcasting responses to multiple delegates, and thus "registerDelegate" and "unregisterDelegate" methods are provided for each class.
 
-
 ## Known Issues
 
-* IoGPersistenceManager can only securely (encrypted) store strings.
+IoGPersistenceManager can only securely (encrypted) store strings.
 
 ## Support
 
