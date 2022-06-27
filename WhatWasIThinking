@@ -98,3 +98,14 @@ generate a framework with modules for all of the proper architectures.
 
 Never added tests for encoding and decoding IoGDataObject instances. Need to do so.
 - Eric C.
+
+Had to make a decision right off the bat, whether to treat GQL Manager the same as Data Manager, or
+whether to design it so that clients, instead of registering as a delegate and getting notificaions
+of every response, passed a closure or a callback to be called at the resolution of a specific
+request. Quickly decided that GraphQL is generally a replacement for REST queries, which are what
+Data Manager generally deals with, but they operate and are used in much the same way. Therefore it
+makes sense to pattern IoGInfrastructure's GraphQL support after Data Manager's.
+- Eric C.
+
+Haven't implemented the ability to cancel a URLRequest. Need to add it.
+- Eric C.

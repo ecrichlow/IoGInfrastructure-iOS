@@ -30,51 +30,19 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 	private var session : URLSession?
 	private var dataTask : URLSessionDataTask?
 
+	// MARK: Business Logic
+
 	override internal func processRequest()
 	{
-		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
-		let newSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
-		dataTask = newSession.dataTask(with: request)
-		guard let newDataTask = dataTask
-			else
-				{
-				return
-				}
-		responseData = Data()
-		timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
+		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest
 			{
-			timer in
-			self.retryNumber += 1
-			if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
-				{
-				self.processRequest()
-				}
-			else
-				{
-				let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
-				self.end = Date()
-				self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
-				callback(self)
-				}
-			}
-		session = newSession
-		start = Date()
-		newDataTask.resume()
-	}
-
-	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
-	override internal func continueMultiPartRequest()
-	{
-		let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as! URLRequest
-		if let currentSession = session
-			{
-			dataTask = currentSession.dataTask(with: request)
+			let newSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
+			dataTask = newSession.dataTask(with: request)
 			guard let newDataTask = dataTask
 				else
 					{
 					return
 					}
-			retryNumber = 0
 			responseData = Data()
 			timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
 				{
@@ -82,26 +50,64 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				self.retryNumber += 1
 				if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
 					{
-					self.continueMultiPartRequest()
+					self.processRequest()
 					}
 				else
 					{
 					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 					self.end = Date()
-					if var respInfo = self.responseInfo
-						{
-						respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
-						self.responseInfo = respInfo
-						}
-					else
-						{
-						self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
-						}
+					self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
 					callback(self)
 					}
 				}
+			session = newSession
 			start = Date()
 			newDataTask.resume()
+			}
+	}
+
+	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
+	override internal func continueMultiPartRequest()
+	{
+		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest
+			{
+			if let currentSession = session
+				{
+				dataTask = currentSession.dataTask(with: request)
+				guard let newDataTask = dataTask
+					else
+						{
+						return
+						}
+				retryNumber = 0
+				responseData = Data()
+				timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
+					{
+					timer in
+					self.retryNumber += 1
+					if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
+						{
+						self.continueMultiPartRequest()
+						}
+					else
+						{
+						let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+						self.end = Date()
+						if var respInfo = self.responseInfo
+							{
+							respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
+							self.responseInfo = respInfo
+							}
+						else
+							{
+							self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
+							}
+						callback(self)
+						}
+					}
+				start = Date()
+				newDataTask.resume()
+				}
 			}
 	}
 

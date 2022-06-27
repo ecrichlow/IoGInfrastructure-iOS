@@ -13,14 +13,19 @@ Two reasons. One, most of the existing frameworks are extremely big, one might e
 ## History
 
 Version 1.1 :	Initial public release
+
 Version 2.0 :	Adds secure storage, multiple API Base URLs, custom data request types and Codable IoGDataObject; Changed from Foundation collection objects to Swift native collection objects; Cleaned up warnings 
+
 Version 3.0 :	Changing to a Swift Package Manager project; adding support for GraphQL; added support for DocC
 
 ## Platforms
 
 iOS 13.0
+
 MacOS 10.10
+
 tvOS 13.0
+
 watchOS 7.0
 
 ## Classes
@@ -40,6 +45,10 @@ This is the class that handles a unique request, and all of the request and resp
 * IoGDataObjectManager
 
 This is the class that handles business object class inflation. It takes JSON data usually returned from a back-end call and parses it into a class defined for a specific business object.
+
+* IoGDataObject
+
+This is the class that clients subclass to create customized business data objects with only the specific properties relevant to the business object. 
 
 * IoGRetryManager
 

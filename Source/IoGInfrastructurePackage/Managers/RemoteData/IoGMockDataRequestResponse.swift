@@ -21,6 +21,8 @@ import Foundation
 internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 {
 
+	// MARK: Business Logic
+
 	override public func processRequest()
 	{
 		start = Date()

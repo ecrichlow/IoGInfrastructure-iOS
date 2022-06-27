@@ -14,6 +14,7 @@
 *	01/15/19		*	EGC	*	File creation date
 *	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
 *	06/18/22		*	EGC	*	Added DocC support
+*	06/24/22		*	EGC	*	Added ability to set values
 ********************************************************************************
 */
 
@@ -51,6 +52,8 @@ open class IoGDataObject: Codable
 		case rawString
 	}
 
+	// MARK: Instance Methods
+
 	required public init(withString source: String)
 	{
 		sourceData = source
@@ -86,6 +89,8 @@ open class IoGDataObject: Codable
 			}
 	}
 
+	// MARK: Business Logic
+
 	/// Encode necessary elements of the class
 	public func encode(to encoder: Encoder) throws
 	{
@@ -109,5 +114,15 @@ open class IoGDataObject: Codable
 			{
 			return String()
 			}
+	}
+
+	/// Set a value for a given key
+	///
+	///  - Parameters:
+	///  	- key: The key for the desired value to set
+	///  	- value: The value to set for the key
+	public func setValue(key: String, value: Any)
+	{
+		objectDictionary[key] = value
 	}
 }

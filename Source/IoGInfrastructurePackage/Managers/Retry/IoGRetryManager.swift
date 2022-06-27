@@ -83,19 +83,25 @@ public class IoGRetryManager
 
 	var retryStore = [Int: Dictionary<String, Any>]()
 
+	// MARK: Instance Methods
+
 	init()
 	{
 	}
+
+	// MARK: Business Logic
 
 	/// Register a delegate to receive a callback when the retry operation completes
 	public func registerDelegate(delegate: IoGRetryManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! IoGRetryManagerDelegate
-			if del === delegate
+			if let del = nextDelegate as? IoGRetryManagerDelegate
 				{
-				return
+				if del === delegate
+					{
+					return
+					}
 				}
 			}
 		let pointer = Unmanaged.passUnretained(delegate as AnyObject).toOpaque()
@@ -108,12 +114,14 @@ public class IoGRetryManager
 		var index = 0
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! IoGRetryManagerDelegate
-			if del === delegate
+			if let del = nextDelegate as? IoGRetryManagerDelegate
 				{
-				break
+				if del === delegate
+					{
+					break
+					}
+				index += 1
 				}
-			index += 1
 			}
 		if index < delegateList.count
 			{
@@ -256,8 +264,10 @@ public class IoGRetryManager
 					delegateList.compact()
 					for nextDelegate in delegateList.allObjects
 						{
-						let delegate = nextDelegate as! IoGRetryManagerDelegate
-						delegate.retrySessionCompleted(requestID: requestNumber, result: .Expired)
+						if let delegate = nextDelegate as? IoGRetryManagerDelegate
+							{
+							delegate.retrySessionCompleted(requestID: requestNumber, result: .Expired)
+							}
 						}
 					timer.invalidate()
 					retryStore[requestNumber] = nil
@@ -277,8 +287,10 @@ public class IoGRetryManager
 					delegateList.compact()
 					for nextDelegate in delegateList.allObjects
 						{
-						let delegate = nextDelegate as! IoGRetryManagerDelegate
-						delegate.retrySessionCompleted(requestID: requestNumber, result: .TimeLimitExceeded)
+						if let delegate = nextDelegate as? IoGRetryManagerDelegate
+							{
+							delegate.retrySessionCompleted(requestID: requestNumber, result: .TimeLimitExceeded)
+							}
 						}
 					timer.invalidate()
 					retryStore[requestNumber] = nil
@@ -305,8 +317,10 @@ public class IoGRetryManager
 						delegateList.compact()
 						for nextDelegate in delegateList.allObjects
 							{
-							let delegate = nextDelegate as! IoGRetryManagerDelegate
-							delegate.retrySessionCompleted(requestID: requestNumber, result: .CountExceeded)
+							if let delegate = nextDelegate as? IoGRetryManagerDelegate
+								{
+								delegate.retrySessionCompleted(requestID: requestNumber, result: .CountExceeded)
+								}
 							}
 						timer.invalidate()
 						retryStore[requestNumber] = nil
@@ -336,8 +350,10 @@ public class IoGRetryManager
 				delegateList.compact()
 				for nextDelegate in delegateList.allObjects
 					{
-					let delegate = nextDelegate as! IoGRetryManagerDelegate
-					delegate.retrySessionCompleted(requestID: requestNumber, result: .Success)
+					if let delegate = nextDelegate as? IoGRetryManagerDelegate
+						{
+						delegate.retrySessionCompleted(requestID: requestNumber, result: .Success)
+						}
 					}
 				retryStore[requestNumber] = nil
 				}

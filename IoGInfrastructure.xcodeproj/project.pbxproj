@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8E298CE92861936B00D4ACFF /* IoGGQLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */; };
 		8E76F5DB285712740043F6B5 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */; };
 		8E76F5DC285712740043F6B5 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */; };
 		8E76F5DD285712740043F6B5 /* IoGDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CC285712740043F6B5 /* IoGDataObject.swift */; };
@@ -63,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		8E298CE62861829000D4ACFF /* IoGInfrastructure.doccarchive */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = IoGInfrastructure.doccarchive; sourceTree = "<group>"; };
+		8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGGQLManager.swift; sourceTree = "<group>"; };
 		8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
 		8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
 		8E76F5CC285712740043F6B5 /* IoGDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObject.swift; sourceTree = "<group>"; };
@@ -111,6 +113,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E298CE7286191EC00D4ACFF /* GraphQL */ = {
+			isa = PBXGroup;
+			children = (
+				8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */,
+			);
+			path = GraphQL;
+			sourceTree = "<group>";
+		};
 		8E76F5C5285712740043F6B5 /* IoGInfrastructurePackage */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +141,7 @@
 				8E76F5CE285712740043F6B5 /* Retry */,
 				8E76F5D0285712740043F6B5 /* Persistence */,
 				8E76F5D2285712740043F6B5 /* RemoteData */,
+				8E298CE7286191EC00D4ACFF /* GraphQL */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -346,6 +357,7 @@
 				8E76F5E4285712740043F6B5 /* IoGDataManager.swift in Sources */,
 				8E76F5DD285712740043F6B5 /* IoGDataObject.swift in Sources */,
 				8E76F5E3285712740043F6B5 /* IoGMockDataRequestResponse.swift in Sources */,
+				8E298CE92861936B00D4ACFF /* IoGGQLManager.swift in Sources */,
 				8E76F5DE285712740043F6B5 /* IoGDataObjectManager.swift in Sources */,
 				8E76F5E0285712740043F6B5 /* IoGPersistenceManager.swift in Sources */,
 			);

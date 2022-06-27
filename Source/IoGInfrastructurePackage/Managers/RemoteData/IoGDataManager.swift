@@ -43,7 +43,7 @@ public class IoGDataManager
 		case IoGDataManagerTypeMock
 	}
 
-	//// The request type, which is an identifier used by clients to differentiate between responses in the delegate method
+	/// The request type, which is an identifier used by clients to differentiate between responses in the delegate method
 	public enum IoGDataRequestType
 	{
 		case Custom
@@ -108,15 +108,19 @@ public class IoGDataManager
 	{
 	}
 
+	// MARK: Business Logic
+
 	/// Register a delegate to receive a callback when the data operation completes
 	public func registerDelegate(delegate: IoGDataManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! IoGDataManagerDelegate
-			if del === delegate
+			if let del = nextDelegate as? IoGDataManagerDelegate
 				{
-				return
+				if del === delegate
+					{
+					return
+					}
 				}
 			}
 		let pointer = Unmanaged.passUnretained(delegate as AnyObject).toOpaque()
@@ -129,12 +133,14 @@ public class IoGDataManager
 		var index = 0
 		for nextDelegate in delegateList.allObjects
 			{
-			let del = nextDelegate as! IoGDataManagerDelegate
-			if del === delegate
+			if let del = nextDelegate as? IoGDataManagerDelegate
 				{
-				break
+				if del === delegate
+					{
+					break
+					}
+				index += 1
 				}
-			index += 1
 			}
 		if index < delegateList.count
 			{
@@ -164,19 +170,23 @@ public class IoGDataManager
 
 	func dataRequestResponse(_ response: IoGDataRequestResponse)
 	{
+		let reqID = response.requestID
 		delegateList.compact()
 		for nextDelegate in delegateList.allObjects
 			{
-			let delegate = nextDelegate as! IoGDataManagerDelegate
-			let responseData = response.responseData
-			if let responseInfo = response.responseInfo, let err = responseInfo[IoGConfigurationManager.requestResponseKeyError] as? Error
+			if let delegate = nextDelegate as? IoGDataManagerDelegate
 				{
-				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: err, response: response)
-				}
-			else
-				{
-				delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: nil, response: response)
+				let responseData = response.responseData
+				if let responseInfo = response.responseInfo, let err = responseInfo[IoGConfigurationManager.requestResponseKeyError] as? Error
+					{
+					delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: err, response: response)
+					}
+				else
+					{
+					delegate.dataRequestResponseReceived(requestID: response.requestID, requestType: response.getRequestInfo()[IoGConfigurationManager.requestResponseKeyRequestType] as! IoGDataManager.IoGDataRequestType, responseData: responseData, error: nil, response: response)
+					}
 				}
 			}
+		outstandingRequests[reqID] = nil
 	}
 }

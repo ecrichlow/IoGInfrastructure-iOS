@@ -50,6 +50,7 @@ public class IoGConfigurationManager
 	static let requestResponseTimeoutErrorDescription = "HTTP Timeout Error"
 	static let requestResponseTimeoutErrorCode = 408
 	static let requestResponseGeneralErrorDescription = "HTTP Request Returned Error"
+	static let requestResponseGeneralErrorCode = 400
 	static let httpHeaderKeyAcceptLanguage = "Accept-Language"
 	static let httpHeaderKeyContentType = "Content-Type"
 	static let httpHeaderKeyUserAgent = "User-Agent"
@@ -85,6 +86,14 @@ public class IoGConfigurationManager
 	// Data Object Manager
 	static let dataParsingRawStringKey = "rawString"
 
+	// GQL Manager
+	static let gqlManagerCustomDataManagerType: CustomDataRequestType = "GQLDataRequestType"
+	static let gqlRequestKeyDataRequestID = "DataRequestID"
+	static let gqlRequestKeyRequestType = "RequestType"
+	static let gqlRequestKeyTargetType = "TargetType"
+	static let gqlRequestResponseParsingErrorDescription = "GraphQL Response Parsing Error"
+	static let gqlRequestResponseParsingErrorCode = 9999
+
 	/// Returns the shared Configuration Manager instance.
 	public static let sharedManager = IoGConfigurationManager()
 
@@ -94,12 +103,16 @@ public class IoGConfigurationManager
 //	private var currentAPIURL : String
 	private var APIURLs = [String]()
 
+	// MARK: Instance Methods
+
 	/// Default Initializer
 	init()
 	{
 // 02-16-22 - EGC - Deprecated single API URL in favor of an array of supported URLs
 //		currentAPIURL = "http://"
 	}
+
+	// MARK: Business Logic
 
 	/// Check the version of IoGInfrastructure in use in the application
 	///

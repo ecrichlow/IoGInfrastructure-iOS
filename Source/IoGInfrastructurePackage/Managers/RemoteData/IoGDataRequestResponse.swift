@@ -34,6 +34,8 @@ public class IoGDataRequestResponse : NSObject
 	internal var start: Date?
 	internal var end: Date?
 
+	// MARK: Instance Methods
+
 	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, callback: @escaping (IoGDataRequestResponse) -> ())
 	{
 		requestID = reqID
@@ -41,6 +43,8 @@ public class IoGDataRequestResponse : NSObject
 		callbackInfo = [IoGConfigurationManager.requestResponseKeyCallback : callback]
 		requestInfo = [IoGConfigurationManager.requestResponseKeyRequest : request, IoGConfigurationManager.requestResponseKeyRequestType : type]
 	}
+
+	// MARK: Business Logic
 
 	internal func processRequest()
 	{

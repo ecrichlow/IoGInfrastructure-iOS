@@ -21,9 +21,7 @@ internal class EncryptionKeyManager
 
 	public static let sharedManager = EncryptionKeyManager()
 
-	init()
-	{
-	}
+	// MARK: Class Methods
 
 	private static func createSymmetricKey() -> SymmetricKey
 	{
@@ -68,6 +66,14 @@ internal class EncryptionKeyManager
 			return createSymmetricKey()
 			}
 	}
+
+	// MARK: Instance Methods
+
+	init()
+	{
+	}
+
+	// MARK: Business Logic
 
 	public func encryptAndEncodeString(string: String, key: SymmetricKey = getKey()) -> String?
 	{

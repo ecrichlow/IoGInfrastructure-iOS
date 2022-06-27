@@ -270,6 +270,10 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
 	}
 
+	func testSuccessfulDataStore()
+	{
+	}
+
 	func testFailedMultiPageDataRetrieval()
 	{
 		let callback1Expectation = expectation(description: "Callback 1 invoked")

@@ -5,7 +5,7 @@
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework
 *						This file contains the manager for constructing
-*						business objects from raw input
+*						business objects from raw JSON input
 * Author:			Eric Crichlow
 * Version:			1.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
@@ -24,6 +24,8 @@ public class IoGDataObjectManager
 
 	/// Returns the shared Data Object Manager instance.
 	public static let sharedManager = IoGDataObjectManager()
+
+	// MARK: Business Logic
 
 	/// Parses JSON string for a single JSON object and returns an instance of the provided type, which must be a subclass of IoGDataObject
 	public func parseObject<T: IoGDataObject>(objectString: String, toObject: T.Type) -> T

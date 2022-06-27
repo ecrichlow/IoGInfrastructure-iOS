@@ -86,10 +86,14 @@ public class IoGPersistenceManager
 
 	var memoryStore = [String: Dictionary<String, Any>]()
 
+	// MARK: Instance Methods
+
 	init()
 	{
 		Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.timerPeriodPersistenceExpirationCheck, repeats: true) {timer in self.checkForExpiredItems()}
 	}
+
+	// MARK: Business Logic
 
 	/// Store a value to storage
 	///
