@@ -42,7 +42,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	}
 
 	/// Returns the shared Data Manager instance.
-	private static var sharedManager = IoGGQLManager()
+	public static let sharedManager = IoGGQLManager()
 
 	var delegateList = NSPointerArray.weakObjects()
 	var outstandingRequests = [Int: [String: Any]]()		// Maintains a link between a GQLManager request and the corresponding DataManager request
@@ -94,7 +94,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 	}
 
-	@discardableResult func transmitRequest<T: IoGDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	@discardableResult func transmitRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -121,42 +121,79 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	private func buildGQLQueryString<T: IoGDataObject>(name: String?, parameters: String?, target: T.Type) -> String
+	@discardableResult internal func transmitTestRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+			{
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let payloadData = Data(gqlQuery.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+			outstandingRequests[reqID] = requestInfo
+			return reqID
+			}
+		return -1
+	}
+
+	private func buildGQLQueryString<T: IoGGQLDataObject>(name: String?, parameters: String?, target: T.Type) -> String
 	{
 		var queryString = "query "
 		let targetName = String(NSStringFromClass(target.self))
-		if let queryName = name
+		let targetComponents = targetName.components(separatedBy: ".")
+		if let className = targetComponents.last
 			{
-			queryString += "\(queryName) "
+			if let queryName = name
+				{
+				queryString += "\(queryName) "
+				}
+			queryString += "{\n"
+			queryString += "\(className)"
+			if let queryParameters = parameters
+				{
+				queryString += "(\(queryParameters))"
+				}
+			queryString += " "
+			if let propertyObjectDefinition = parseTargetDataObject(target: target)
+				{
+				queryString += propertyObjectDefinition
+				}
+			queryString += "}\n"
 			}
-		queryString += "{\n"
-		queryString += "\(targetName)"
-		if let queryParameters = parameters
-			{
-			queryString += "(\(queryParameters))"
-			}
-		queryString += " "
-		if let propertyObjectDefinition = parseTargetDataObject(target: target)
-			{
-			queryString += propertyObjectDefinition
-			}
-		queryString += "}\n"
 		return queryString
 	}
 
-	private func parseTargetDataObject<T: IoGDataObject>(target: T.Type) -> String?
+	private func parseTargetDataObject<T: IoGGQLDataObject>(target: T.Type) -> String?
 	{
-		let typeInstance = target.init(withString: "[]")	// Swift's reflection only works on instances, not class types, so we need to create a dummy instance
+		let typeInstance = target.init()	// Swift's reflection only works on instances, not class types, so we need to create a dummy instance
 		let mirror = Mirror(reflecting: typeInstance)
 		var gqlObjectDefinition = "{\n"
 		for child in mirror.children
 			{
-			if child.value is IoGDataObject
+			if child.value is IoGGQLDataObject
 				{
-				let propertyType = type(of: child.value) as! IoGDataObject.Type
-				if let propertyObjectDefinition = parseTargetDataObject(target: propertyType.self), let innerClassName = child.label
+				if let childObject = child.value as? IoGGQLDataObject
 					{
-					gqlObjectDefinition += "\(innerClassName) {\n\(propertyObjectDefinition)\n}\n"
+					if let propertyObjectDefinition = parseTargetDataObject(target: type(of: childObject).self), let innerClassName = child.label
+						{
+						gqlObjectDefinition += "\(innerClassName) \(propertyObjectDefinition)"
+						}
+					}
+				}
+			else if child.value is NSArray
+				{
+				if let childArray = child.value as? NSArray, let childName = child.label
+					{
+					let arrayDefinition = parseArray(array: childArray as NSArray, name: childName)
+					if let propertyName = child.label
+						{
+						gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
+						}
 					}
 				}
 			else
@@ -168,7 +205,50 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				}
 			}
 		gqlObjectDefinition += "}\n"
-		return nil
+		return gqlObjectDefinition
+	}
+
+	private func parseArray(array: NSArray, name: String?) -> String
+	{
+		var arrayDefinition = ""
+
+		if let arrayObject = array.firstObject
+			{
+			if arrayObject is IoGGQLDataObject
+				{
+				if let propertyType = type(of: arrayObject) as? IoGGQLDataObject.Type
+					{
+					if let propertyObjectDefinition = parseTargetDataObject(target: propertyType.self)
+						{
+						arrayDefinition += propertyObjectDefinition
+						}
+					}
+				else if arrayObject is NSArray
+					{
+					if let childArray = arrayObject as? NSArray
+						{
+						let subarrayDefinition = parseArray(array: childArray as NSArray, name: name)
+						if let propertyObjectName = name
+							{
+							arrayDefinition += "\(propertyObjectName) \(subarrayDefinition)"
+							}
+						else
+							{
+							arrayDefinition += "\(subarrayDefinition)"
+							}
+						}
+					}
+				else
+					{
+					if let propertyObjectName = name
+						{
+						arrayDefinition += "\(propertyObjectName)\n"
+						}
+					}
+				}
+			}
+		return arrayDefinition
+
 	}
 
 	private func isGQLResponsePlural(content: String) -> Bool
@@ -177,9 +257,18 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		do
 			{
 			let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
-			if let _ = jsonData as? NSArray
+			if let dataDictionary = jsonData as? [String: Any]
 				{
-				return true
+				if dataDictionary.keys.count == 1
+					{
+					if let key = dataDictionary.keys.first
+						{
+						if let _ = dataDictionary[key] as? NSArray
+							{
+							return true
+							}
+						}
+					}
 				}
 			}
 		catch
@@ -214,7 +303,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return nil
 	}
 
-	private func populateDataObject<T: IoGDataObject>(data: String, target: T.Type) -> T
+	private func populateDataObject<T: IoGGQLDataObject>(data: String, target: T.Type) -> T
 	{
 		let dataObject = Data(data.utf8)
 		do
@@ -222,52 +311,57 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let jsonDict = try JSONSerialization.jsonObject(with: dataObject, options: [])
 			if let objectDictionary = jsonDict as? [String: Any]
 				{
-				var returnObject = target.init(withString: "[]")
+				var returnObject = target.init()
 				assignDataToFields(target: returnObject, fields: objectDictionary)
 				return returnObject
 				}
 			}
 		catch
 			{
-			return target.init(withString: "[]")
+			return target.init()
 			}
-		return target.init(withString: "[]")
+		return target.init()
 	}
 
-	private func populateDataObjectArray<T: IoGDataObject>(data: String, target: T.Type) -> [T]
+	private func populateDataObjectArray<T: IoGGQLDataObject>(data: String, target: T.Type) -> [T]
 	{
 		var objectArray = [T]()
 		let data = Data(data.utf8)
 		do
 			{
-			let jsonArray = try JSONSerialization.jsonObject(with: data, options: [])
-			if let dataArray = jsonArray as? [Any]
+			let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
+			if let dataDictionary = jsonData as? [String: Any]
 				{
-				for nextObject in dataArray
+				if dataDictionary.keys.count == 1
 					{
-					if let objectDictionary = nextObject as? [String: Any]
+					if let key = dataDictionary.keys.first
 						{
-						var returnObject = target.init(withString: "[]")
-						assignDataToFields(target: returnObject, fields: objectDictionary)
-						objectArray.append(returnObject)
+						if let dataArray = dataDictionary[key] as? [[String: Any]]
+							{
+							for nextObject in dataArray
+								{
+								var returnObject = target.init()
+								assignDataToFields(target: returnObject, fields: nextObject)
+								objectArray.append(returnObject)
+								}
+							}
 						}
 					}
 				}
 			}
 		catch
 			{
-			return objectArray
 			}
 
 		return objectArray
 	}
 
-	private func assignDataToFields<T: IoGDataObject>(target: T, fields: [String: Any])
+	private func assignDataToFields<T: IoGGQLDataObject>(target: T, fields: [String: Any])
 	{
 		let mirror = Mirror(reflecting: target)
 		for child in mirror.children
 			{
-			if child.value is IoGDataObject
+			if child.value is IoGGQLDataObject
 				{
 				if let propertyName = child.label
 					{
@@ -277,9 +371,9 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							{
 							let jsonData = try JSONSerialization.data(withJSONObject: fieldValue)
 							let contentString = String(decoding: jsonData, as: UTF8.self)
-							let typeInstance = type(of: target).init(withString: "[]")	// Dummy instance
+							let typeInstance = type(of: target).init()	// Dummy instance
 							let object = populateDataObject(data: contentString, target: type(of: typeInstance))
-							target.setValue(key: propertyName, value: object)
+							target.setProperty(name: propertyName, value: object)
 							}
 						catch
 							{
@@ -287,7 +381,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 						}
 					}
 				}
-			else if child.value is [IoGDataObject]
+			else if child.value is [IoGGQLDataObject]
 				{
 				if let propertyName = child.label
 					{
@@ -300,11 +394,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 								{
 								let jsonData = try JSONSerialization.data(withJSONObject: nextObject)
 								let contentString = String(decoding: jsonData, as: UTF8.self)
-								let typeInstance = type(of: target).init(withString: "[]")	// Dummy instance
+								let typeInstance = type(of: target).init()	// Dummy instance
 								let object = populateDataObject(data: contentString, target: type(of: typeInstance))
 								objectArray.append(object)
 								}
-							target.setValue(key: propertyName, value: objectArray)
+							target.setProperty(name: propertyName, value: objectArray)
 							}
 						catch
 							{
@@ -318,7 +412,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 					{
 					if let fieldValue = fields[propertyName]
 						{
-						target.setValue(key: propertyName, value: fieldValue)
+						target.setProperty(name: propertyName, value: fieldValue)
 						}
 					}
 				}
@@ -360,14 +454,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
 							if let dataDictionary = jsonDict as? [String: Any]
 								{
-								if let dataDict = dataDictionary["data"] as? Data
+								if let dataString = dataDictionary["data"] as? String
 									{
-									let fullContentString = String(decoding: dataDict, as: UTF8.self)
-									if let contentString = parseGQLResponse(content: fullContentString)
+									if let contentString = parseGQLResponse(content: dataString)
 										{
 										if isGQLResponsePlural(content: contentString)
 											{
-											let objectArray = populateDataObjectArray(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGDataObject.Type)
+											let objectArray = populateDataObjectArray(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLDataObject.Type)
 											for nextDelegate in delegateList.allObjects
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate
@@ -378,7 +471,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 											}
 										else
 											{
-											let object = populateDataObject(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGDataObject.Type)
+											let object = populateDataObject(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLDataObject.Type)
 											for nextDelegate in delegateList.allObjects
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate

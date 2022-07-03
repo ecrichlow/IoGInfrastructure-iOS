@@ -33,6 +33,8 @@ public class IoGDataRequestResponse : NSObject
 	internal var customRequestType: CustomDataRequestType?
 	internal var start: Date?
 	internal var end: Date?
+	internal var sentDataSize = 0
+	internal var receivedDataSize = 0
 
 	// MARK: Instance Methods
 
@@ -132,5 +134,21 @@ public class IoGDataRequestResponse : NSObject
 				return nil
 				}
 		return startTime.distance(to: endTime)
+	}
+
+	/// Retrieve the size of the body sent in an HTTP POST
+	///
+	///  - Returns: The number of bytes sent as the HTTP POST body
+	public func getSentDataSize() -> Int
+	{
+		return sentDataSize
+	}
+
+	/// Retrieve the size of the data returned from an HTTP request
+	///
+	///  - Returns: The number of bytes received in response to a successful HTTP request
+	public func getReceivedDataSize() -> Int
+	{
+		return receivedDataSize
 	}
 }

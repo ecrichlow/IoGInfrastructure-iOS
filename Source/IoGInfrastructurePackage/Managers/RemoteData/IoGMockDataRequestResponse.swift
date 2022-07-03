@@ -26,6 +26,7 @@ internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 	override public func processRequest()
 	{
 		start = Date()
+		statusCode = 200
 		sendResponse()
 	}
 
@@ -70,7 +71,22 @@ internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 					}
 				self.responseData = resp
 				}
-				self.end = Date()
+			else if requestString.contains(IoGConfigurationManager.mockGQLCallIndicator)
+				{
+				let resp = requestString.hasSuffix(IoGConfigurationManager.mockResponseIndicator1) == true ? Data(IoGConfigurationManager.mockGQLQueryResponse1.utf8) : Data(IoGConfigurationManager.mockGQLQueryResponse2.utf8)
+				if var respInfo = self.responseInfo
+					{
+					respInfo[IoGConfigurationManager.requestResponseKeyResponse] = resp
+					self.responseInfo = respInfo
+					}
+				else
+					{
+					self.responseInfo = [IoGConfigurationManager.requestResponseKeyResponse: resp]
+					}
+				self.responseData = resp
+				self.sentDataSize = resp.count
+				}
+			self.end = Date()
 			callback(self)
 			}
 	}

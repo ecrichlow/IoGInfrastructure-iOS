@@ -22,6 +22,12 @@
 
 /* Begin PBXBuildFile section */
 		8E298CE92861936B00D4ACFF /* IoGGQLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */; };
+		8E298CF42869A07E00D4ACFF /* IoGGQLManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CF32869A07E00D4ACFF /* IoGGQLManagerTests.swift */; };
+		8E298CF6286A8FE800D4ACFF /* TestFlightDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CF5286A8FE800D4ACFF /* TestFlightDetails.swift */; };
+		8E298CF9286A964C00D4ACFF /* TestRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CF8286A964C00D4ACFF /* TestRoute.swift */; };
+		8E298CFB286A97EB00D4ACFF /* TestPassenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CFA286A97EB00D4ACFF /* TestPassenger.swift */; };
+		8E298CFF286AACF800D4ACFF /* TestFlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298CFE286AACF800D4ACFF /* TestFlight.swift */; };
+		8E298D03286CD5A600D4ACFF /* IoGGQLDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298D02286CD5A600D4ACFF /* IoGGQLDataObject.swift */; };
 		8E76F5DB285712740043F6B5 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */; };
 		8E76F5DC285712740043F6B5 /* IoGConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */; };
 		8E76F5DD285712740043F6B5 /* IoGDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5CC285712740043F6B5 /* IoGDataObject.swift */; };
@@ -34,6 +40,7 @@
 		8E76F5E4285712740043F6B5 /* IoGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D6285712740043F6B5 /* IoGDataManager.swift */; };
 		8E76F5E5285712740043F6B5 /* IoGLiveDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */; };
 		8E76F5E6285712740043F6B5 /* IoGLiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */; };
+		8EF416692871094F006E43D7 /* TestDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF416682871094F006E43D7 /* TestDependent.swift */; };
 		OBJ_38 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_49 /* EncryptionKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* EncryptionKeyManagerTests.swift */; };
 		OBJ_50 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* IoGDataManagerTests.swift */; };
@@ -65,6 +72,12 @@
 /* Begin PBXFileReference section */
 		8E298CE62861829000D4ACFF /* IoGInfrastructure.doccarchive */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = IoGInfrastructure.doccarchive; sourceTree = "<group>"; };
 		8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGGQLManager.swift; sourceTree = "<group>"; };
+		8E298CF32869A07E00D4ACFF /* IoGGQLManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGGQLManagerTests.swift; sourceTree = "<group>"; };
+		8E298CF5286A8FE800D4ACFF /* TestFlightDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFlightDetails.swift; sourceTree = "<group>"; };
+		8E298CF8286A964C00D4ACFF /* TestRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRoute.swift; sourceTree = "<group>"; };
+		8E298CFA286A97EB00D4ACFF /* TestPassenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPassenger.swift; sourceTree = "<group>"; };
+		8E298CFE286AACF800D4ACFF /* TestFlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFlight.swift; sourceTree = "<group>"; };
+		8E298D02286CD5A600D4ACFF /* IoGGQLDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGGQLDataObject.swift; sourceTree = "<group>"; };
 		8E76F5C8285712740043F6B5 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
 		8E76F5CA285712740043F6B5 /* IoGConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGConfigurationManager.swift; sourceTree = "<group>"; };
 		8E76F5CC285712740043F6B5 /* IoGDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGDataObject.swift; sourceTree = "<group>"; };
@@ -79,6 +92,7 @@
 		8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoGLiveDataManager.swift; sourceTree = "<group>"; };
 		8E76F5D9285712740043F6B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E76F5DA285712740043F6B5 /* IoGInfrastructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoGInfrastructure.h; sourceTree = "<group>"; };
+		8EF416682871094F006E43D7 /* TestDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDependent.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		OBJ_13 /* EncryptionKeyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManagerTests.swift; sourceTree = "<group>"; };
 		OBJ_14 /* IoGDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoGDataManagerTests.swift; sourceTree = "<group>"; };
@@ -117,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				8E298CE82861936B00D4ACFF /* IoGGQLManager.swift */,
+				8E298D02286CD5A600D4ACFF /* IoGGQLDataObject.swift */,
 			);
 			path = GraphQL;
 			sourceTree = "<group>";
@@ -218,6 +233,7 @@
 				OBJ_16 /* IoGPersistenceManagerTests.swift */,
 				OBJ_17 /* IoGRetryManagerTests.swift */,
 				OBJ_18 /* IoGTestConfigurationManager.swift */,
+				8E298CF32869A07E00D4ACFF /* IoGGQLManagerTests.swift */,
 				OBJ_19 /* Test Business Objects */,
 			);
 			name = IoGInfrastructureTests;
@@ -228,6 +244,11 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_20 /* TestComputerObject.swift */,
+				8E298CF5286A8FE800D4ACFF /* TestFlightDetails.swift */,
+				8E298CF8286A964C00D4ACFF /* TestRoute.swift */,
+				8E298CFA286A97EB00D4ACFF /* TestPassenger.swift */,
+				8EF416682871094F006E43D7 /* TestDependent.swift */,
+				8E298CFE286AACF800D4ACFF /* TestFlight.swift */,
 			);
 			path = "Test Business Objects";
 			sourceTree = "<group>";
@@ -360,6 +381,7 @@
 				8E298CE92861936B00D4ACFF /* IoGGQLManager.swift in Sources */,
 				8E76F5DE285712740043F6B5 /* IoGDataObjectManager.swift in Sources */,
 				8E76F5E0285712740043F6B5 /* IoGPersistenceManager.swift in Sources */,
+				8E298D03286CD5A600D4ACFF /* IoGGQLDataObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,13 +397,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				8E298CF6286A8FE800D4ACFF /* TestFlightDetails.swift in Sources */,
+				8E298CFF286AACF800D4ACFF /* TestFlight.swift in Sources */,
 				OBJ_49 /* EncryptionKeyManagerTests.swift in Sources */,
 				OBJ_50 /* IoGDataManagerTests.swift in Sources */,
+				8E298CF9286A964C00D4ACFF /* TestRoute.swift in Sources */,
 				OBJ_51 /* IoGDataParsingTests.swift in Sources */,
 				OBJ_52 /* IoGPersistenceManagerTests.swift in Sources */,
+				8E298CF42869A07E00D4ACFF /* IoGGQLManagerTests.swift in Sources */,
 				OBJ_53 /* IoGRetryManagerTests.swift in Sources */,
 				OBJ_54 /* IoGTestConfigurationManager.swift in Sources */,
+				8E298CFB286A97EB00D4ACFF /* TestPassenger.swift in Sources */,
 				OBJ_55 /* TestComputerObject.swift in Sources */,
+				8EF416692871094F006E43D7 /* TestDependent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

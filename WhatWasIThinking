@@ -109,3 +109,8 @@ makes sense to pattern IoGInfrastructure's GraphQL support after Data Manager's.
 
 Haven't implemented the ability to cancel a URLRequest. Need to add it.
 - Eric C.
+
+After the initial implementation failed, came to understand that Swift's reflection model, using
+Mirror, doesn't refelct computed properties. Initially, the GQLManager was built on IoGDataObject,
+which is based entirely on computed properties. Back to the drawing board.
+- Eric C.

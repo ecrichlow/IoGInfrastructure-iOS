@@ -12,6 +12,7 @@
 *	11/11/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for encryption tests and version 2
 *								enhancement tests
+*	06/26/22		*	EGC	*	Addition of GraphQL management tests
 ********************************************************************************
 */
 
@@ -64,6 +65,20 @@ class IoGTestConfigurationManager
 
 	// Encryption
 	static let stringToEncrypt = "Test encryption string"
+
+	// GraphQL Manager
+	static let gqlTestURL1 = "http://www.iogtests.com/graphql/1"
+	static let gqlTestURL2 = "http://www.iogtests.com/graphql/2"
+	static let gqlQueryName1 = "ObjectRequest"
+	static let gqlQueryName2 = "ArrayRequest"
+	static let gqlQuery1FlightID = "1272"
+	static let gqlQuery1Seats = 168
+	static let gqlQuery1Pilot = "Eric Crichlow"
+	static let gqlQuery1Origin = "LAS"
+	static let gqlQuery1Destination = "PHX"
+	static let gqlQuery1PassengerTotal = 5
+	static let gqlQuery1PassengerLastName = "Crichlow"
+	static let gqlQuery2FlightTotal = 3
 
 	static let sharedManager = IoGTestConfigurationManager()
 

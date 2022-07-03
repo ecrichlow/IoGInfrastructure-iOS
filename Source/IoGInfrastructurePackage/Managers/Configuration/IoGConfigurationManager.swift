@@ -67,6 +67,7 @@ public class IoGConfigurationManager
 	static let mockSlowResponseIndicator = "/3"
 	static let mockSuccessfulCallIndicator = "www.success.com"
 	static let mockFailedCallIndicator = "www.failure.com"
+	static let mockGQLCallIndicator = "www.iogtests.com/graphql"
 	static let mockDataResponse1 = "{\"Generation\":\"1\", \"Computers\":[\"Color Computer 2\", \"Color Computer 3\", \"MM/1\"], \"Manufacturer\":null, \"Conventions\":\"Rainbowfest\"}"
 	static let mockDataResponse2 = "{\"Generation\":\"2\", \"Computers\":[\"Mac Performa 6400\", \"Powerbook G4\", \"Power Mac G4\", \"iMac\", \"Macbook Pro\"], \"Manufacturer\":\"Apple\"}"
 
@@ -93,6 +94,90 @@ public class IoGConfigurationManager
 	static let gqlRequestKeyTargetType = "TargetType"
 	static let gqlRequestResponseParsingErrorDescription = "GraphQL Response Parsing Error"
 	static let gqlRequestResponseParsingErrorCode = 9999
+	static let mockGQLQueryResponse1 =
+"""
+{
+	"data" : {
+		"flightID": "1272",
+		"seats": 168,
+		"route": {
+		   "origin": "LAS",
+		   "destination": "PHX"
+		},
+		"passenger": [
+			{
+				"passengerID": "1",
+				"name": "Trista Crichlow",
+				"age": 36
+				"dependent": [
+					{
+						"passengerID": "4",
+						"name": "Carson Crichlow",
+						"age": 11
+					},
+					{
+						"passengerID": "5",
+						"name": "Kinsey Crichlow",
+						"age": 5
+					}
+				]
+			},
+			{
+				"passengerID": "2",
+				"name": "Haylie Crichlow",
+				"age": 29
+			},
+			{
+				"passengerID": "3",
+				"name": "Timara Crichlow",
+				"age": 23
+			},
+			{
+				"passengerID": "4",
+				"name": "Carson Crichlow",
+				"age": 11
+			},
+			{
+				"passengerID": "5",
+				"name": "Kinsey Crichlow",
+				"age": 5
+			}
+		],
+		"pilot": "Eric Crichlow"
+	}
+}
+"""
+	static let mockGQLQueryResponse2 =
+"""
+	"data" : {
+		"flights": [
+			{
+				"flightID": "1272",
+				"seats": 168,
+				"route": {
+					"origin": "LAS",
+					"destination": "PHX"
+				}
+			},
+			{
+				"flightID": "121985",
+				"seats": 158,
+				"route": {
+					"origin": "PHX",
+					"destination": "CMH"
+				}
+			},
+			{
+				"flightID": "6809",
+				"seats": 180,
+				"route": {
+					"origin": "SEA",
+					"destination": "LAS"
+				}
+			},
+		]
+	}
+"""
 
 	/// Returns the shared Configuration Manager instance.
 	public static let sharedManager = IoGConfigurationManager()

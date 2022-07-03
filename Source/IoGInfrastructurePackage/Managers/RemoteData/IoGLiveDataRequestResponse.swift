@@ -62,6 +62,10 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				}
 			session = newSession
 			start = Date()
+			if let body = request.httpBody
+				{
+				sentDataSize = body.count
+				}
 			newDataTask.resume()
 			}
 	}
@@ -106,6 +110,10 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 						}
 					}
 				start = Date()
+				if let body = request.httpBody
+					{
+					sentDataSize = body.count
+					}
 				newDataTask.resume()
 				}
 			}
@@ -178,6 +186,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 					{
 					self.responseInfo = [IoGConfigurationManager.requestResponseKeyResponse: resp]
 					}
+				receivedDataSize = resp.count
 				}
 			}
 		if let response = task.response as? HTTPURLResponse
