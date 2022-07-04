@@ -277,30 +277,18 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return false
 	}
 
-	private func parseGQLResponse(content: String) -> String?
+	private func parseGQLResponse(dataDictionary: [String: Any]) -> String?
 	{
-		let data = Data(content.utf8)
 		do
 			{
-			let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
-			if let dataDictionary = jsonData as? [String: Any]
-				{
-				if let key = dataDictionary.keys.first
-					{
-					if let data = dataDictionary[key]
-						{
-						let jsonData = try JSONSerialization.data(withJSONObject: data)
-						let contentString = String(decoding: jsonData, as: UTF8.self)
-						return contentString
-						}
-					}
-				}
+			let jsonData = try JSONSerialization.data(withJSONObject: dataDictionary)
+			let contentString = String(decoding: jsonData, as: UTF8.self)
+			return contentString
 			}
 		catch
 			{
 			return nil
 			}
-		return nil
 	}
 
 	private func populateDataObject<T: IoGGQLDataObject>(data: String, target: T.Type) -> T
@@ -320,6 +308,12 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			{
 			return target.init()
 			}
+		return target.init()
+	}
+
+	// This was the only way to take a object inspecxted with Mirror, get the dynamic type, and instantiate am instance of that class that wasn't returned as AnyObject
+	private func instantiatePropertyObject<T: IoGGQLDataObject>(target: T.Type) -> T
+	{
 		return target.init()
 	}
 
@@ -371,8 +365,9 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							{
 							let jsonData = try JSONSerialization.data(withJSONObject: fieldValue)
 							let contentString = String(decoding: jsonData, as: UTF8.self)
-							let typeInstance = type(of: target).init()	// Dummy instance
-							let object = populateDataObject(data: contentString, target: type(of: typeInstance))
+							let childType = type(of: child.value)
+							let realType = instantiatePropertyObject(target: childType as! IoGGQLDataObject.Type)	// Dummy instance
+							let object = populateDataObject(data: contentString, target: type(of: realType))
 							target.setProperty(name: propertyName, value: object)
 							}
 						catch
@@ -454,13 +449,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
 							if let dataDictionary = jsonDict as? [String: Any]
 								{
-								if let dataString = dataDictionary["data"] as? String
+								if let dataObject = dataDictionary["data"] as? [String: Any]
 									{
-									if let contentString = parseGQLResponse(content: dataString)
+									if let contentString = parseGQLResponse(dataDictionary: dataObject), let type = requestInfo[IoGConfigurationManager.gqlRequestKeyTargetType] as? IoGGQLDataObject.Type
 										{
 										if isGQLResponsePlural(content: contentString)
 											{
-											let objectArray = populateDataObjectArray(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLDataObject.Type)
+											let objectArray = populateDataObjectArray(data: contentString, target: type)
 											for nextDelegate in delegateList.allObjects
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate
@@ -471,7 +466,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 											}
 										else
 											{
-											let object = populateDataObject(data: contentString, target: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLDataObject.Type)
+											let object = populateDataObject(data: contentString, target: type)
 											for nextDelegate in delegateList.allObjects
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate

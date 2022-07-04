@@ -108,7 +108,7 @@ public class IoGConfigurationManager
 			{
 				"passengerID": "1",
 				"name": "Trista Crichlow",
-				"age": 36
+				"age": 36,
 				"dependent": [
 					{
 						"passengerID": "4",

@@ -49,9 +49,22 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 					{
 					if let data = self.returnedData as? FlightDetails
 						{
-						if let flightID = data.flightID, let seats = data.seats, let pilot = data.pilot, let route = data.route, let passengers = data.passenger, let passenger = passengers.first
+						if let flightID = data.flightID, let seats = data.seats, let pilot = data.pilot
 							{
-							if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.passengerName?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
+							let route = data.route
+							let passengers = data.passenger
+							if let passenger = passengers.first
+								{
+								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.passengerName?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
+									{
+									XCTFail()
+									}
+								else
+									{
+									XCTFail()
+									}
+								}
+							else
 								{
 								XCTFail()
 								}
