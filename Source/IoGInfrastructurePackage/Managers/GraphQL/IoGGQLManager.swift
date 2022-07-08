@@ -368,7 +368,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							let childType = type(of: child.value)
 							let realType = instantiatePropertyObject(target: childType as! IoGGQLDataObject.Type)	// Dummy instance
 							let object = populateDataObject(data: contentString, target: type(of: realType))
-							target.setProperty(name: propertyName, value: object)
+							target.setProperty(propertyName: propertyName, value: object)
 							}
 						catch
 							{
@@ -378,26 +378,31 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				}
 			else if child.value is [IoGGQLDataObject]
 				{
-				if let propertyName = child.label
+				if let propertyName = child.label, let property = child.value as? [IoGGQLDataObject]
 					{
-					if let fieldValue = fields[propertyName] as? [[String: Any]]
+					if let fieldValue = fields[propertyName] as? [[String: Any]], let fieldTarget = property.first
 						{
 						do
 							{
-							var objectArray = [T]()
+							var objectArray: [IoGGQLDataObject] = [T]()
 							for nextObject in fieldValue
 								{
 								let jsonData = try JSONSerialization.data(withJSONObject: nextObject)
 								let contentString = String(decoding: jsonData, as: UTF8.self)
-								let typeInstance = type(of: target).init()	// Dummy instance
-								let object = populateDataObject(data: contentString, target: type(of: typeInstance))
+								let childType = type(of: fieldTarget)
+								let realType = instantiatePropertyObject(target: childType as! IoGGQLDataObject.Type)	// Dummy instance
+								let object = populateDataObject(data: contentString, target: type(of: realType))
 								objectArray.append(object)
 								}
-							target.setProperty(name: propertyName, value: objectArray)
+							target.setProperty(propertyName: propertyName, value: objectArray)
 							}
 						catch
 							{
 							}
+						}
+					else
+						{
+						target.clearArray(propertyName: propertyName)	// Clear out dummy instance from array
 						}
 					}
 				}
@@ -407,7 +412,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 					{
 					if let fieldValue = fields[propertyName]
 						{
-						target.setProperty(name: propertyName, value: fieldValue)
+						target.setProperty(propertyName: propertyName, value: fieldValue)
 						}
 					}
 				}
@@ -495,6 +500,16 @@ public class IoGGQLManager: IoGDataManagerDelegate
 										if let delegate = nextDelegate as? IoGGQLManagerDelegate
 											{
 											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: errorString, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+											}
+										}
+									}
+								else
+									{
+									for nextDelegate in delegateList.allObjects
+										{
+										if let delegate = nextDelegate as? IoGGQLManagerDelegate
+											{
+											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 											}
 										}
 									}

@@ -32,9 +32,9 @@ class FlightDetails : IoGGQLDataObject
 
 	// MARK: Business Logic
 
-	override public func setProperty(name: String, value: Any?)
+	override public func setProperty(propertyName: String, value: Any?)
 	{
-		switch name
+		switch propertyName
 			{
 			case "flightID":
 				flightID = value as? String
@@ -46,6 +46,17 @@ class FlightDetails : IoGGQLDataObject
 				passenger = value as! [Passenger]
 			case "pilot":
 				pilot = value as? String
+			default:
+				break
+			}
+	}
+
+	override public func clearArray(propertyName: String)
+	{
+		switch propertyName
+			{
+			case "passenger":
+				self.passenger.removeAll()
 			default:
 				break
 			}

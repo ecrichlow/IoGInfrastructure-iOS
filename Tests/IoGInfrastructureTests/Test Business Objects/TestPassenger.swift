@@ -19,9 +19,9 @@ import Foundation
 class Passenger: IoGGQLDataObject
 {
 	var passengerID: String? = ""
-	var passengerName: String? = ""
+	var name: String? = ""
 	var age: NSNumber? = 0
-	var dependent: [Dependent]? = [Dependent.init()]
+	var dependent: [Dependent] = [Dependent.init()]
 
 	// MARK: Instance Methods
 
@@ -30,18 +30,29 @@ class Passenger: IoGGQLDataObject
 	}
 
 	// MARK: Business Logic
-	override public func setProperty(name: String, value: Any?)
+	override public func setProperty(propertyName: String, value: Any?)
 	{
-		switch name
+		switch propertyName
 			{
 			case "passengerID":
 				passengerID = value as? String
-			case "passengerName":
-				passengerName = value as? String
+			case "name":
+				name = value as? String
 			case "age":
 				age = value as? NSNumber
 			case "dependent":
-				dependent = value as? [Dependent]
+				dependent = value as! [Dependent]
+			default:
+				break
+			}
+	}
+
+	override public func clearArray(propertyName: String)
+	{
+		switch propertyName
+			{
+			case "dependent":
+				self.dependent.removeAll()
 			default:
 				break
 			}

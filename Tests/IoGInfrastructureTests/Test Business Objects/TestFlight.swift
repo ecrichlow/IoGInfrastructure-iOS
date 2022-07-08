@@ -21,7 +21,7 @@ class Flight : IoGGQLDataObject
 
 	var flightID: String? = ""
 	var seats: NSNumber? = 0
-	var route: Route? = Route.init()
+	var route: Route = Route.init()
 
 	// MARK: Instance Methods
 
@@ -30,18 +30,22 @@ class Flight : IoGGQLDataObject
 	}
 
 	// MARK: Business Logic
-	override public func setProperty(name: String, value: Any?)
+	override public func setProperty(propertyName: String, value: Any?)
 	{
-		switch name
+		switch propertyName
 			{
 			case "flightID":
 				flightID = value as? String
 			case "seats":
 				seats = value as? NSNumber
 			case "route":
-				route = value as? Route
+				route = value as! Route
 			default:
 				break
 			}
+	}
+
+	override public func clearArray(propertyName: String)
+	{
 	}
 }

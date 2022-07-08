@@ -19,7 +19,7 @@ import Foundation
 class Dependent: IoGGQLDataObject
 {
 	var passengerID: String? = ""
-	var passengerName: String? = ""
+	var name: String? = ""
 	var age: NSNumber? = 0
 
 	// MARK: Instance Methods
@@ -29,19 +29,23 @@ class Dependent: IoGGQLDataObject
 	}
 
 	// MARK: Business Logic
-	override public func setProperty(name: String, value: Any?)
+	override public func setProperty(propertyName: String, value: Any?)
 	{
-		switch name
+		switch propertyName
 			{
 			case "passengerID":
 				passengerID = value as? String
-			case "passengerName":
-				passengerName = value as? String
+			case "name":
+				name = value as? String
 			case "age":
 				age = value as? NSNumber
 			default:
 				break
 			}
+	}
+
+	override public func clearArray(propertyName: String)
+	{
 	}
 }
 

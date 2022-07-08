@@ -19,8 +19,9 @@ import XCTest
 class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 {
 
-	var callbackInvoked : Bool?
-	var returnedData : Any?
+	var callbackInvoked: Bool?
+	var returnedData: Any?
+	var returnedError: Error?
 
     override func setUpWithError() throws
 	{
@@ -55,11 +56,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							let passengers = data.passenger
 							if let passenger = passengers.first
 								{
-								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.passengerName?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
-									{
-									XCTFail()
-									}
-								else
+								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 									{
 									XCTFail()
 									}
@@ -99,10 +96,6 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 					if let data = self.returnedData as? [Flight]
 						{
 						if data.count != IoGTestConfigurationManager.gqlQuery2FlightTotal || data.first?.flightID == nil || data.last?.seats == nil
-							{
-							XCTFail()
-							}
-						else
 							{
 							XCTFail()
 							}
@@ -163,7 +156,18 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							}
 						else
 							{
-							XCTFail()
+							if let error = self.returnedError
+								{
+								let nserror = error as! NSError
+								if nserror.code != IoGConfigurationManager.gqlRequestResponseParsingErrorCode
+									{
+									XCTFail()
+									}
+								}
+							else
+								{
+								XCTFail()
+								}
 							}
 						}
 					}
@@ -179,5 +183,6 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	{
 		callbackInvoked = true
 		returnedData = responseData
+		returnedError = error
 	}
 }
