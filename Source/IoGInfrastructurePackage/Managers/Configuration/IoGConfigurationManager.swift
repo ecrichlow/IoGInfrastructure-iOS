@@ -91,6 +91,7 @@ public class IoGConfigurationManager
 	static let gqlManagerCustomDataManagerType: CustomDataRequestType = "GQLDataRequestType"
 	static let gqlRequestKeyDataRequestID = "DataRequestID"
 	static let gqlRequestKeyRequestType = "RequestType"
+	static let gqlRequestKeyCustomRequestType = "CustomRequestType"
 	static let gqlRequestKeyTargetType = "TargetType"
 	static let gqlRequestResponseParsingErrorDescription = "GraphQL Response Parsing Error"
 	static let gqlRequestResponseParsingErrorCode = 9999

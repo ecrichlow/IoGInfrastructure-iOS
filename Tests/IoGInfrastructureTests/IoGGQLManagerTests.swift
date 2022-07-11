@@ -22,6 +22,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	var callbackInvoked: Bool?
 	var returnedData: Any?
 	var returnedError: Error?
+	var customRequestType: CustomGQLRequestType?
 
     override func setUpWithError() throws
 	{
@@ -158,7 +159,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							{
 							if let error = self.returnedError
 								{
-								let nserror = error as! NSError
+								let nserror = error as NSError
 								if nserror.code != IoGConfigurationManager.gqlRequestResponseParsingErrorCode
 									{
 									XCTFail()
@@ -177,12 +178,58 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
 	}
 
+	func testCustomTypeGQLObjectRetrieval()
+	{
+		let callbackExpectation = expectation(description: "Callback invoked")
+		IoGGQLManager.sharedManager.transmitTestRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: FlightDetails.self)
+		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
+			{
+			timer in
+			if let calledBack = self.callbackInvoked
+				{
+				if calledBack
+					{
+					if let data = self.returnedData as? FlightDetails
+						{
+						if let flightID = data.flightID, let seats = data.seats, let pilot = data.pilot
+							{
+							let route = data.route
+							let passengers = data.passenger
+							if let passenger = passengers.first
+								{
+								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false || self.customRequestType == nil || self.customRequestType != IoGTestConfigurationManager.dataRequestCustomType
+									{
+									XCTFail()
+									}
+								}
+							else
+								{
+								XCTFail()
+								}
+							}
+						else
+							{
+							XCTFail()
+							}
+						}
+					else
+						{
+						XCTFail()
+						}
+					}
+				callbackExpectation.fulfill()
+				}
+			}
+		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
+	}
+	
 	// GQL Manager Delegate method(s)
 
-	func gqlRequestResponseReceived(requestID: Int, requestType: IoGGQLManager.IoGGQLRequestType, responseData: Any?, error: Error?)
+	func gqlRequestResponseReceived(requestID: Int, requestType: IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: CustomGQLRequestType?, responseData: Any?, error: Error?)
 	{
 		callbackInvoked = true
 		returnedData = responseData
 		returnedError = error
+		customRequestType = customRequestIdentifier
 	}
 }

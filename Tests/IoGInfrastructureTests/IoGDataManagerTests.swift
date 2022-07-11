@@ -272,6 +272,7 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 
 	func testSuccessfulDataStore()
 	{
+		// TODO: Test implementation of Codable protocol
 	}
 
 	func testFailedMultiPageDataRetrieval()

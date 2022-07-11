@@ -77,14 +77,14 @@ public class IoGDataManager
 		switch (type)
 			{
 			case .IoGDataManagerTypeLive:
-// 06-19-22 - EGC - Changed sharedManager to instantiate a dataManager of the defautl type
+// 06-19-22 - EGC - Changed sharedManager to instantiate a dataManager of the default type
 //				if sharedManager == nil || !(sharedManager is IoGLiveDataManager)
 				if !(sharedManager is IoGLiveDataManager)
 					{
 					sharedManager = IoGLiveDataManager()
 					}
 			case .IoGDataManagerTypeMock:
-// 06-19-22 - EGC - Changed sharedManager to instantiate a dataManager of the defautl type
+// 06-19-22 - EGC - Changed sharedManager to instantiate a dataManager of the default type
 //				if sharedManager == nil || !(sharedManager is IoGMockDataManager)
 				if !(sharedManager is IoGMockDataManager)
 					{

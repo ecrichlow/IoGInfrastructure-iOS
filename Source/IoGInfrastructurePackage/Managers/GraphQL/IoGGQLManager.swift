@@ -20,8 +20,10 @@ import Foundation
 /// a GraphQL request
 public protocol IoGGQLManagerDelegate : AnyObject
 {
-	func gqlRequestResponseReceived(requestID: Int, requestType: IoGGQLManager.IoGGQLRequestType, responseData: Any?, error: Error?)
+	func gqlRequestResponseReceived(requestID: Int, requestType: IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: CustomGQLRequestType?, responseData: Any?, error: Error?)
 }
+
+public typealias CustomGQLRequestType = String
 
 /// Singleton class that manages attempts to interact with GraphQL servers
 public class IoGGQLManager: IoGDataManagerDelegate
@@ -121,6 +123,33 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
+	@discardableResult func transmitRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+			{
+			do
+				{
+				var urlRequest = URLRequest(url: requestURL)
+				let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+				let jsonData = try JSONSerialization.data(withJSONObject: gqlQuery)
+				urlRequest.httpBody = jsonData
+				urlRequest.httpMethod = "POST"
+				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				requestID += 1
+				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+				outstandingRequests[reqID] = requestInfo
+				return reqID
+				}
+			catch
+				{
+				return -1
+				}
+			}
+		return -1
+	}
+
 	@discardableResult internal func transmitTestRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
@@ -135,6 +164,26 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
 			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+			outstandingRequests[reqID] = requestInfo
+			return reqID
+			}
+		return -1
+	}
+
+	@discardableResult internal func transmitTestRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+			{
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let payloadData = Data(gqlQuery.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 			outstandingRequests[reqID] = requestInfo
 			return reqID
 			}
@@ -299,7 +348,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let jsonDict = try JSONSerialization.jsonObject(with: dataObject, options: [])
 			if let objectDictionary = jsonDict as? [String: Any]
 				{
-				var returnObject = target.init()
+				let returnObject = target.init()
 				assignDataToFields(target: returnObject, fields: objectDictionary)
 				return returnObject
 				}
@@ -334,7 +383,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							{
 							for nextObject in dataArray
 								{
-								var returnObject = target.init()
+								let returnObject = target.init()
 								assignDataToFields(target: returnObject, fields: nextObject)
 								objectArray.append(returnObject)
 								}
@@ -390,7 +439,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 								let jsonData = try JSONSerialization.data(withJSONObject: nextObject)
 								let contentString = String(decoding: jsonData, as: UTF8.self)
 								let childType = type(of: fieldTarget)
-								let realType = instantiatePropertyObject(target: childType as! IoGGQLDataObject.Type)	// Dummy instance
+								let realType = instantiatePropertyObject(target: childType)	// Dummy instance
 								let object = populateDataObject(data: contentString, target: type(of: realType))
 								objectArray.append(object)
 								}
@@ -442,6 +491,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 		if requestType == .Custom
 			{
+			var customType: CustomGQLRequestType? = nil
 			if response.getCustomRequestType() == IoGConfigurationManager.gqlManagerCustomDataManagerType
 				{
 				delegateList.compact()
@@ -449,6 +499,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 					{
 					if let data = responseData, let requestInfo = outstandingRequests[gqlRequestID]
 						{
+						if let cType = requestInfo[IoGConfigurationManager.gqlRequestKeyCustomRequestType] as? CustomGQLRequestType
+							{
+							customType = cType
+							}
 						do
 							{
 							let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
@@ -465,7 +519,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate
 													{
-													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: objectArray, error: nil)
+													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: objectArray, error: nil)
 													}
 												}
 											}
@@ -476,7 +530,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate
 													{
-													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: object, error: nil)
+													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: object, error: nil)
 													}
 												}
 											}
@@ -487,7 +541,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 											{
 											if let delegate = nextDelegate as? IoGGQLManagerDelegate
 												{
-												delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+												delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 												}
 											}
 										}
@@ -499,7 +553,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 										{
 										if let delegate = nextDelegate as? IoGGQLManagerDelegate
 											{
-											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: errorString, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: errorString, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 											}
 										}
 									}
@@ -509,7 +563,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 										{
 										if let delegate = nextDelegate as? IoGGQLManagerDelegate
 											{
-											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 											}
 										}
 									}
@@ -520,7 +574,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 									{
 									if let delegate = nextDelegate as? IoGGQLManagerDelegate
 										{
-										delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+										delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 										}
 									}
 								}
@@ -531,7 +585,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 								{
 								if let delegate = nextDelegate as? IoGGQLManagerDelegate
 									{
-									delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+									delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
 									}
 								}
 							}
@@ -542,7 +596,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							{
 							if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
 								{
-								delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+								delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
 								}
 							}
 						}
@@ -553,7 +607,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 						{
 						if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
 							{
-							delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+							delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
 							}
 						}
 					}
