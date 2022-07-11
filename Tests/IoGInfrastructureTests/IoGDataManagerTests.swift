@@ -270,11 +270,6 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
 	}
 
-	func testSuccessfulDataStore()
-	{
-		// TODO: Test implementation of Codable protocol
-	}
-
 	func testFailedMultiPageDataRetrieval()
 	{
 		let callback1Expectation = expectation(description: "Callback 1 invoked")

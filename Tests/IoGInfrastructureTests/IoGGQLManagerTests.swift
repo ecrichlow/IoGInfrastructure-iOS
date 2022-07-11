@@ -57,7 +57,13 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							let passengers = data.passenger
 							if let passenger = passengers.first
 								{
-								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
+								XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
+								XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
+								XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlQuery1Pilot)
+								XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+								XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+								XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
+								if passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 									{
 									XCTFail()
 									}
@@ -96,10 +102,9 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 					{
 					if let data = self.returnedData as? [Flight]
 						{
-						if data.count != IoGTestConfigurationManager.gqlQuery2FlightTotal || data.first?.flightID == nil || data.last?.seats == nil
-							{
-							XCTFail()
-							}
+						XCTAssertEqual(data.count, IoGTestConfigurationManager.gqlQuery2FlightTotal)
+						XCTAssertNotNil(data.first?.flightID)
+						XCTAssertNotNil(data.last?.seats)
 						}
 					}
 				callbackExpectation.fulfill()
@@ -135,10 +140,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 									if let error = dataDictionary[IoGConfigurationManager.requestResponseKeyError] as? Error
 										{
 										let nserror = error as NSError
-										if nserror.description != IoGConfigurationManager.gqlRequestResponseParsingErrorDescription || nserror.code != IoGConfigurationManager.gqlRequestResponseParsingErrorCode
-											{
-											XCTFail()
-											}
+										XCTAssertEqual(nserror.description, IoGConfigurationManager.gqlRequestResponseParsingErrorDescription)
+										XCTAssertEqual(nserror.code, IoGConfigurationManager.gqlRequestResponseParsingErrorCode)
 										}
 									else
 										{
@@ -160,10 +163,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							if let error = self.returnedError
 								{
 								let nserror = error as NSError
-								if nserror.code != IoGConfigurationManager.gqlRequestResponseParsingErrorCode
-									{
-									XCTFail()
-									}
+								XCTAssertEqual(nserror.code, IoGConfigurationManager.gqlRequestResponseParsingErrorCode)
 								}
 							else
 								{
@@ -197,7 +197,15 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 							let passengers = data.passenger
 							if let passenger = passengers.first
 								{
-								if flightID != IoGTestConfigurationManager.gqlQuery1FlightID || seats.intValue != IoGTestConfigurationManager.gqlQuery1Seats || pilot != IoGTestConfigurationManager.gqlQuery1Pilot || route.origin != IoGTestConfigurationManager.gqlQuery1Origin || route.destination != IoGTestConfigurationManager.gqlQuery1Destination || passengers.count != IoGTestConfigurationManager.gqlQuery1PassengerTotal || passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false || self.customRequestType == nil || self.customRequestType != IoGTestConfigurationManager.dataRequestCustomType
+								XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
+								XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
+								XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlQuery1Pilot)
+								XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+								XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+								XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
+								XCTAssertEqual(self.customRequestType, IoGTestConfigurationManager.dataRequestCustomType)
+								XCTAssertNotNil(self.customRequestType)
+								if passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 									{
 									XCTFail()
 									}

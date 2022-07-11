@@ -86,4 +86,46 @@ class IoGDataParsingTests: XCTestCase
 		XCTAssertNotNil(computer)
 		XCTAssertEqual(year, "1980")
 	}
+
+	func testSuccessfulDataStore()
+	{
+		let computer = IoGDataObjectManager.sharedManager.parseObject(objectString: IoGTestConfigurationManager.parsingObjectData, toObject: TestComputerObject.self)
+		XCTAssertNotNil(computer)
+		XCTAssertEqual(computer.model, "TRS-80 Color Computer 2")
+		XCTAssertEqual(computer.processor, "6809")
+		computer.setValue(key: "model", value: "TRS-80 Color Computer 3")
+		computer.setValue(key: "processor", value: "68B09E")
+		XCTAssertEqual(computer.model, "TRS-80 Color Computer 3")
+		XCTAssertEqual(computer.processor, "68B09E")
+		let encoder = JSONEncoder()
+		if let data = try? encoder.encode(computer)
+			{
+			UserDefaults.standard.set(data, forKey: "TestData")
+			}
+		else
+			{
+			XCTFail()
+			}
+		if UserDefaults.standard.object(forKey: "TestData") != nil
+			{
+			if let savedObjectData = UserDefaults.standard.object(forKey: "TestData") as? Data
+				{
+				let decoder = JSONDecoder()
+				if let savedComputer = try? decoder.decode(TestComputerObject.self, from: savedObjectData)
+					{
+					XCTAssertEqual(savedComputer.model, "TRS-80 Color Computer 3")
+					XCTAssertEqual(savedComputer.processor, "68B09E")
+					}
+				}
+			else
+				{
+				XCTFail()
+				}
+			}
+		else
+			{
+			XCTFail()
+			}
+	}
+
 }

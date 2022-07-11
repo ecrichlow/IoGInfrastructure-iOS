@@ -94,6 +94,17 @@ open class IoGDataObject: Codable
 	/// Encode necessary elements of the class
 	public func encode(to encoder: Encoder) throws
 	{
+		do
+			{
+			let jsonData = try JSONSerialization.data(withJSONObject: objectDictionary, options: [])
+			if let jsonString = String(data: jsonData, encoding: String.Encoding.utf8)
+				{
+				sourceData = jsonString
+				}
+			}
+		catch
+			{
+			}
 		var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sourceData, forKey: .rawString)
 	}
