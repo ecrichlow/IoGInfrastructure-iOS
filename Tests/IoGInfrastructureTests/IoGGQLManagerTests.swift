@@ -41,7 +41,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testSuccessfulGQLObjectRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		IoGGQLManager.sharedManager.transmitTestRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
 			timer in
@@ -92,7 +92,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testSuccessfulGQLArrayRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		IoGGQLManager.sharedManager.transmitTestRequest(url: IoGTestConfigurationManager.gqlTestURL2, name: IoGTestConfigurationManager.gqlQueryName2, parameters: "flightID = 2022", type: .Features, target: Flight.self)
+		IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL2, name: IoGTestConfigurationManager.gqlQueryName2, parameters: "flightID = 2022", type: .Features, target: Flight.self)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
 			timer in
@@ -116,7 +116,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testFailedGQLDataRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		IoGGQLManager.sharedManager.transmitTestRequest(url: IoGTestConfigurationManager.successURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.successURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
 			timer in
@@ -181,7 +181,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testCustomTypeGQLObjectRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		IoGGQLManager.sharedManager.transmitTestRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: FlightDetails.self)
+		IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: FlightDetails.self)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
 			timer in

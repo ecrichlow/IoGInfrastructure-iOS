@@ -41,7 +41,7 @@ public class IoGLiveDataManager : IoGDataManager
 		return reqID
 	}
 
-	/// Send URLRequest
+	/// Send URLRequest with custom type
 	///
 	///  - Parameters:
 	///   - request: The URLRequest to process

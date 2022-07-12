@@ -96,7 +96,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 	}
 
-	@discardableResult func transmitRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	/// Send GraphQL Query Request
+	///
+	///  - Parameters:
+	///   - url: The URL string for the request
+	///   - name: The name to assign to the query
+	///   - parameters: The query parameters
+	///   - type: One of the pre-defined identifiers used by delegates to differentiate the kind of request they are being notified about
+	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///
+	///  - Returns: An identifier for the request
+	@discardableResult func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -123,7 +133,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	/// Send GraphQL Query Request with custom type
+	///
+	///  - Parameters:
+	///   - url: The URL string for the request
+	///   - name: The name to assign to the query
+	///   - parameters: The query parameters
+	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request they are being notified about
+	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///
+	///  - Returns: An identifier for the request
+	@discardableResult func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -150,7 +170,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult internal func transmitTestRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -170,7 +190,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult internal func transmitTestRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -470,6 +490,9 @@ public class IoGGQLManager: IoGDataManagerDelegate
 
 	// MARK: IoGGQLManagerDelegate Methods
 
+	/// IoGDataManager delegate method that handles the response from the server
+	///
+	/// > Note: Clients should not call this method
 	public func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 	{
 		var gqlRequestID = -1

@@ -54,6 +54,10 @@ open class IoGDataObject: Codable
 
 	// MARK: Instance Methods
 
+	/// Default initializer
+	///
+	/// > Note: This initializer is used by the Data Object Manager to create instances of the type requested by the
+	/// client. Subclasses should not override this method.
 	required public init(withString source: String)
 	{
 		sourceData = source
@@ -71,7 +75,13 @@ open class IoGDataObject: Codable
 			}
 	}
 
-	public required init(from decoder: Decoder) throws
+	/// Initializer used when creating previously encoded instances
+	///
+	///  - Parameters:
+	///  	- from: Previously encooded object data
+	///
+	///	> Note: Subclasses should not override this method
+	required public init(from decoder: Decoder) throws
 	{
 		let values = try decoder.container(keyedBy: CodingKeys.self)
         sourceData = try values.decode(String.self, forKey: .rawString)
@@ -92,6 +102,11 @@ open class IoGDataObject: Codable
 	// MARK: Business Logic
 
 	/// Encode necessary elements of the class
+	///
+	///  - Parameters:
+	///  	- to: Encoder to be used for storing object instances
+	///
+	///	> Note: Subclasses should not override this method
 	public func encode(to encoder: Encoder) throws
 	{
 		do
@@ -115,6 +130,8 @@ open class IoGDataObject: Codable
 	///  	- key: The key for the desired value to retrieve
 	///
 	/// - Returns: The value associated with the requested key
+	///
+	///	> Note: Subclasses should not override this method
 	public func getValue(_ key: String) -> Any
 	{
 		if let value = objectDictionary[key]
@@ -132,6 +149,8 @@ open class IoGDataObject: Codable
 	///  - Parameters:
 	///  	- key: The key for the desired value to set
 	///  	- value: The value to set for the key
+	///
+	///	> Note: Subclasses should not override this method
 	public func setValue(key: String, value: Any)
 	{
 		objectDictionary[key] = value
