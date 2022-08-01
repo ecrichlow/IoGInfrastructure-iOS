@@ -28,6 +28,8 @@ class FlightDetails : IoGGQLDataObject
 
 	required public init()
 	{
+		super.init()
+		mutations = ["mutationChangePilot": ["pilot"]]
 	}
 
 	// MARK: Business Logic

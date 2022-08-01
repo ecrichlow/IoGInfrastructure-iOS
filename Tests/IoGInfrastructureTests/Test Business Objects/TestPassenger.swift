@@ -27,6 +27,10 @@ class Passenger: IoGGQLDataObject
 
 	required public init()
 	{
+		super.init()
+		// Mutations
+		mutations =  ["mutationAddDependent": [["id": "passengerID"], "name", "age"],
+					  "mutationRemoveDependent": [["id": "passengerID"]]]
 	}
 
 	// MARK: Business Logic

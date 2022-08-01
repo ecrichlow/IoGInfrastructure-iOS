@@ -210,6 +210,146 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
+	@discardableResult func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+			{
+			do
+				{
+				var urlRequest = URLRequest(url: requestURL)
+				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
+				urlRequest.httpBody = jsonData
+				urlRequest.httpMethod = "POST"
+				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				requestID += 1
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
+				return reqID
+				}
+			catch
+				{
+				return -1
+				}
+			}
+		return -1
+	}
+
+	@discardableResult func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+			{
+			do
+				{
+				var urlRequest = URLRequest(url: requestURL)
+				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
+				urlRequest.httpBody = jsonData
+				urlRequest.httpMethod = "POST"
+				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				requestID += 1
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
+				return reqID
+				}
+			catch
+				{
+				return -1
+				}
+			}
+		return -1
+	}
+
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+			{
+			do
+				{
+				var urlRequest = URLRequest(url: requestURL)
+				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
+				urlRequest.httpBody = jsonData
+				urlRequest.httpMethod = "POST"
+				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				requestID += 1
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
+				return reqID
+				}
+			catch
+				{
+				return -1
+				}
+			}
+		return -1
+	}
+
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
+	{
+		let reqID = requestID
+		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+			{
+			do
+				{
+				var urlRequest = URLRequest(url: requestURL)
+				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
+				urlRequest.httpBody = jsonData
+				urlRequest.httpMethod = "POST"
+				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				requestID += 1
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
+				return reqID
+				}
+			catch
+				{
+				return -1
+				}
+			}
+		return -1
+	}
+
 	private func buildGQLQueryString<T: IoGGQLDataObject>(name: String?, parameters: String?, target: T.Type) -> String
 	{
 		var queryString = "query "
@@ -235,6 +375,20 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			queryString += "}\n"
 			}
 		return queryString
+	}
+
+	private func buildGQLMutationString<T: IoGGQLDataObject>(name: String, target: T, returnType: T.Type?) -> String
+	{
+		var mutationString = "mutation {\n\(name)"
+		let parameterDefinition = parseTargetParameters(target: target, mutationName: name)
+		mutationString += parameterDefinition
+		if let rType = returnType
+			{
+			let returnQueryDefinition = buildGQLQueryString(name: nil, parameters: nil, target: rType)
+			mutationString += returnQueryDefinition
+			}
+		mutationString += "}"
+		return mutationString
 	}
 
 	private func parseTargetDataObject<T: IoGGQLDataObject>(target: T.Type) -> String?
@@ -275,6 +429,79 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 		gqlObjectDefinition += "}\n"
 		return gqlObjectDefinition
+	}
+
+	private func parseTargetParameters<T: IoGGQLDataObject>(target: T, mutationName: String) -> String
+	{
+		let mirror = Mirror(reflecting: target)
+		var parameterList = "("
+		var firstParameter = true
+		if let mutationParameters = target.mutations[mutationName]
+			{
+			for parameter in mutationParameters
+				{
+				var parameterName = ""
+				var associatedPropertyName = ""
+				if !firstParameter
+					{
+					parameterList += ", "
+					}
+				if parameter is [String: String]	// Parameter name is different from property name
+					{
+					if let parameterEntry = parameter as? [String: String]
+						{
+						if let key = parameterEntry.keys.first
+							{
+							parameterName = key
+							if let value = parameterEntry[key]
+								{
+								associatedPropertyName = value
+								}
+							}
+						}
+					}
+				else		// Parameter name is same as property name
+					{
+					if let pName = parameter as? String
+						{
+						parameterName = pName
+						associatedPropertyName = pName
+						}
+					}
+				for child in mirror.children
+					{
+					if let propertyName = child.label
+						{
+						if propertyName == associatedPropertyName
+							{
+							parameterList += "\(parameterName):"
+							switch child.value
+								{
+								case is String:
+									parameterList += "\"\(child.value)\""
+								case is Bool:
+									let booleanValue = child.value as! Bool
+									if booleanValue == true
+										{
+										parameterList += "true"
+										}
+									else
+										{
+										parameterList += "false"
+										}
+								default:
+									parameterList += "\(child.value):"
+								
+							}
+							break
+							}
+						}
+					}
+				firstParameter = false
+				}
+			}
+		parameterList += ")"
+		return parameterList
 	}
 
 	private func parseArray(array: NSArray, name: String?) -> String
@@ -488,6 +715,37 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 	}
 
+	private func processTestMutation(dataObject: IoGGQLDataObject, mutationString: String)
+	{
+		if mutationString.contains("(") && mutationString.contains(")")
+			{
+			let firstComponentArray = mutationString.components(separatedBy: "(")
+			if firstComponentArray.count > 1
+				{
+				let subString = firstComponentArray[1]
+				let secondComponentArray = subString.components(separatedBy: ")")
+				if secondComponentArray.count > 0
+					{
+					let parameterString = secondComponentArray[0]
+					let parameterArray = parameterString.components(separatedBy: ",")
+					if parameterArray.count > 0
+						{
+						for parameterPair in parameterArray
+							{
+							let parameterPairArray = parameterPair.components(separatedBy: ":")
+							if parameterPairArray.count == 2
+								{
+								let property = parameterPairArray[0].replacingOccurrences(of: " ", with: "")
+								let value = parameterPairArray[1].replacingOccurrences(of: " ", with: "")
+								dataObject.setProperty(propertyName: property, value: value)
+								}
+							}
+						}
+					}
+				}
+			}
+	}
+
 	// MARK: IoGGQLManagerDelegate Methods
 
 	/// IoGDataManager delegate method that handles the response from the server
@@ -549,6 +807,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 										else
 											{
 											let object = populateDataObject(data: contentString, target: type)
+											// Support for GQL mutation unit tests
+											if let mutationString = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationString] as? String
+											{
+												processTestMutation(dataObject: object, mutationString: mutationString)
+											}
 											for nextDelegate in delegateList.allObjects
 												{
 												if let delegate = nextDelegate as? IoGGQLManagerDelegate

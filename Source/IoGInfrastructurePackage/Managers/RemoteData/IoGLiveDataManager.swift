@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-* IogLiveDataManager.swift
+* IoGLiveDataManager.swift
 *
 * Title:			IoG Infrastructure
 * Description:		IoG Mobile App Infrastructure Framework

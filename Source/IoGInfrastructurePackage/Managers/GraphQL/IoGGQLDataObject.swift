@@ -32,8 +32,33 @@ import Foundation
 /// > Note: Native types can be declared as optionals, but must have an initial value assigned in order for the query
 /// parsing to work. Properties that are also subclasses of IoGGQLDataObject must have an instance of the subclass
 /// initially assigned to them. Array properties must initially contain an object of the designated type.
+///
+/// For mutations, subclasses should add code to the required initializer that contains listings for the business object's
+/// supported mutations:
+///
+/// ``` swift
+/// required public init()
+/// {
+/// 	super.init()
+/// 	mutations = ["mutationAddDependent": [["id": "passengerID"], "name", "age"],
+/// 				 "mutationRemoveDependent": [["id": "passengerID"]]]
+/// }
+/// ```
+/// The format of each entry in the mutation dictionary is:
+///
+/// 	* A key that is the name of the mutation
+///
+/// 	* A value that is an array of the list of parameters for the mutation
+///
+/// > Note: The format of the parameter list array is, if the parameter name is the same as the property name, a string
+///	that denotes the name; if the parameter name and property name are different, a dictionary with the parameter name
+///	as the sole key and the property name as the sole value
 open class IoGGQLDataObject
 {
+
+	// Mutations
+	/// The collection of mutations supported for the business object
+	public var mutations = [String: [Any]]()
 
 	// MARK: Instance Methods
 
