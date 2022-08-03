@@ -111,24 +111,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
 			{
-			do
-				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlQuery)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-				outstandingRequests[reqID] = requestInfo
-				return reqID
-				}
-			catch
-				{
-				return -1
-				}
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let payloadData = Data(gqlQuery.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -148,24 +141,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
 			{
-			do
-				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlQuery)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-				outstandingRequests[reqID] = requestInfo
-				return reqID
-				}
-			catch
-				{
-				return -1
-				}
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let payloadData = Data(gqlQuery.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -215,32 +201,25 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
-			do
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let payloadData = Data(gqlMutation.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			var requestInfo:  [String : Any]
+			if let rType = returnType
 				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				var requestInfo:  [String : Any]
-				if let rType = returnType
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
-					}
-				else
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-					}
-				outstandingRequests[reqID] = requestInfo
-				return reqID
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
 				}
-			catch
+			else
 				{
-				return -1
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 				}
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -250,32 +229,25 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
-			do
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let payloadData = Data(gqlMutation.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			var requestInfo:  [String : Any]
+			if let rType = returnType
 				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				var requestInfo:  [String : Any]
-				if let rType = returnType
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
-					}
-				else
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-					}
-				outstandingRequests[reqID] = requestInfo
-				return reqID
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
 				}
-			catch
+			else
 				{
-				return -1
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 				}
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -285,32 +257,25 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
-			do
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let payloadData = Data(gqlMutation.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			var requestInfo:  [String : Any]
+			if let rType = returnType
 				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				var requestInfo:  [String : Any]
-				if let rType = returnType
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
-					}
-				else
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-					}
-				outstandingRequests[reqID] = requestInfo
-				return reqID
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
 				}
-			catch
+			else
 				{
-				return -1
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self] as [String : Any]
 				}
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -320,32 +285,25 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
-			do
+			var urlRequest = URLRequest(url: requestURL)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let payloadData = Data(gqlMutation.utf8)
+			urlRequest.httpBody = payloadData
+			urlRequest.httpMethod = "POST"
+			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
+			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+			requestID += 1
+			var requestInfo:  [String : Any]
+			if let rType = returnType
 				{
-				var urlRequest = URLRequest(url: requestURL)
-				let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
-				let jsonData = try JSONSerialization.data(withJSONObject: gqlMutation)
-				urlRequest.httpBody = jsonData
-				urlRequest.httpMethod = "POST"
-				IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-				requestID += 1
-				var requestInfo:  [String : Any]
-				if let rType = returnType
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
-					}
-				else
-					{
-					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
-					}
-				outstandingRequests[reqID] = requestInfo
-				return reqID
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
-			catch
+			else
 				{
-				return -1
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
+			outstandingRequests[reqID] = requestInfo
+			return reqID
 			}
 		return -1
 	}
@@ -384,8 +342,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		mutationString += parameterDefinition
 		if let rType = returnType
 			{
-			let returnQueryDefinition = buildGQLQueryString(name: nil, parameters: nil, target: rType)
-			mutationString += returnQueryDefinition
+			if let propertyObjectDefinition = parseTargetDataObject(target: rType)
+				{
+				mutationString += " "
+				mutationString += propertyObjectDefinition
+				}
 			}
 		mutationString += "}"
 		return mutationString
@@ -478,16 +439,36 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							switch child.value
 								{
 								case is String:
-									parameterList += "\"\(child.value)\""
-								case is Bool:
-									let booleanValue = child.value as! Bool
-									if booleanValue == true
+									if let parameterValue = child.value as? String
 										{
-										parameterList += "true"
+										parameterList += "\"\(parameterValue)\""
 										}
-									else
+								case is Bool:
+									if let booleanValue = child.value as? Bool
 										{
-										parameterList += "false"
+										if booleanValue == true
+											{
+											parameterList += "true"
+											}
+										else
+											{
+											parameterList += "false"
+											}
+										}
+								case is Int:
+									if let parameterValue = child.value as? Int
+										{
+										parameterList += "\"\(parameterValue)\""
+										}
+								case is Double:
+									if let parameterValue = child.value as? Double
+										{
+										parameterList += "\"\(parameterValue)\""
+										}
+								case is Float:
+									if let parameterValue = child.value as? Float
+										{
+										parameterList += "\"\(parameterValue)\""
 										}
 								default:
 									parameterList += "\(child.value):"
@@ -735,8 +716,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							let parameterPairArray = parameterPair.components(separatedBy: ":")
 							if parameterPairArray.count == 2
 								{
-								let property = parameterPairArray[0].replacingOccurrences(of: " ", with: "")
-								let value = parameterPairArray[1].replacingOccurrences(of: " ", with: "")
+								let property = parameterPairArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+								let value = parameterPairArray[1].trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "")
 								dataObject.setProperty(propertyName: property, value: value)
 								}
 							}

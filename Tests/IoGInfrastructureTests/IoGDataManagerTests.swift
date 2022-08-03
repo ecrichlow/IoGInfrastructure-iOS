@@ -59,8 +59,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 								}
 							}
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -107,8 +107,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 						{
 						XCTFail()
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -135,8 +135,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 								}
 							}
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -183,8 +183,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 						{
 						XCTFail()
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -263,8 +263,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 						{
 						XCTFail()
 						}
+					callback1Expectation.fulfill()
 					}
-				callback1Expectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -342,8 +342,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 														{
 														XCTFail()
 														}
+													callback2Expectation.fulfill()
 													}
-												callback2Expectation.fulfill()
 												}
 											}
 										}
@@ -363,8 +363,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 						{
 						XCTFail()
 						}
+					callback1Expectation.fulfill()
 					}
-				callback1Expectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -395,8 +395,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 								}
 							}
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -427,8 +427,8 @@ class IoGDataManagerTests: XCTestCase, IoGDataManagerDelegate
 								}
 							}
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)

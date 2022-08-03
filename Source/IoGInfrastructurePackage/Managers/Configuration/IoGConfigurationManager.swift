@@ -64,7 +64,9 @@ public class IoGConfigurationManager
 	static let mockFastDataRequestResponseTime = 0.1 as TimeInterval
 	static let mockSlowDataRequestResponseTime = 5 as TimeInterval
 	static let mockResponseIndicator1 = "/1"
-	static let mockSlowResponseIndicator = "/3"
+	static let mockResponseIndicator2 = "/2"
+	static let mockResponseIndicator3 = "/3"
+	static let mockSlowResponseIndicator = "www.success.com/3"
 	static let mockSuccessfulCallIndicator = "www.success.com"
 	static let mockFailedCallIndicator = "www.failure.com"
 	static let mockGQLCallIndicator = "www.iogtests.com/graphql"

@@ -57,6 +57,7 @@ class IoGTestConfigurationManager
 	static let dataRequestFastResponseCheck = 0.5 as TimeInterval
 	static let dataRequestSlowResponseCheck = 7 as TimeInterval
 	static let dataTestExpirationCheckTimeout = 10 as TimeInterval
+	static let gqlMutationExpirationCheckTimeout = 10 as TimeInterval
 	static let dataRequestCustomType = "CustomTypeTestX"
 
 	// Data Parsing

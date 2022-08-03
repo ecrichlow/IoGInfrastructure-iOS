@@ -83,8 +83,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						{
 						XCTFail()
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -108,8 +108,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						XCTAssertNotNil(data.first?.flightID)
 						XCTAssertNotNil(data.last?.seats)
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -174,8 +174,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 								}
 							}
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -228,8 +228,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						{
 						XCTFail()
 						}
+					callbackExpectation.fulfill()
 					}
-				callbackExpectation.fulfill()
 				}
 			}
 		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
@@ -298,8 +298,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 										{
 										XCTFail()
 										}
+									callbackExpectation.fulfill()
 									}
-								callbackExpectation.fulfill()
 								}
 							}
 						}
@@ -310,7 +310,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 					}
 				}
 			}
-		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
+		waitForExpectations(timeout: IoGTestConfigurationManager.gqlMutationExpirationCheckTimeout, handler: nil)
 	}
 
 	func testFailedGQLObjectMutation()
@@ -375,8 +375,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 										{
 										XCTFail()
 										}
+									callbackExpectation.fulfill()
 									}
-								callbackExpectation.fulfill()
 								}
 							}
 						}
@@ -387,7 +387,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 					}
 				}
 			}
-		waitForExpectations(timeout: IoGTestConfigurationManager.dataTestExpirationCheckTimeout, handler: nil)
+		waitForExpectations(timeout: IoGTestConfigurationManager.gqlMutationExpirationCheckTimeout, handler: nil)
 	}
 
 	// GQL Manager Delegate method(s)

@@ -73,7 +73,15 @@ internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 				}
 			else if requestString.contains(IoGConfigurationManager.mockGQLCallIndicator)
 				{
-				let resp = requestString.hasSuffix(IoGConfigurationManager.mockResponseIndicator1) == true ? Data(IoGConfigurationManager.mockGQLQueryResponse1.utf8) : Data(IoGConfigurationManager.mockGQLQueryResponse2.utf8)
+				var resp: Data
+				if requestString.hasSuffix(IoGConfigurationManager.mockResponseIndicator1) || requestString.hasSuffix(IoGConfigurationManager.mockResponseIndicator3)
+					{
+					resp = Data(IoGConfigurationManager.mockGQLQueryResponse1.utf8)
+					}
+				else
+					{
+					resp =  Data(IoGConfigurationManager.mockGQLQueryResponse2.utf8)
+					}
 				if var respInfo = self.responseInfo
 					{
 					respInfo[IoGConfigurationManager.requestResponseKeyResponse] = resp
