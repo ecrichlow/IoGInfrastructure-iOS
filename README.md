@@ -54,15 +54,25 @@ This is the class that clients subclass to create customized business data objec
 
 This is the class that manages delayed and repeated execution of a block of code, allowing the caller to determine when the workflow has completed and retry attempts are no longer necessary.
 
+* IoGGQLManager
+
+This is the class that handles GraphQL interactions. It dynamically inspects business objects that are subclasses of "IoGGQLDataObject" and builds query and mutation strings for them, makes requests to the GraphQL server and returns populated objects or arrays of those objects. Under the enumeration "IoGGQLRequestType" are defined the types of requests that the class supports. This is a convenience for clients of the class to identify what type of request is being responded to. Add your own entries to this enumeration for your own custom request types.
+
+* IoGGQLDataObject
+
+This is the class that clients subclass to create customized GraphQL business data objects with only the specific properties and mutations relevant to the business object. 
+
 ## Installation
 
 Install using Xcode "Add Packages..." file menu option
+
+Reference the package using this URL: https://github.com/ecrichlow/IoGInfrastructure-iOS.git
 
 ## Usage
 
 As for utilizing the classes contained in this project, the easiest way to learn how to use them is by looking at the unit test classes. They give great detail as to how to perform each function.
 
-Of note, the IoGDataManager and IoGRetryManager classes support broadcasting responses to multiple delegates, and thus "registerDelegate" and "unregisterDelegate" methods are provided for each class.
+Of note, the IoGDataManager, IoGRetryManager and IoGGQLManager classes support broadcasting responses to multiple delegates, and thus "registerDelegate" and "unregisterDelegate" methods are provided for each class.
 
 ## Known Issues
 
