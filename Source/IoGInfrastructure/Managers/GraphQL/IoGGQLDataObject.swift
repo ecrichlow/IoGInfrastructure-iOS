@@ -88,7 +88,7 @@ open class IoGGQLDataObject
 	/// 		}
 	/// }
 	/// ```
-	public func setProperty(propertyName: String, value: Any?)
+	open func setProperty(propertyName: String, value: Any?)
 	{
 		preconditionFailure("This method must be overridden")
 	}
@@ -114,7 +114,7 @@ open class IoGGQLDataObject
 	/// 		}
 	/// }
 	/// ```
-	public func clearArray(propertyName: String)
+	open func clearArray(propertyName: String)
 	{
 		preconditionFailure("This method must be overridden")
 	}
