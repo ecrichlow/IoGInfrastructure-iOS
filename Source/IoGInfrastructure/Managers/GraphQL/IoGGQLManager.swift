@@ -196,7 +196,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
@@ -224,7 +224,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
@@ -252,7 +252,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
@@ -280,7 +280,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
@@ -335,7 +335,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return queryString
 	}
 
-	private func buildGQLMutationString<T: IoGGQLDataObject>(name: String, target: T, returnType: T.Type?) -> String
+	private func buildGQLMutationString<T: IoGGQLDataObject, R: IoGGQLDataObject>(name: String, target: T, returnType: R.Type?) -> String
 	{
 		var mutationString = "mutation {\n\(name)"
 		let parameterDefinition = parseTargetParameters(target: target, mutationName: name)
