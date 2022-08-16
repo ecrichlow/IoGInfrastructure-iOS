@@ -106,7 +106,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -136,7 +136,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
@@ -196,7 +196,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: T.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
@@ -224,7 +224,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: T.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
