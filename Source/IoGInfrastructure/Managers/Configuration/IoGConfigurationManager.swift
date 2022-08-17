@@ -273,7 +273,20 @@ public class IoGConfigurationManager
 	/// 	- address: The base URL to add to the authorized list, as a string
 	public func addAPIURL(address: String)
 	{
-		APIURLs.append(address)
+		var found = false
+
+		for url in APIURLs
+		{
+			if url == address
+			{
+				found = true
+				break
+			}
+		}
+		if !found
+		{
+			APIURLs.append(address)
+		}
 	}
 
 	/// Retrieve the list of supported base URLs
