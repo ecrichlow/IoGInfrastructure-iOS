@@ -256,7 +256,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						self.returnedError = nil
 						self.customRequestType = nil
 						data.setProperty(propertyName: "pilot", value: IoGTestConfigurationManager.gqlMutationPilot)
-						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
+						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customizedParameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
 						XCTAssertNotEqual(mutationRequestID, -1)
 						Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 							{
@@ -333,7 +333,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						self.returnedData = nil
 						self.returnedError = nil
 						self.customRequestType = nil
-						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
+						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customizedParameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
 						XCTAssertNotEqual(mutationRequestID, -1)
 						Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 							{

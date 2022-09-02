@@ -39,9 +39,11 @@ import Foundation
 /// ``` swift
 /// required public init()
 /// {
-/// 	super.init()
-/// 	mutations = ["mutationAddDependent": [["id": "passengerID"], "name", "age"],
-/// 				 "mutationRemoveDependent": [["id": "passengerID"]]]
+///	    super.init()
+///	    var idParameter = GQLMutationParameterFields()
+///	    idParameter["passengerID"] = [.Alias: "id"]
+///	    mutations = ["mutationAddDependent": [idParameter, "name", "age"],
+///		         "mutationRemoveDependent": [idParameter]]
 /// }
 /// ```
 /// The format of each entry in the mutation dictionary is:
@@ -51,14 +53,21 @@ import Foundation
 /// 	* A value that is an array of the list of parameters for the mutation
 ///
 /// > Note: The format of the parameter list array is, if the parameter name is the same as the property name, a string
-///	that denotes the name; if the parameter name and property name are different, a dictionary with the parameter name
-///	as the sole key and the property name as the sole value
+///	that denotes the name; if the parameter name and property name are different, a variable of the type
+///	GQLMutationParameterFields, which is a dictionary with a single key, that is the name of the parametert, and a value
+///	that is a dictionary of predefined possible keys and their associated values. The keys / values are:
+///
+///		* Alias - Value is the name of the associated property
+///
+///		* LiteralRepresentation - Value is TRUE if the string is to be included without quotes
+///
+///		* BooleanNumericRepresentation - Value is TRUE if the boolean value should be represented by 0 / 1
 open class IoGGQLDataObject
 {
 
 	// Mutations
 	/// The collection of mutations supported for the business object
-	public var mutations = [String: [Any]]()
+	public var mutations = GQLMutationParameterList()
 
 	// MARK: Instance Methods
 
@@ -81,11 +90,11 @@ open class IoGGQLDataObject
 	/// ``` swift
 	/// override public func setProperty(propertyName: String, value: Any?)
 	/// {
-	/// 	switch propertyName
-	/// 		{
-	/// 		case "name":
-	/// 			name = value as <type>
-	/// 		}
+	///     switch propertyName
+	///         {
+	///         case "name":
+	///             name = value as <type>
+	///         }
 	/// }
 	/// ```
 	open func setProperty(propertyName: String, value: Any?)
@@ -107,11 +116,11 @@ open class IoGGQLDataObject
 	/// ``` swift
 	/// override public func clearArray(propertyName: String)
 	/// {
-	/// 	switch propertyName
-	/// 		{
-	/// 		case "arrayName":
-	/// 			arrayName.removeAll()
-	/// 		}
+	///     switch propertyName
+	///         {
+	///         case "arrayName":
+	///             arrayName.removeAll()
+	///         }
 	/// }
 	/// ```
 	open func clearArray(propertyName: String)

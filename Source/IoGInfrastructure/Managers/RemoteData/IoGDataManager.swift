@@ -55,6 +55,72 @@ public class IoGDataManager
 		case UpdateUserInfo
 		case Features
 		case Version
+		case Analytics
+		case Score
+		case Catalog
+		case Charge
+		case Purchase
+		case Cart
+		case Extra
+		case Station
+		case Vehicle
+		case Block
+		case Chat
+		case Customer
+		case Admin
+		case Video
+		case Audio
+		case Unregister
+		case Delete
+		case Selections
+		case Location
+		case Profile
+		case Shop
+		case Receipt
+		case Store
+		case Department
+		case Category
+		case Image
+		case Thumbnail
+		case Gallery
+		case Price
+		case Offer
+		case Discount
+		case Address
+		case Contact
+		case Lookup
+		case Save
+		case Open
+		case Close
+		case Time
+		case Schedule
+		case Service
+		case Order
+		case Log
+		case Diagnostics
+		case Notification
+		case Alert
+		case Event
+		case Map
+		case Route
+		case Lock
+		case Unlock
+		case Transfer
+		case Upload
+		case Download
+		case Send
+		case Receive
+		case Directory
+		case Verify
+		case List
+		case Trip
+		case Details
+		case Pass
+		case Cancel
+		case Confirm
+		case Comment
+		case Rating
+		case Search
 	}
 
 	/// Returns the shared Data Manager instance.

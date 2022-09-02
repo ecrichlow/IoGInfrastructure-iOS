@@ -23,7 +23,22 @@ public protocol IoGGQLManagerDelegate : AnyObject
 	func gqlRequestResponseReceived(requestID: Int, requestType: IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: CustomGQLRequestType?, responseData: Any?, error: Error?)
 }
 
+/// The parameter type, which identifies the modifiers available for use with mutation parameters
+public enum IoGGQLParamterModifierType
+{
+	/// The parameter name and property name do not match
+	case Alias
+	/// The string value will be included without quotes
+	case LiteralRepresentation
+	/// Either true/false or 1/0 will be used to denote the boolean value
+	case BooleanNumericRepresentation
+}
+
 public typealias CustomGQLRequestType = String
+public typealias GQLMutationParameterList = [String: [Any]]
+public typealias GQLMutationParameterFields = [String: [IoGGQLParamterModifierType: Any]]
+public typealias GQLQueryPropertyParameters = [String: String]
+public typealias GQLQueryPropertyParametersList = [GQLQueryPropertyParameters]
 
 /// Singleton class that manages attempts to interact with GraphQL servers
 public class IoGGQLManager: IoGDataManagerDelegate
@@ -41,6 +56,72 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		case UpdateUserInfo
 		case Features
 		case Version
+		case Analytics
+		case Score
+		case Catalog
+		case Charge
+		case Purchase
+		case Cart
+		case Extra
+		case Station
+		case Vehicle
+		case Block
+		case Chat
+		case Customer
+		case Admin
+		case Video
+		case Audio
+		case Unregister
+		case Delete
+		case Selections
+		case Location
+		case Profile
+		case Shop
+		case Receipt
+		case Store
+		case Department
+		case Category
+		case Image
+		case Thumbnail
+		case Gallery
+		case Price
+		case Offer
+		case Discount
+		case Address
+		case Contact
+		case Lookup
+		case Save
+		case Open
+		case Close
+		case Time
+		case Schedule
+		case Service
+		case Order
+		case Log
+		case Diagnostics
+		case Notification
+		case Alert
+		case Event
+		case Map
+		case Route
+		case Lock
+		case Unlock
+		case Transfer
+		case Upload
+		case Download
+		case Send
+		case Receive
+		case Directory
+		case Verify
+		case List
+		case Trip
+		case Details
+		case Pass
+		case Cancel
+		case Confirm
+		case Comment
+		case Rating
+		case Search
 	}
 
 	/// Returns the shared Data Manager instance.
@@ -196,13 +277,24 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
+	/// Send GraphQL Mutation Request
+	///
+	///  - Parameters:
+	///   - url: The URL string for the request
+	///   - name: The name to assign to the query
+	///   - customizedParameters: The query parameters
+	///   - requestType: One of the pre-defined identifiers used by delegates to differentiate the kind of request they are being notified about
+	///   - target: The type of IoGGQLDataObject subclass that the mutation is defined in and relates to
+	///   - returnType: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///
+	///  - Returns: An identifier for the request
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -224,13 +316,24 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
+	/// Send GraphQL Mutation Request with custom type
+	///
+	///  - Parameters:
+	///   - url: The URL string for the request
+	///   - name: The name to assign to the query
+	///   - customizedParameters: The query parameters
+	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request they are being notified about
+	///   - target: The type of IoGGQLDataObject subclass that the mutation is defined in and relates to
+	///   - returnType: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///
+	///  - Returns: An identifier for the request
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -252,13 +355,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -280,13 +383,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
 	{
 		let reqID = requestID
 		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -335,10 +438,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return queryString
 	}
 
-	private func buildGQLMutationString<T: IoGGQLDataObject, R: IoGGQLDataObject>(name: String, target: T, returnType: R.Type?) -> String
+	private func buildGQLMutationString<T: IoGGQLDataObject, R: IoGGQLDataObject>(name: String, customizedParameters: [GQLMutationParameterFields]?, target: T, returnType: R.Type?) -> String
 	{
 		var mutationString = "mutation {\n\(name)"
-		let parameterDefinition = parseTargetParameters(target: target, mutationName: name)
+		let parameterDefinition = parseTargetParameters(target: target, mutationName: name, customizedParameters: customizedParameters)
 		mutationString += parameterDefinition
 		if let rType = returnType
 			{
@@ -392,7 +495,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return gqlObjectDefinition
 	}
 
-	private func parseTargetParameters<T: IoGGQLDataObject>(target: T, mutationName: String) -> String
+	private func parseTargetParameters<T: IoGGQLDataObject>(target: T, mutationName: String, customizedParameters: [GQLMutationParameterFields]?) -> String
 	{
 		let mirror = Mirror(reflecting: target)
 		var parameterList = "("
@@ -403,20 +506,47 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				var parameterName = ""
 				var associatedPropertyName = ""
+				var parameterModifiers: [IoGGQLParamterModifierType: Any]? = nil
+				var booleanNumericRepresentation = false
+				var literalRepresentation = false
 				if !firstParameter
 					{
 					parameterList += ", "
 					}
-				if parameter is [String: String]	// Parameter name is different from property name
+				if parameter is GQLMutationParameterFields	// Parameter is customized
 					{
-					if let parameterEntry = parameter as? [String: String]
+					if let parameterEntry = parameter as? GQLMutationParameterFields
 						{
-						if let key = parameterEntry.keys.first
+						// Store the modifiers for later use
+						if let parameterFieldName = parameterEntry.keys.first
 							{
-							parameterName = key
-							if let value = parameterEntry[key]
+							parameterModifiers = parameterEntry[parameterFieldName]
+							parameterName = parameterFieldName
+							// But use the alias modifier immediately
+							if let modifiers = parameterModifiers
 								{
-								associatedPropertyName = value
+								if let propertyName = modifiers[.Alias] as? String
+									{
+									associatedPropertyName = propertyName
+									}
+								else
+									{
+									associatedPropertyName = parameterFieldName
+									}
+								if let booleanRepresentation = modifiers[.BooleanNumericRepresentation] as? Bool
+									{
+									if booleanRepresentation
+										{
+										booleanNumericRepresentation = true
+										}
+									}
+								if let literal = modifiers[.LiteralRepresentation] as? Bool
+									{
+									if literal
+										{
+										literalRepresentation = true
+										}
+									}
 								}
 							}
 						}
@@ -441,34 +571,55 @@ public class IoGGQLManager: IoGDataManagerDelegate
 								case is String:
 									if let parameterValue = child.value as? String
 										{
-										parameterList += "\"\(parameterValue)\""
+										if literalRepresentation
+										{
+											parameterList += "\(parameterValue)"
+										}
+										else
+											{
+											parameterList += "\"\(parameterValue)\""
+											}
 										}
 								case is Bool:
 									if let booleanValue = child.value as? Bool
 										{
 										if booleanValue == true
 											{
-											parameterList += "true"
+											if booleanNumericRepresentation
+												{
+												parameterList += "1"
+												}
+											else
+												{
+												parameterList += "true"
+												}
 											}
 										else
 											{
-											parameterList += "false"
+											if booleanNumericRepresentation
+												{
+												parameterList += "0"
+												}
+											else
+												{
+												parameterList += "false"
+												}
 											}
 										}
 								case is Int:
 									if let parameterValue = child.value as? Int
 										{
-										parameterList += "\"\(parameterValue)\""
+										parameterList += "\(parameterValue)"
 										}
 								case is Double:
 									if let parameterValue = child.value as? Double
 										{
-										parameterList += "\"\(parameterValue)\""
+										parameterList += "\(parameterValue)"
 										}
 								case is Float:
 									if let parameterValue = child.value as? Float
 										{
-										parameterList += "\"\(parameterValue)\""
+										parameterList += "\(parameterValue)"
 										}
 								default:
 									parameterList += "\(child.value):"

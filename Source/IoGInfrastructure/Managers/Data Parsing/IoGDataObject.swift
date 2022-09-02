@@ -27,17 +27,17 @@ import Foundation
 /// ``` swift
 /// var title : String
 /// {
-/// 	get
-/// 	{
-/// 		if let content = getValue("title") as? String
-/// 		{
-/// 			return content
-/// 		}
-/// 		else
-/// 		{
-/// 			return ""
-/// 		}
-/// 	}
+///     get
+///     {
+///         if let content = getValue("title") as? String
+///         {
+///             return content
+///         }
+///         else
+///         {
+///             return ""
+///         }
+///     }
 /// }
 /// ```
 ///  Or return nil if the var is an optional and the value isn't found.
