@@ -185,15 +185,16 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///   - parameters: The query parameters
 	///   - type: One of the pre-defined identifiers used by delegates to differentiate the kind of request they are being notified about
 	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///   - propertyParameters: An array of dictionaries matching target type property names with a parameters to add to them in the query string
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target, propertyParameters: propertyParameters)
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -215,15 +216,16 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///   - parameters: The query parameters
 	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request they are being notified about
 	///   - target: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///   - propertyParameters: An array of dictionaries matching target type property names with a parameters to add to them in the query string
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target, propertyParameters: propertyParameters)
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -237,13 +239,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type) -> Int
+	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target, propertyParameters: propertyParameters)
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -257,13 +259,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type) -> Int
+	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: target), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target)
+			let gqlQuery = buildGQLQueryString(name: name, parameters: parameters, target: target, propertyParameters: propertyParameters)
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -282,19 +284,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///  - Parameters:
 	///   - url: The URL string for the request
 	///   - name: The name to assign to the query
-	///   - customizedParameters: The query parameters
 	///   - requestType: One of the pre-defined identifiers used by delegates to differentiate the kind of request they are being notified about
 	///   - target: The type of IoGGQLDataObject subclass that the mutation is defined in and relates to
 	///   - returnType: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///   - returnTypePropertyParameters: An array of dictionaries matching target type property names with a parameters to add to them in the post mutation query string
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType, returnTypePropertyParameters: returnTypePropertyParameters)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -321,19 +323,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	///  - Parameters:
 	///   - url: The URL string for the request
 	///   - name: The name to assign to the query
-	///   - customizedParameters: The query parameters
 	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request they are being notified about
 	///   - target: The type of IoGGQLDataObject subclass that the mutation is defined in and relates to
 	///   - returnType: The type of IoGGQLDataObject subclass for the manager to populate with the query response and return to the delegates
+	///   - returnTypePropertyParameters: An array of dictionaries matching target type property names with a parameters to add to them in the post mutation query string
 	///
 	///  - Returns: An identifier for the request
-	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType, returnTypePropertyParameters: returnTypePropertyParameters)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -355,13 +357,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, requestType: IoGGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType, returnTypePropertyParameters: returnTypePropertyParameters)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -383,13 +385,13 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customizedParameters: [GQLMutationParameterFields]?, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?) -> Int
+	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
-		if let _ = parseTargetDataObject(target: type(of: target).self), let requestURL = URL(string: url)
+		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
-			let gqlMutation = buildGQLMutationString(name: name, customizedParameters: customizedParameters, target: target, returnType: returnType)
+			let gqlMutation = buildGQLMutationString(name: name, target: target, returnType: returnType, returnTypePropertyParameters: returnTypePropertyParameters)
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
@@ -411,7 +413,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return -1
 	}
 
-	private func buildGQLQueryString<T: IoGGQLDataObject>(name: String?, parameters: String?, target: T.Type) -> String
+	private func buildGQLQueryString<T: IoGGQLDataObject>(name: String?, parameters: String?, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> String
 	{
 		var queryString = "query "
 		let targetName = String(NSStringFromClass(target.self))
@@ -429,7 +431,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				queryString += "(\(queryParameters))"
 				}
 			queryString += " "
-			if let propertyObjectDefinition = parseTargetDataObject(target: target)
+			if let propertyObjectDefinition = parseTargetDataObject(target: target, fieldParameters: propertyParameters)
 				{
 				queryString += propertyObjectDefinition
 				}
@@ -438,14 +440,14 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return queryString
 	}
 
-	private func buildGQLMutationString<T: IoGGQLDataObject, R: IoGGQLDataObject>(name: String, customizedParameters: [GQLMutationParameterFields]?, target: T, returnType: R.Type?) -> String
+	private func buildGQLMutationString<T: IoGGQLDataObject, R: IoGGQLDataObject>(name: String, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> String
 	{
 		var mutationString = "mutation {\n\(name)"
-		let parameterDefinition = parseTargetParameters(target: target, mutationName: name, customizedParameters: customizedParameters)
+		let parameterDefinition = parseTargetParameters(target: target, mutationName: name)
 		mutationString += parameterDefinition
 		if let rType = returnType
 			{
-			if let propertyObjectDefinition = parseTargetDataObject(target: rType)
+			if let propertyObjectDefinition = parseTargetDataObject(target: rType, fieldParameters: returnTypePropertyParameters)
 				{
 				mutationString += " "
 				mutationString += propertyObjectDefinition
@@ -455,7 +457,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return mutationString
 	}
 
-	private func parseTargetDataObject<T: IoGGQLDataObject>(target: T.Type) -> String?
+	private func parseTargetDataObject<T: IoGGQLDataObject>(target: T.Type, fieldParameters: GQLQueryPropertyParametersList?) -> String?
 	{
 		let typeInstance = target.init()	// Swift's reflection only works on instances, not class types, so we need to create a dummy instance
 		let mirror = Mirror(reflecting: typeInstance)
@@ -466,9 +468,16 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				if let childObject = child.value as? IoGGQLDataObject
 					{
-					if let propertyObjectDefinition = parseTargetDataObject(target: type(of: childObject).self), let innerClassName = child.label
+					if let propertyObjectDefinition = parseTargetDataObject(target: type(of: childObject).self, fieldParameters: fieldParameters), let innerClassName = child.label
 						{
-						gqlObjectDefinition += "\(innerClassName) \(propertyObjectDefinition)"
+						if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: innerClassName, fieldParameters: parameters)
+							{
+							gqlObjectDefinition += "\(innerClassName)(\(innerClassParameters)) \(propertyObjectDefinition)"
+							}
+						else
+							{
+							gqlObjectDefinition += "\(innerClassName) \(propertyObjectDefinition)"
+							}
 						}
 					}
 				}
@@ -476,10 +485,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				if let childArray = child.value as? NSArray, let childName = child.label
 					{
-					let arrayDefinition = parseArray(array: childArray as NSArray, name: childName)
+					let arrayDefinition = parseArray(array: childArray as NSArray, name: childName, fieldParameters: fieldParameters)
 					if let propertyName = child.label
 						{
-						gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
+						if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+							{
+							gqlObjectDefinition += "\(propertyName)(\(innerClassParameters)) \(arrayDefinition)"
+							}
+						else
+							{
+							gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
+							}
 						}
 					}
 				}
@@ -487,7 +503,14 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				if let propertyName = child.label
 					{
-					gqlObjectDefinition += "\(propertyName)\n"
+					if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+						{
+						gqlObjectDefinition += "\(propertyName)(\(innerClassParameters))"
+						}
+					else
+						{
+						gqlObjectDefinition += "\(propertyName)\n"
+						}
 					}
 				}
 			}
@@ -495,7 +518,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return gqlObjectDefinition
 	}
 
-	private func parseTargetParameters<T: IoGGQLDataObject>(target: T, mutationName: String, customizedParameters: [GQLMutationParameterFields]?) -> String
+	private func parseTargetParameters<T: IoGGQLDataObject>(target: T, mutationName: String) -> String
 	{
 		let mirror = Mirror(reflecting: target)
 		var parameterList = "("
@@ -636,7 +659,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		return parameterList
 	}
 
-	private func parseArray(array: NSArray, name: String?) -> String
+	private func parseArray(array: NSArray, name: String?, fieldParameters: GQLQueryPropertyParametersList?) -> String
 	{
 		var arrayDefinition = ""
 
@@ -646,7 +669,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				if let propertyType = type(of: arrayObject) as? IoGGQLDataObject.Type
 					{
-					if let propertyObjectDefinition = parseTargetDataObject(target: propertyType.self)
+					if let propertyObjectDefinition = parseTargetDataObject(target: propertyType.self, fieldParameters: fieldParameters)
 						{
 						arrayDefinition += propertyObjectDefinition
 						}
@@ -655,10 +678,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 					{
 					if let childArray = arrayObject as? NSArray
 						{
-						let subarrayDefinition = parseArray(array: childArray as NSArray, name: name)
+						let subarrayDefinition = parseArray(array: childArray as NSArray, name: name, fieldParameters: fieldParameters)
 						if let propertyObjectName = name
 							{
-							arrayDefinition += "\(propertyObjectName) \(subarrayDefinition)"
+							if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyObjectName, fieldParameters: parameters)
+								{
+								arrayDefinition += "\(propertyObjectName)(\(innerClassParameters)) \(subarrayDefinition)"
+								}
+							else
+								{
+								arrayDefinition += "\(propertyObjectName) \(subarrayDefinition)"
+								}
 							}
 						else
 							{
@@ -670,13 +700,32 @@ public class IoGGQLManager: IoGDataManagerDelegate
 					{
 					if let propertyObjectName = name
 						{
-						arrayDefinition += "\(propertyObjectName)\n"
+						if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyObjectName, fieldParameters: parameters)
+							{
+							arrayDefinition += "\(propertyObjectName)(\(innerClassParameters))"
+							}
+						else
+							{
+							arrayDefinition += "\(propertyObjectName)\n"
+							}
 						}
 					}
 				}
 			}
 		return arrayDefinition
 
+	}
+
+	private func getFieldParameters(fieldName: String, fieldParameters: GQLQueryPropertyParametersList) -> String?
+	{
+		for parameter in fieldParameters
+		{
+			if let parameters = parameter[fieldName]
+			{
+				return parameters
+			}
+		}
+		return nil
 	}
 
 	private func isGQLResponsePlural(content: String) -> Bool

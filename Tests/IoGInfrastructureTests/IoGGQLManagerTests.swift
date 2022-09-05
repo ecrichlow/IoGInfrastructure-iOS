@@ -41,7 +41,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testSuccessfulGQLObjectRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self, propertyParameters: nil)
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -93,7 +93,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testSuccessfulGQLArrayRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL2, name: IoGTestConfigurationManager.gqlQueryName2, parameters: "flightID = 2022", type: .Features, target: Flight.self)
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL2, name: IoGTestConfigurationManager.gqlQueryName2, parameters: "flightID = 2022", type: .Features, target: Flight.self, propertyParameters: nil)
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -118,7 +118,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testFailedGQLDataRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.successURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.successURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self, propertyParameters: nil)
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -184,7 +184,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	func testCustomTypeGQLObjectRetrieval()
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: FlightDetails.self)
+		let propertyParameters = ["passenger": "page: 1, limit: 10"]
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: FlightDetails.self, propertyParameters: [propertyParameters])
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -239,7 +240,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
 		// First, retrieve a GQL object
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self, propertyParameters: nil)
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -256,7 +257,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						self.returnedError = nil
 						self.customRequestType = nil
 						data.setProperty(propertyName: "pilot", value: IoGTestConfigurationManager.gqlMutationPilot)
-						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customizedParameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
+						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self, returnTypePropertyParameters: nil)
 						XCTAssertNotEqual(mutationRequestID, -1)
 						Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 							{
@@ -317,7 +318,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 	{
 		let callbackExpectation = expectation(description: "Callback invoked")
 		// First, retrieve a GQL object
-		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self)
+		let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: IoGTestConfigurationManager.gqlTestURL1, name: IoGTestConfigurationManager.gqlQueryName1, parameters: nil, type: .Version, target: FlightDetails.self, propertyParameters: nil)
 		XCTAssertNotEqual(queryRequestID, -1)
 		Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 			{
@@ -333,7 +334,7 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 						self.returnedData = nil
 						self.returnedError = nil
 						self.customRequestType = nil
-						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customizedParameters: nil, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self)
+						let mutationRequestID = IoGGQLManager.sharedManager.transmitTestMutationRequest(url: IoGTestConfigurationManager.gqlTestURL3, name: IoGTestConfigurationManager.gqlMutationName1, customTypeIdentifier: IoGTestConfigurationManager.dataRequestCustomType, target: data, returnType: FlightDetails.self, returnTypePropertyParameters: nil)
 						XCTAssertNotEqual(mutationRequestID, -1)
 						Timer.scheduledTimer(withTimeInterval: IoGTestConfigurationManager.dataRequestFastResponseCheck, repeats: false)
 							{

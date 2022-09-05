@@ -29,7 +29,9 @@ class FlightDetails : IoGGQLDataObject
 	required public init()
 	{
 		super.init()
-		mutations = ["mutationChangePilot": ["pilot"]]
+		var pilotParameter = GQLMutationParameterFields()
+		pilotParameter["pilotName"] = [.Alias: "pilot"]
+		mutations = ["mutationChangePilot": [pilotParameter]]
 	}
 
 	// MARK: Business Logic

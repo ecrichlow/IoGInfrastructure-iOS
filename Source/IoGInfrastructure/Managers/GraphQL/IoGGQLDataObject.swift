@@ -41,7 +41,7 @@ import Foundation
 /// {
 ///	    super.init()
 ///	    var idParameter = GQLMutationParameterFields()
-///	    idParameter["passengerID"] = [.Alias: "id"]
+///	    idParameter["id"] = [.Alias: "passengerID"]
 ///	    mutations = ["mutationAddDependent": [idParameter, "name", "age"],
 ///		         "mutationRemoveDependent": [idParameter]]
 /// }
@@ -54,7 +54,7 @@ import Foundation
 ///
 /// > Note: The format of the parameter list array is, if the parameter name is the same as the property name, a string
 ///	that denotes the name; if the parameter name and property name are different, a variable of the type
-///	GQLMutationParameterFields, which is a dictionary with a single key, that is the name of the parametert, and a value
+///	GQLMutationParameterFields, which is a dictionary with a single key, that is the name of the parameter, and a value
 ///	that is a dictionary of predefined possible keys and their associated values. The keys / values are:
 ///
 ///		* Alias - Value is the name of the associated property
@@ -62,6 +62,16 @@ import Foundation
 ///		* LiteralRepresentation - Value is TRUE if the string is to be included without quotes
 ///
 ///		* BooleanNumericRepresentation - Value is TRUE if the boolean value should be represented by 0 / 1
+///
+/// For groups of parameters that need to be passed for specific properties in a query, an array of parameters should be
+/// passed into the transmitQueryRequest or transmitMutationRequest method. This array consists of a dictionary for
+/// each relevant property, that dictionary having a single key - the name of the property, and a value which is the string
+/// that should be passed with the property:
+/// 
+/// ``` swift
+/// let propertyParameters = [["passengers": "page: 1, limit: 10"], ["pilot": "Eric Crichlow"]]
+/// let queryRequestID = IoGGQLManager.sharedManager.transmitTestQueryRequest(url: gqlURL, name: "FlightDetailsQuery", parameters: nil, customTypeIdentifier: "FlightDetails", target: FlightDetails.self, propertyParameters: propertyParameters)
+/// ```
 open class IoGGQLDataObject
 {
 

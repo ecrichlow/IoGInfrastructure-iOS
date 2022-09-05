@@ -30,7 +30,7 @@ class Passenger: IoGGQLDataObject
 		super.init()
 		// Mutations
 		var idParameter = GQLMutationParameterFields()
-		idParameter["passengerID"] = [.Alias: "id"]
+		idParameter["id"] = [.Alias: "passengerID"]
 		mutations =  ["mutationAddDependent": [idParameter, "name", "age"],
 					  "mutationRemoveDependent": [idParameter]]
 	}

@@ -115,6 +115,6 @@ Mirror, doesn't refelct computed properties. Initially, the GQLManager was built
 which is based entirely on computed properties. Back to the drawing board.
 - Eric C.
 
-The GQL tests are notably missing testing of customized mutation parameters. Not very practical to
+The GQL tests are notably missing testing of customized query parameters. Not very practical to
 add, but still a notable gap.
 - Eric C.
