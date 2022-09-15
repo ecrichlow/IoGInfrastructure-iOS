@@ -198,6 +198,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -229,6 +231,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -249,6 +253,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -269,6 +275,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlQuery.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -300,6 +308,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -339,6 +349,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -367,6 +379,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
@@ -395,6 +409,8 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			let payloadData = Data(gqlMutation.utf8)
 			urlRequest.httpBody = payloadData
 			urlRequest.httpMethod = "POST"
+			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
 			requestID += 1
