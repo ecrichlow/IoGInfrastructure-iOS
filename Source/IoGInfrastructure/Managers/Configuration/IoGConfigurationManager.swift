@@ -96,6 +96,7 @@ public class IoGConfigurationManager
 	static let gqlRequestKeyCustomRequestType = "CustomRequestType"
 	static let gqlRequestKeyTargetType = "TargetType"
 	static let gqlRequestKeyReturnTargetType = "ReturnTargetType"
+	static let gqlRequestKeyTestMutationName = "TestMutationName"
 	static let gqlRequestKeyTestMutationString = "TestMutationString"
 	static let gqlRequestResponseParsingErrorDescription = "GraphQL Response Parsing Error"
 	static let gqlRequestResponseParsingErrorCode = 9999

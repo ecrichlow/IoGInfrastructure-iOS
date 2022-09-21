@@ -387,11 +387,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
 			else
 				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self] as [String : Any]
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -417,11 +417,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
 			else
 				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
 				}
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -912,7 +912,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			}
 	}
 
-	private func processTestMutation(dataObject: IoGGQLDataObject, mutationString: String)
+	private func processTestMutation(dataObject: IoGGQLDataObject, mutationName: String, mutationString: String)
 	{
 		if mutationString.contains("(") && mutationString.contains(")")
 			{
@@ -932,8 +932,39 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							let parameterPairArray = parameterPair.components(separatedBy: ":")
 							if parameterPairArray.count == 2
 								{
-								let property = parameterPairArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+								var property = parameterPairArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
 								let value = parameterPairArray[1].trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "")
+								var parameterList = "("
+								var firstParameter = true
+								if let mutationParameters = dataObject.mutations[mutationName]
+									{
+									for parameter in mutationParameters
+										{
+										var parameterModifiers: [IoGGQLParamterModifierType: Any]? = nil
+										if !firstParameter
+											{
+											parameterList += ", "
+											}
+										if parameter is GQLMutationParameterFields	// Parameter is customized
+											{
+											if let parameterEntry = parameter as? GQLMutationParameterFields
+												{
+												if let parameterFieldName = parameterEntry.keys.first
+													{
+													parameterModifiers = parameterEntry[parameterFieldName]
+													if let modifiers = parameterModifiers
+														{
+														if let propertyName = modifiers[.Alias] as? String
+															{
+															property = propertyName
+															}
+														}
+													}
+												}
+											}
+										firstParameter = false
+										}
+									}
 								dataObject.setProperty(propertyName: property, value: value)
 								}
 							}
@@ -988,32 +1019,68 @@ public class IoGGQLManager: IoGDataManagerDelegate
 								{
 								if let dataObject = dataDictionary["data"] as? [String: Any]
 									{
-									if let contentString = parseGQLResponse(dataDictionary: dataObject), let type = requestInfo[IoGConfigurationManager.gqlRequestKeyTargetType] as? IoGGQLDataObject.Type
+									if let contentString = parseGQLResponse(dataDictionary: dataObject)
 										{
-										if isGQLResponsePlural(content: contentString)
+										var returnType: IoGGQLDataObject.Type
+										if let type = requestInfo[IoGConfigurationManager.gqlRequestKeyReturnTargetType]
 											{
-											let objectArray = populateDataObjectArray(data: contentString, target: type)
-											for nextDelegate in delegateList.allObjects
+											returnType = type as! IoGGQLDataObject.Type
+											if isGQLResponsePlural(content: contentString)
 												{
-												if let delegate = nextDelegate as? IoGGQLManagerDelegate
+												let objectArray = populateDataObjectArray(data: contentString, target: returnType)
+												for nextDelegate in delegateList.allObjects
 													{
-													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: objectArray, error: nil)
+													if let delegate = nextDelegate as? IoGGQLManagerDelegate
+														{
+														delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: objectArray, error: nil)
+														}
+													}
+												}
+											else
+												{
+												let object = populateDataObject(data: contentString, target: returnType)
+												// Support for GQL mutation unit tests
+												if let mutationName = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationName] as? String, let mutationString = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationString] as? String
+													{
+													processTestMutation(dataObject: object, mutationName: mutationName, mutationString: mutationString)
+													}
+												for nextDelegate in delegateList.allObjects
+													{
+													if let delegate = nextDelegate as? IoGGQLManagerDelegate
+														{
+														delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: object, error: nil)
+														}
 													}
 												}
 											}
-										else
+										else if let type = requestInfo[IoGConfigurationManager.gqlRequestKeyTargetType]
 											{
-											let object = populateDataObject(data: contentString, target: type)
-											// Support for GQL mutation unit tests
-											if let mutationString = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationString] as? String
-											{
-												processTestMutation(dataObject: object, mutationString: mutationString)
-											}
-											for nextDelegate in delegateList.allObjects
+											returnType = type as! IoGGQLDataObject.Type
+											if isGQLResponsePlural(content: contentString)
 												{
-												if let delegate = nextDelegate as? IoGGQLManagerDelegate
+												let objectArray = populateDataObjectArray(data: contentString, target: returnType)
+												for nextDelegate in delegateList.allObjects
 													{
-													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: object, error: nil)
+													if let delegate = nextDelegate as? IoGGQLManagerDelegate
+														{
+														delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: objectArray, error: nil)
+														}
+													}
+												}
+											else
+												{
+												let object = populateDataObject(data: contentString, target: returnType)
+												// Support for GQL mutation unit tests
+												if let mutationName = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationName] as? String, let mutationString = requestInfo[IoGConfigurationManager.gqlRequestKeyTestMutationString] as? String
+													{
+													processTestMutation(dataObject: object, mutationName: mutationName, mutationString: mutationString)
+													}
+												for nextDelegate in delegateList.allObjects
+													{
+													if let delegate = nextDelegate as? IoGGQLManagerDelegate
+														{
+														delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: object, error: nil)
+														}
 													}
 												}
 											}
