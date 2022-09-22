@@ -41,7 +41,6 @@
 		8E76F5E5285712740043F6B5 /* IoGLiveDataRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D7285712740043F6B5 /* IoGLiveDataRequestResponse.swift */; };
 		8E76F5E6285712740043F6B5 /* IoGLiveDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E76F5D8285712740043F6B5 /* IoGLiveDataManager.swift */; };
 		8EF416692871094F006E43D7 /* TestDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF416682871094F006E43D7 /* TestDependent.swift */; };
-		OBJ_38 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_49 /* EncryptionKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* EncryptionKeyManagerTests.swift */; };
 		OBJ_50 /* IoGDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* IoGDataManagerTests.swift */; };
 		OBJ_51 /* IoGDataParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* IoGDataParsingTests.swift */; };
@@ -389,7 +388,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_38 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +430,7 @@
 		OBJ_28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -444,7 +442,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 3.7;
+				MARKETING_VERSION = 3.8;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -463,7 +461,7 @@
 		OBJ_29 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -475,7 +473,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 3.7;
+				MARKETING_VERSION = 3.8;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";

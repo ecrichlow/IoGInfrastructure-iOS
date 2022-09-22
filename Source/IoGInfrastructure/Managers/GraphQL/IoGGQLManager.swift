@@ -793,7 +793,20 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			if let objectDictionary = jsonDict as? [String: Any]
 				{
 				let returnObject = target.init()
-				assignDataToFields(target: returnObject, fields: objectDictionary)
+				if objectDictionary.keys.count == 1
+					{
+					if let key = objectDictionary.keys.first
+						{
+						if let dataDictionary = objectDictionary[key] as? [String: Any]
+							{
+							assignDataToFields(target: returnObject, fields: dataDictionary)
+							}
+						}
+					}
+				else
+					{
+					assignDataToFields(target: returnObject, fields: objectDictionary)
+					}
 				return returnObject
 				}
 			}
