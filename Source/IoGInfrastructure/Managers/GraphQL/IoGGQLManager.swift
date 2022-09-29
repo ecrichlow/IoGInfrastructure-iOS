@@ -480,52 +480,58 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		var gqlObjectDefinition = "{\n"
 		for child in mirror.children
 			{
-			if child.value is IoGGQLDataObject
+			if let propertyName = child.label
 				{
-				if let childObject = child.value as? IoGGQLDataObject
+				if !typeInstance.excludeFromQueries.contains(propertyName)
 					{
-					if let propertyObjectDefinition = parseTargetDataObject(target: type(of: childObject).self, fieldParameters: fieldParameters), let innerClassName = child.label
+					if child.value is IoGGQLDataObject
 						{
-						if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: innerClassName, fieldParameters: parameters)
+						if let childObject = child.value as? IoGGQLDataObject
 							{
-							gqlObjectDefinition += "\(innerClassName)(\(innerClassParameters)) \(propertyObjectDefinition)"
-							}
-						else
-							{
-							gqlObjectDefinition += "\(innerClassName) \(propertyObjectDefinition)"
+							if let propertyObjectDefinition = parseTargetDataObject(target: type(of: childObject).self, fieldParameters: fieldParameters), let innerClassName = child.label
+								{
+								if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: innerClassName, fieldParameters: parameters)
+									{
+									gqlObjectDefinition += "\(innerClassName)(\(innerClassParameters)) \(propertyObjectDefinition)"
+									}
+								else
+									{
+									gqlObjectDefinition += "\(innerClassName) \(propertyObjectDefinition)"
+									}
+								}
 							}
 						}
-					}
-				}
-			else if child.value is NSArray
-				{
-				if let childArray = child.value as? NSArray, let childName = child.label
-					{
-					let arrayDefinition = parseArray(array: childArray as NSArray, name: childName, fieldParameters: fieldParameters)
-					if let propertyName = child.label
+					else if child.value is NSArray
 						{
-						if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+						if let childArray = child.value as? NSArray, let childName = child.label
 							{
-							gqlObjectDefinition += "\(propertyName)(\(innerClassParameters)) \(arrayDefinition)"
+							let arrayDefinition = parseArray(array: childArray as NSArray, name: childName, fieldParameters: fieldParameters)
+							if let propertyName = child.label
+								{
+								if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+									{
+									gqlObjectDefinition += "\(propertyName)(\(innerClassParameters)) \(arrayDefinition)"
+									}
+								else
+									{
+									gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
+									}
+								}
 							}
-						else
-							{
-							gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
-							}
-						}
-					}
-				}
-			else
-				{
-				if let propertyName = child.label
-					{
-					if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
-						{
-						gqlObjectDefinition += "\(propertyName)(\(innerClassParameters))"
 						}
 					else
 						{
-						gqlObjectDefinition += "\(propertyName)\n"
+						if let propertyName = child.label
+							{
+							if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+								{
+								gqlObjectDefinition += "\(propertyName)(\(innerClassParameters))"
+								}
+							else
+								{
+								gqlObjectDefinition += "\(propertyName)\n"
+								}
+							}
 						}
 					}
 				}

@@ -33,6 +33,18 @@ import Foundation
 /// parsing to work. Properties that are also subclasses of IoGGQLDataObject must have an instance of the subclass
 /// initially assigned to them. Array properties must initially contain an object of the designated type.
 ///
+/// For queries, some properties relevant to the class but not available as query elements need to be defined but not
+/// included in the query, so subclasses should add code to the required initializer that contains names of the properties
+/// that should not be parsed into the query:
+///
+/// ``` swift
+/// required public init()
+/// {
+///	    super.init()
+///	    excludeFromQueries.append(contentsOf: ["username", "password"])
+/// }
+/// ```
+/// 
 /// For mutations, subclasses should add code to the required initializer that contains listings for the business object's
 /// supported mutations:
 ///
@@ -74,6 +86,10 @@ import Foundation
 /// ```
 open class IoGGQLDataObject
 {
+
+	// Queries
+	/// The collection of properties not to be included in dynamic query generation
+	public var excludeFromQueries = [String]()
 
 	// Mutations
 	/// The collection of mutations supported for the business object
