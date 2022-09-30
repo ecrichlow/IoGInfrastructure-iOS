@@ -1115,14 +1115,39 @@ public class IoGGQLManager: IoGDataManagerDelegate
 											}
 										}
 									}
-								else if let error = dataDictionary["error"] as? Data
+								else if let errorList = dataDictionary["errors"] as? [[String: Any]]
 									{
-									let errorString = String(decoding: error, as: UTF8.self)
-									for nextDelegate in delegateList.allObjects
+									if let error = errorList.first
 										{
-										if let delegate = nextDelegate as? IoGGQLManagerDelegate
+										if let message = error["message"] as? String
 											{
-											delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: errorString, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+											for nextDelegate in delegateList.allObjects
+												{
+												if let delegate = nextDelegate as? IoGGQLManagerDelegate
+													{
+													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: message, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+													}
+												}
+											}
+										else
+											{
+											for nextDelegate in delegateList.allObjects
+												{
+												if let delegate = nextDelegate as? IoGGQLManagerDelegate
+													{
+													delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+													}
+												}
+											}
+										}
+									else
+										{
+										for nextDelegate in delegateList.allObjects
+											{
+											if let delegate = nextDelegate as? IoGGQLManagerDelegate
+												{
+												delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.gqlRequestResponseParsingErrorDescription, code: IoGConfigurationManager.gqlRequestResponseParsingErrorCode, userInfo: nil))
+												}
 											}
 										}
 									}
