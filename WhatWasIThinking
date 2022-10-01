@@ -1,0 +1,120 @@
+This file exists to document the train of thoughts that go into design and implementation decisions.
+
+In-class comments and documentation exist to chronicle how things are.
+
+This file exists to chronicle how things got to be that way. Nothing is ever deleted from this file.
+If a decision that was made turns out to have been a poor decision, the thought process that went
+into the original decision and the "better" subsequent decision remain in the file.
+
+Days/weeks/months/years from now someone, maybe even you yourself, will need to understand why a
+decision was made, or whether or not a design/implementation change should be made.
+
+This file should be your go-to place for understanding the thought process that went into the
+evolution of the system. And you should document your own thoughts and decisions here.
+
+- Eric C.
+
+
+First major decision that needed to be made, whether to make requests for data from the back end
+be implemented such that the caller included a block to be executed when the request completed, or
+to use a multiple delegate (observer) pattern to notify all interested parties of newly retrieved
+data. Decided to go the latter route. This includes tagging requests with an identifier that
+observers can use to determine if they care about the newly retrieved data. This way, if data is
+relevant to multiple components, each component can independently and immediately act on new data
+retrieval. They won't rely on the initiator of the request to inform them of the new data.
+- Eric C.
+
+Instead of having separate objects for URL requests and responses, we're tying them together in the
+same object. This way, interactions can more easily be cached, or at least persisted for longer than
+the moment retrieved data gets passed to the caller. Also, in some cases requests return data in
+pages. In those cases, we will continue to use the same DataRequestResponse object to manage
+subsequent requests for additional pages of data.
+- Eric C.
+
+Added the request ID, request data, request type and error to the DataManager delegate method as a
+convenience, so delegates can more easily check each response for an ID or type they are waiting for
+or care about, more easily get the response data, and more easily tell if the call succeeded, without
+having to pull all 3 from the DataRequestResponse object.
+- Eric C.
+
+Setting "Immortal" as the lifespan for a PersistenceManager save to memory will not save the data to
+a file or user defaults and ressurect it to memory when the app exits and restarts. Immortal lifespan
+is meaningless for a to-memory save. A session save to memory is also useless if a session persists
+beyond an app exit and restart.
+- Eric C.
+
+See no sense in making the RetryManager persist through app restarts. So all retry objects only exist
+thorugh the current session.
+- Eric C.
+
+Delegate lists are implemented as NSPointerArrays so we can keep an array of weak references to the
+delegates to prevent retain cycles.
+- Eric C.
+
+"Page" based API calls usually rely on the caller to specify the "page" of data they're requesting.
+So the continueMultiPartRequest() method on IoGDataRequestResponse relies on the caller to change
+the URL appropriately in order to get the next "page" of data. However, having to dig into the
+requestInfo to manually change the URL isn't the most user friendly way to go about it. In the
+future a method should be added to update the URL.
+- Eric C.
+
+The downside of the IoGDataRequestType enumeration strategy is that it reuqires either adding
+specialized entries for each project, or a ton of generalized entries that each project has to
+shoehorn its requests into, or each project has to keep a local version of this project and add
+its own values to. Perhaps the architecture needs to be changed to allow for per-project
+customization of this mechanism instead of a hardcoded enumeration.
+- Eric C.
+
+Was needlessly using legacy NSArray and NSDictionary classes. Took those out, except one case
+where NSDictionary is being used for its "write" method, which isn't supported by Dictionary. Also
+getting rid of force unwrapping, even where they're preceeded by a nil check that makes them safe.
+It just looks bad for code to have force unwrapping in it at all.
+- Eric C.
+
+It seems some Swift devs look poorly on model objects that don't support conform to Codable, so
+I'm making the addition to IoGDataObject to make it conform to Codable, which now limits the
+values it can store to elements that also conform to Codable. Don't expect this will be a problem
+for most use cases.
+- Eric C.
+
+PersistenceManager supports saving all kinds of objects. But we're only supporting secure saving of
+String objects.
+- Eric C.
+
+Was thinking completely wrong about encryption on first swing, implementing asymmetric RSA encryption
+when what I really needed was symmetric encryption.
+- Eric C.
+
+Frameworks don't have access to the Keychain as they can't add entitlements. So we can't securely
+store the symmetric key we create for encryption. We're therefore encoding it and saving it,
+insecurely, in UserDefaults. Since this isn't particularly secure, it makes sense to give clients
+the option of passing in their own SymmetricKey for encryption and decryption.
+- Eric C.
+
+Decided it best to switch this from a framework project to a Swift Package so it could be distributed
+via the Swift Package Manager, which would eliminate the problem with having to run a script to
+generate a framework with modules for all of the proper architectures.
+- Eric C.
+
+Never added tests for encoding and decoding IoGDataObject instances. Need to do so.
+- Eric C.
+
+Had to make a decision right off the bat, whether to treat GQL Manager the same as Data Manager, or
+whether to design it so that clients, instead of registering as a delegate and getting notificaions
+of every response, passed a closure or a callback to be called at the resolution of a specific
+request. Quickly decided that GraphQL is generally a replacement for REST queries, which are what
+Data Manager generally deals with, but they operate and are used in much the same way. Therefore it
+makes sense to pattern IoGInfrastructure's GraphQL support after Data Manager's.
+- Eric C.
+
+Haven't implemented the ability to cancel a URLRequest. Need to add it.
+- Eric C.
+
+After the initial implementation failed, came to understand that Swift's reflection model, using
+Mirror, doesn't refelct computed properties. Initially, the GQLManager was built on IoGDataObject,
+which is based entirely on computed properties. Back to the drawing board.
+- Eric C.
+
+The GQL tests are notably missing testing of customized query parameters. Not very practical to
+add, but still a notable gap.
+- Eric C.
