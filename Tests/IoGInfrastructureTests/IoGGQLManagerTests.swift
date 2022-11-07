@@ -61,8 +61,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 								XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
 								XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
 								XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlQuery1Pilot)
-								XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
-								XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+								XCTAssertEqual(route?.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+								XCTAssertEqual(route?.destination, IoGTestConfigurationManager.gqlQuery1Destination)
 								XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
 								if passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 									{
@@ -205,8 +205,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 								XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
 								XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
 								XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlQuery1Pilot)
-								XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
-								XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+								XCTAssertEqual(route?.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+								XCTAssertEqual(route?.destination, IoGTestConfigurationManager.gqlQuery1Destination)
 								XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
 								XCTAssertEqual(self.customRequestType, IoGTestConfigurationManager.dataRequestCustomType)
 								XCTAssertNotNil(self.customRequestType)
@@ -277,8 +277,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 												XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
 												XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
 												XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlMutationPilot)
-												XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
-												XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+												XCTAssertEqual(route?.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+												XCTAssertEqual(route?.destination, IoGTestConfigurationManager.gqlQuery1Destination)
 												XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
 												if passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 													{
@@ -354,8 +354,8 @@ class IoGGQLManagerTests: XCTestCase, IoGGQLManagerDelegate
 												XCTAssertEqual(flightID, IoGTestConfigurationManager.gqlQuery1FlightID)
 												XCTAssertEqual(seats.intValue, IoGTestConfigurationManager.gqlQuery1Seats)
 												XCTAssertEqual(pilot, IoGTestConfigurationManager.gqlQuery1Pilot)
-												XCTAssertEqual(route.origin, IoGTestConfigurationManager.gqlQuery1Origin)
-												XCTAssertEqual(route.destination, IoGTestConfigurationManager.gqlQuery1Destination)
+												XCTAssertEqual(route?.origin, IoGTestConfigurationManager.gqlQuery1Origin)
+												XCTAssertEqual(route?.destination, IoGTestConfigurationManager.gqlQuery1Destination)
 												XCTAssertEqual(passengers.count, IoGTestConfigurationManager.gqlQuery1PassengerTotal)
 												if passenger.name?.contains(IoGTestConfigurationManager.gqlQuery1PassengerLastName) == false
 													{

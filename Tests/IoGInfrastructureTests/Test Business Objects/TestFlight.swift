@@ -21,7 +21,7 @@ class Flight : IoGGQLDataObject
 
 	var flightID: String? = ""
 	var seats: NSNumber? = 0
-	var route: Route = Route.init()
+	var route: Route? = Route.init()
 
 	// MARK: Instance Methods
 
@@ -39,7 +39,7 @@ class Flight : IoGGQLDataObject
 			case "seats":
 				seats = value as? NSNumber
 			case "route":
-				route = value as! Route
+				route = value as? Route
 			default:
 				break
 			}

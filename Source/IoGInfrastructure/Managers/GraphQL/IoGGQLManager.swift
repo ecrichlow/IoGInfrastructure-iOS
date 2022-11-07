@@ -930,14 +930,20 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							{
 							let jsonData = try JSONSerialization.data(withJSONObject: fieldValue)
 							let contentString = String(decoding: jsonData, as: UTF8.self)
-							let childType = type(of: child.value)
-							let realType = instantiatePropertyObject(target: childType as! IoGGQLDataObject.Type)	// Dummy instance
+							let nonOptionalType = child.value as! IoGGQLDataObject
+							let childType = type(of: nonOptionalType)
+							let realType = instantiatePropertyObject(target: childType)	// Dummy instance
 							let object = populateDataObject(data: contentString, target: type(of: realType))
 							target.setProperty(propertyName: propertyName, value: object)
 							}
 						catch
 							{
+							target.setProperty(propertyName: propertyName, value: nil)	// Clear out dummy instance
 							}
+						}
+					else
+						{
+						target.setProperty(propertyName: propertyName, value: nil)	// Clear out dummy instance
 						}
 					}
 				}
@@ -963,6 +969,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							}
 						catch
 							{
+							target.clearArray(propertyName: propertyName)	// Clear out dummy instance from array
 							}
 						}
 					else

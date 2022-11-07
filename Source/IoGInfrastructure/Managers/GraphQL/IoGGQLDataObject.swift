@@ -25,13 +25,14 @@ import Foundation
 /// ``` swift
 /// var flightID: String? = ""
 /// var seats: NSNumber? = 0
-/// var route: Route = Route.init()
+/// var route: Route? = Route.init()
 /// var passenger: [Passenger] = [Passenger.init()]
 /// ```
 ///
 /// > Note: Native types can be declared as optionals, but must have an initial value assigned in order for the query
 /// parsing to work. Properties that are also subclasses of IoGGQLDataObject must have an instance of the subclass
-/// initially assigned to them. Array properties must initially contain an object of the designated type.
+/// initially assigned to them, but should also be declared as optional. Array properties must initially contain an object
+/// of the designated type.
 ///
 /// For queries, some properties relevant to the class but not available as query elements need to be defined but not
 /// included in the query, so subclasses should add code to the required initializer that contains names of the properties
@@ -119,7 +120,7 @@ open class IoGGQLDataObject
 	///     switch propertyName
 	///         {
 	///         case "name":
-	///             name = value as <type>
+	///             name = value as? <type>
 	///         }
 	/// }
 	/// ```
