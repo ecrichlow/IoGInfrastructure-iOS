@@ -495,7 +495,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		var queryString = "query "
 		if let operation = operationName
 			{
-			queryString += "\(operation)"
+			queryString += "{ \(operation)"
 			if let queryParameters = parameters
 				{
 				queryString += "(\(queryParameters))"
@@ -505,6 +505,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		if let propertyObjectDefinition = parseTargetDataObject(target: target, fieldParameters: propertyParameters)
 			{
 			queryString += propertyObjectDefinition
+			}
+		if let _ = operationName
+			{
+			queryString += "}\n"
 			}
 		return queryString
 	}
@@ -559,30 +563,30 @@ public class IoGGQLManager: IoGDataManagerDelegate
 						if let childArray = child.value as? NSArray, let childName = child.label
 							{
 							let arrayDefinition = parseArray(array: childArray as NSArray, name: childName, fieldParameters: fieldParameters)
-							if let propertyName = child.label
+							if let innerPropertyName = child.label
 								{
-								if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+								if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: innerPropertyName, fieldParameters: parameters)
 									{
-									gqlObjectDefinition += "\(propertyName)(\(innerClassParameters)) \(arrayDefinition)"
+									gqlObjectDefinition += "\(innerPropertyName)(\(innerClassParameters)) \(arrayDefinition)"
 									}
 								else
 									{
-									gqlObjectDefinition += "\(propertyName) \(arrayDefinition)"
+									gqlObjectDefinition += "\(innerPropertyName) \(arrayDefinition)"
 									}
 								}
 							}
 						}
 					else
 						{
-						if let propertyName = child.label
+						if let innerPropertyName = child.label
 							{
-							if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: propertyName, fieldParameters: parameters)
+							if let parameters = fieldParameters, let innerClassParameters = getFieldParameters(fieldName: innerPropertyName, fieldParameters: parameters)
 								{
-								gqlObjectDefinition += "\(propertyName)(\(innerClassParameters))"
+								gqlObjectDefinition += "\(innerPropertyName)(\(innerClassParameters))"
 								}
 							else
 								{
-								gqlObjectDefinition += "\(propertyName)\n"
+								gqlObjectDefinition += "\(innerPropertyName)\n"
 								}
 							}
 						}
@@ -785,6 +789,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 							}
 						}
 					}
+				}
+			else
+				{
+				arrayDefinition += "\n"
 				}
 			}
 		return arrayDefinition
