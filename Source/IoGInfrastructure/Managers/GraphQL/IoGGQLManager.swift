@@ -495,7 +495,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		var queryString = "query "
 		if let operation = operationName
 			{
-			queryString += "{ \(operation)"
+			queryString += "{\n\(operation)"
 			if let queryParameters = parameters
 				{
 				queryString += "(\(queryParameters))"
@@ -794,6 +794,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				{
 				arrayDefinition += "\n"
 				}
+			}
+		else
+			{
+			arrayDefinition += "\n"
 			}
 		return arrayDefinition
 
