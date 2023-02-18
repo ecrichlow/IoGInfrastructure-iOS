@@ -119,6 +119,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
+	override internal func cancelRequest()
+	{
+		dataTask?.cancel()
+	}
+
 	// MARK: URLSessionDelegate methods
 
 	public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)

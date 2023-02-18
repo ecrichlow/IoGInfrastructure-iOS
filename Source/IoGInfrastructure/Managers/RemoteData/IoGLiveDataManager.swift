@@ -21,9 +21,9 @@ import Foundation
 /// The "live" subclass of IoGDataManager that manages back end communications to real servers
 public class IoGLiveDataManager : IoGDataManager
 {
-
+	
 	// MARK: Business Logic
-
+	
 	/// Send URLRequest
 	///
 	///  - Parameters:
@@ -40,7 +40,7 @@ public class IoGLiveDataManager : IoGDataManager
 		requestResponse.processRequest()
 		return reqID
 	}
-
+	
 	/// Send URLRequest with custom type
 	///
 	///  - Parameters:
@@ -57,5 +57,17 @@ public class IoGLiveDataManager : IoGDataManager
 		requestID += 1
 		requestResponse.processRequest()
 		return reqID
+	}
+	
+	/// Cancel URLRequest
+	///
+	///  - Parameters:
+	///   - targetRequestID: The ID of the URLRequest to cancel
+	override public func cancelRequest(targetRequestID: Int)
+	{
+		if let foundRequest = outstandingRequests[targetRequestID]
+			{
+			foundRequest.cancelRequest()
+			}
 	}
 }

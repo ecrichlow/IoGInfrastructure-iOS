@@ -1089,6 +1089,10 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			{
 			return
 			}
+		else
+			{
+			IoGDataManager.dataManagerOfDefaultType().cancelRequest(targetRequestID: gqlRequestID)	// Noticed that some GQL servers can re-send response even after completing the response
+			}
 		if requestType == .Custom
 			{
 			var customType: CustomGQLRequestType? = nil

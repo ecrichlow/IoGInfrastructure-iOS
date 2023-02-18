@@ -56,6 +56,10 @@ public class IoGDataRequestResponse : NSObject
 	{
 	}
 
+	internal func cancelRequest()
+	{
+	}
+
 	/// Retrieve the success status of the request
 	///
 	///  - Returns: Whether or not the URL request was successful

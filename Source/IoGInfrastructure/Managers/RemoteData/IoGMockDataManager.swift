@@ -19,9 +19,9 @@ import Foundation
 
 internal class IoGMockDataManager : IoGDataManager
 {
-
+	
 	// MARK: Business Logic
-
+	
 	@discardableResult override internal func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		let reqID = requestID
@@ -30,7 +30,7 @@ internal class IoGMockDataManager : IoGDataManager
 		requestResponse.processRequest()
 		return reqID
 	}
-
+	
 	@discardableResult override internal func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		let reqID = requestID
@@ -39,5 +39,9 @@ internal class IoGMockDataManager : IoGDataManager
 		requestID += 1
 		requestResponse.processRequest()
 		return reqID
+	}
+	
+	override internal func cancelRequest(targetRequestID: Int)
+	{
 	}
 }

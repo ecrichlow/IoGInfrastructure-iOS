@@ -224,6 +224,10 @@ public class IoGDataManager
 		return 0
 	}
 
+	internal func cancelRequest(targetRequestID: Int)
+	{
+	}
+
 	/// Execute data request for the next page of data in a multi-page request
 	///
 	/// > Note: For multi-page requests, the client must manually modify the URLRequest string to properly request the next page

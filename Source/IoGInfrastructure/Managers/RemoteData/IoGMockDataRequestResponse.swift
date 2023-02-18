@@ -36,6 +36,10 @@ internal class IoGMockDataRequestResponse : IoGDataRequestResponse
 		sendResponse()
 	}
 
+	override internal func cancelRequest()
+	{
+	}
+
 	private func sendResponse()
 	{
 		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
