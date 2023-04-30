@@ -52,11 +52,11 @@ public class IoGDataRequestResponse : NSObject
 	{
 	}
 
-	internal func continueMultiPartRequest()
+	public func continueMultiPartRequest()
 	{
 	}
 
-	internal func cancelRequest()
+	public func cancelRequest()
 	{
 	}
 

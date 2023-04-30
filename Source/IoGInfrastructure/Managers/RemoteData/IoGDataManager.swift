@@ -214,17 +214,17 @@ public class IoGDataManager
 			}
 	}
 
-	@discardableResult internal func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
+	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		return 0
 	}
 
-	@discardableResult internal func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
+	@discardableResult public func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		return 0
 	}
 
-	internal func cancelRequest(targetRequestID: Int)
+	public func cancelRequest(targetRequestID: Int)
 	{
 	}
 

@@ -71,7 +71,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 	}
 
 	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
-	override internal func continueMultiPartRequest()
+	override public func continueMultiPartRequest()
 	{
 		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest
 			{
@@ -119,7 +119,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
-	override internal func cancelRequest()
+	override public func cancelRequest()
 	{
 		dataTask?.cancel()
 	}
