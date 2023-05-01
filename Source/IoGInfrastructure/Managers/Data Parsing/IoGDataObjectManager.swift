@@ -33,6 +33,13 @@ public class IoGDataObjectManager
 		return T.init(withString: objectString)
 	}
 
+	/// Parses Data object containing JSON string for a single JSON object and returns an instance of the provided type, which must be a subclass of IoGDataObject
+	public func parseObject<T: IoGDataObject>(objectData: Data, toObject: T.Type) -> T
+	{
+		let contentString = String(decoding: objectData, as: UTF8.self)
+		return parseObject(objectString: contentString, toObject: toObject)
+	}
+
 	/// Parses JSON string for an array of JSON objects and returns an array of the provided type, which must be a subclass of IoGDataObject
 	public func parseArray<T: IoGDataObject>(arrayString: String, forObject: T.Type) -> [T]
 	{
@@ -58,5 +65,12 @@ public class IoGDataObjectManager
 			}
 
 		return objectArray
+	}
+
+	/// Parses Data object containing JSON string for an array of JSON objects and returns an array of the provided type, which must be a subclass of IoGDataObject
+	public func parseArray<T: IoGDataObject>(arrayData: Data, forObject: T.Type) -> [T]
+	{
+		let contentString = String(decoding: arrayData, as: UTF8.self)
+		return parseArray(arrayString: contentString, forObject: forObject)
 	}
 }
