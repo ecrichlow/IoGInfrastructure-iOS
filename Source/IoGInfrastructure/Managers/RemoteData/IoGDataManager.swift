@@ -177,6 +177,8 @@ public class IoGDataManager
 	// MARK: Business Logic
 
 	/// Register a delegate to receive a callback when the data operation completes
+    /// - Parameters:
+    ///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to be called when data operations complete
 	public func registerDelegate(delegate: IoGDataManagerDelegate)
 	{
 		for nextDelegate in delegateList.allObjects
@@ -193,7 +195,9 @@ public class IoGDataManager
 		delegateList.addPointer(pointer)
 	}
 
-	/// Unregister a relegate from receiving a callback when the data operation completes
+	/// Unregister a delegate from receiving a callback when the data operation completes
+    /// - Parameters:
+    ///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to stop being called when data operations complete
 	public func unregisterDelegate(delegate: IoGDataManagerDelegate)
 	{
 		var index = 0
