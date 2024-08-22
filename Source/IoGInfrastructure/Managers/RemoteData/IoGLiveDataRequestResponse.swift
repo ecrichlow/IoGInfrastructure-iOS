@@ -226,7 +226,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
 		for nextURL in apiURLs
 			{
-			if nextURL.absoluteString.contains(hostToValidate)
+			if hostToValidate.contains(nextURL.absoluteString)
 				{
 				if let serverTrust = didReceive.protectionSpace.serverTrust
 					{
