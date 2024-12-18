@@ -165,6 +165,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 
 	public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
 	{
+		if let timer = timeoutTimer
+			{
+			timer.invalidate()
+			timeoutTimer = nil
+			}
 		end = Date()
 		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 		if let err = error
@@ -253,6 +258,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 	// TODO: May need to comment this one out
 	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
 	{
+		if let timer = timeoutTimer
+			{
+			timer.invalidate()
+			timeoutTimer = nil
+			}
 		guard let httpResponse = response as? HTTPURLResponse
 			else
 				{
