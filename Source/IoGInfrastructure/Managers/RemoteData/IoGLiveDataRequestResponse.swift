@@ -15,6 +15,7 @@
 *	11/19/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for multiple API URLs
 *	06/19/22		*	EGC	*	Added DocC support
+*	12/17/24		*	EGC	*	Added support for customizing retry logic
 ********************************************************************************
 */
 
@@ -48,7 +49,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				{
 				timer in
 				self.retryNumber += 1
-				if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
+				if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
 					{
 					self.processRequest()
 					}
@@ -89,7 +90,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 					{
 					timer in
 					self.retryNumber += 1
-					if self.retryNumber <= IoGConfigurationManager.defaultRequestNumRetries
+					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
 						{
 						self.continueMultiPartRequest()
 						}

@@ -13,6 +13,7 @@
 *	09/27/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for custom request type
 *	06/19/22		*	EGC	*	Added DocC support
+*	12/17/24		*	EGC	*	Added support for customizing retry logic
 ********************************************************************************
 */
 
@@ -121,6 +122,16 @@ public class IoGDataManager
 		case Comment
 		case Rating
 		case Search
+		case Info
+		case Validate
+		case Flight
+		case Seat
+		case Date
+		case Token
+		case Authenticate
+		case Authorization
+		case Permissions
+		case Secret
 	}
 
 	/// Returns the shared Data Manager instance.
@@ -129,6 +140,8 @@ public class IoGDataManager
 	var delegateList = NSPointerArray.weakObjects()
 	var outstandingRequests = [Int: IoGDataRequestResponse]()
 	var requestID = 0
+	var retryOnFailure = true
+	var numAutoRetries = IoGConfigurationManager.defaultRequestNumRetries
 
 	// MARK: Class Methods
 
@@ -216,6 +229,32 @@ public class IoGDataManager
 			{
 			delegateList.removePointer(at: index)
 			}
+	}
+
+	/// Sets whether or not to automatically retry on failed requests
+    /// - Parameters:
+    ///   - retry: whether or not to attempt automatic retries
+	public func setRetryOnFailure(retry: Bool)
+	{
+		retryOnFailure = retry
+	}
+
+	func getRetryOnFailure() -> Bool
+	{
+		return retryOnFailure
+	}
+
+	/// Sets the number of retries to automatically attempt on request failure
+    /// - Parameters:
+    ///   - retries: the number of times to automatically retry a failed attempt
+	public func setNumberOfRetries(retries: Int)
+	{
+		numAutoRetries = retries
+	}
+
+	func getNumberofRetries() -> Int
+	{
+		return numAutoRetries
 	}
 
 	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
