@@ -14,6 +14,7 @@
 *	10/03/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for custom request type
 *	06/19/22		*	EGC	*	Added DocC support
+*	06/04/25		*	EGC	*	Added ability for client to get session cookies
 ********************************************************************************
 */
 
@@ -35,6 +36,7 @@ public class IoGDataRequestResponse : NSObject
 	internal var end: Date?
 	internal var sentDataSize = 0
 	internal var receivedDataSize = 0
+	internal var responseCookies: [HTTPCookie]?
 
 	// MARK: Instance Methods
 

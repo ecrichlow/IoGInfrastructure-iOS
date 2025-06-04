@@ -16,6 +16,7 @@
 *	02/16/22		*	EGC	*	Added support for multiple API URLs
 *	06/19/22		*	EGC	*	Added DocC support
 *	12/17/24		*	EGC	*	Added support for customizing retry logic
+*	06/04/25		*	EGC	*	Added ability for client to get session cookies
 ********************************************************************************
 */
 
@@ -206,6 +207,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			let header = response.allHeaderFields
 			self.statusCode = code
 			self.responseHeader = header
+			self.responseCookies = session.configuration.httpCookieStorage?.cookies
 			}
 		callback(self)
 	}
