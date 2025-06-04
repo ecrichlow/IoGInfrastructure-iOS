@@ -157,4 +157,12 @@ public class IoGDataRequestResponse : NSObject
 	{
 		return receivedDataSize
 	}
+
+	/// Retrieve the cookies from an HTTP response
+	///
+	///  - Returns: The HTTP cookies from the response
+	public func getResponseCookies() -> [HTTPCookie]?
+	{
+		return responseCookies
+	}
 }
