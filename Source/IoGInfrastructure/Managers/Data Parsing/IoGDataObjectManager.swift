@@ -98,7 +98,7 @@ public class IoGDataObjectManager
 			do
 				{
 				let jsonDict = try JSONSerialization.jsonObject(with: objectData, options: []) as? [String: Any]
-				if let element = jsonDict?[fromBaseElement] as? [String: Any]
+				if let element = jsonDict?[fromBaseElement] as? [[String: Any]]
 					{
 					let elementData = try JSONSerialization.data(withJSONObject: element)
 					return parseArray(arrayData: elementData, forObject: toObject)
