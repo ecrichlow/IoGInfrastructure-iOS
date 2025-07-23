@@ -14,6 +14,7 @@
 *	02/04/22		*	EGC	*	Adding support for Codable, removing NS types
 *	06/18/22		*	EGC	*	Added DocC support
 *	06/03/25		*	EGC	*	Added support for nested base objects
+*	07/23/25		*	EGC	*	Added support for nested base arrays
 ********************************************************************************
 */
 
@@ -87,6 +88,27 @@ public class IoGDataObjectManager
 			}
 
 		return objectArray
+	}
+
+	/// Parses JSON string for a single JSON object, where all of the necessary data comes from a dictionary within the JSON object, and returns an instance of the provided type, which must be a subclass of IoGDataObject
+	public func parseArray<T: IoGDataObject>(arrayString: String, toObject: T.Type, fromBaseElement: String) -> [T]
+	{
+		if let objectData = arrayString.data(using: .utf8)
+			{
+			do
+				{
+				let jsonDict = try JSONSerialization.jsonObject(with: objectData, options: []) as? [String: Any]
+				if let element = jsonDict?[fromBaseElement] as? [String: Any]
+					{
+					let elementData = try JSONSerialization.data(withJSONObject: element)
+					return parseArray(arrayData: elementData, forObject: toObject)
+					}
+				}
+			catch
+				{
+				}
+			}
+		return [T.init(withString: "")]
 	}
 
 	/// Parses Data object containing JSON string for an array of JSON objects and returns an array of the provided type, which must be a subclass of IoGDataObject
