@@ -148,8 +148,8 @@ public class IoGRetryManager
 			return -1
 			}
 		let request = requestID
-		var newRetryEntry = [String: Any]()
 		requestID += 1
+		var newRetryEntry = [String: Any]()
 		newRetryEntry[IoGConfigurationManager.retryItemFieldLifespan] = lifespan.rawValue
 		if let max = maxCount
 			{

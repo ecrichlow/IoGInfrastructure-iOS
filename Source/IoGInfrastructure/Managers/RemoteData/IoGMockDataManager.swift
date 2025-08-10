@@ -25,8 +25,8 @@ internal class IoGMockDataManager : IoGDataManager
 	@discardableResult override internal func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		let reqID = requestID
-		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
 		requestID += 1
+		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
 		requestResponse.processRequest()
 		return reqID
 	}
@@ -34,9 +34,9 @@ internal class IoGMockDataManager : IoGDataManager
 	@discardableResult override internal func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		let requestResponse = IoGMockDataRequestResponse(withRequestID: reqID, type: .Custom, request: request, callback: dataRequestResponse)
 		requestResponse.setCustomRequestType(customType: customTypeIdentifier)
-		requestID += 1
 		requestResponse.processRequest()
 		return reqID
 	}

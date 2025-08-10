@@ -220,6 +220,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, operationName: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -230,12 +231,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -257,6 +257,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult public func transmitQueryRequest<T: IoGGQLDataObject>(url: String, operationName: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -267,12 +268,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -283,6 +283,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, operationName: String?, parameters: String?, type: IoGGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -293,12 +294,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -309,6 +309,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult internal func transmitTestQueryRequest<T: IoGGQLDataObject>(url: String, name: String?, parameters: String?, customTypeIdentifier: CustomGQLRequestType, target: T.Type, propertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: target, fieldParameters: propertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -319,12 +320,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
 			outstandingRequests[reqID] = requestInfo
 			return reqID
@@ -346,6 +346,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -356,12 +357,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{
@@ -391,6 +391,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult public func transmitMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -401,12 +402,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{
@@ -425,6 +425,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, requestType: IoGGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -435,12 +436,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{
@@ -459,6 +459,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	@discardableResult func transmitTestMutationRequest<T: IoGGQLDataObject, R: IoGGQLDataObject>(url: String, name: String, customTypeIdentifier: CustomGQLRequestType, target: T, returnType: R.Type?, returnTypePropertyParameters: GQLQueryPropertyParametersList?) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		if let _ = parseTargetDataObject(target: type(of: target).self, fieldParameters: returnTypePropertyParameters), let requestURL = URL(string: url)
 			{
 			var urlRequest = URLRequest(url: requestURL)
@@ -469,12 +470,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 			urlRequest.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
 			for nextHeaderField in requestHeaders.keys
-			{
+				{
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
-			}
+				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
 			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			requestID += 1
 			var requestInfo:  [String : Any]
 			if let rType = returnType
 				{

@@ -34,9 +34,9 @@ public class IoGLiveDataManager : IoGDataManager
 	@discardableResult override public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
 		outstandingRequests[reqID] = requestResponse
-		requestID += 1
 		requestResponse.processRequest()
 		return reqID
 	}
@@ -51,10 +51,10 @@ public class IoGLiveDataManager : IoGDataManager
 	@discardableResult override public func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		let reqID = requestID
+		requestID += 1
 		let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: .Custom, request: request, callback: dataRequestResponse)
 		requestResponse.setCustomRequestType(customType: customTypeIdentifier)
 		outstandingRequests[reqID] = requestResponse
-		requestID += 1
 		requestResponse.processRequest()
 		return reqID
 	}

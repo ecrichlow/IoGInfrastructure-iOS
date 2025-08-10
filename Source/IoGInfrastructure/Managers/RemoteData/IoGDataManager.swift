@@ -300,6 +300,9 @@ public class IoGDataManager
 					}
 				}
 			}
-		outstandingRequests[reqID] = nil
+		if outstandingRequests[reqID] != nil
+			{
+			outstandingRequests[reqID] = nil
+			}
 	}
 }
