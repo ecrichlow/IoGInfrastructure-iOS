@@ -13,6 +13,7 @@
 *	10/01/18		*	EGC	*	File creation date
 *	02/16/22		*	EGC	*	Added support for custom request type
 *	06/19/22		*	EGC	*	Added DocC support
+*	08/14/25		*	EGC	*	Added support for thread safety
 ********************************************************************************
 */
 
@@ -35,9 +36,11 @@ public class IoGLiveDataManager : IoGDataManager
 	{
 		let reqID = requestID
 		requestID += 1
-		let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
-		outstandingRequests[reqID] = requestResponse
-		requestResponse.processRequest()
+		processingQueue.sync {
+			let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: type, request: request, callback: dataRequestResponse)
+			outstandingRequests[reqID] = requestResponse
+			requestResponse.processRequest()
+			}
 		return reqID
 	}
 	
@@ -52,10 +55,12 @@ public class IoGLiveDataManager : IoGDataManager
 	{
 		let reqID = requestID
 		requestID += 1
-		let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: .Custom, request: request, callback: dataRequestResponse)
-		requestResponse.setCustomRequestType(customType: customTypeIdentifier)
-		outstandingRequests[reqID] = requestResponse
-		requestResponse.processRequest()
+		processingQueue.sync {
+			let requestResponse = IoGLiveDataRequestResponse(withRequestID: reqID, type: .Custom, request: request, callback: dataRequestResponse)
+			requestResponse.setCustomRequestType(customType: customTypeIdentifier)
+			outstandingRequests[reqID] = requestResponse
+			requestResponse.processRequest()
+			}
 		return reqID
 	}
 	
@@ -65,9 +70,11 @@ public class IoGLiveDataManager : IoGDataManager
 	///   - targetRequestID: The ID of the URLRequest to cancel
 	override public func cancelRequest(targetRequestID: Int)
 	{
-		if let foundRequest = outstandingRequests[targetRequestID]
-			{
-			foundRequest.cancelRequest()
+		processingQueue.sync {
+			if let foundRequest = outstandingRequests[targetRequestID]
+				{
+				foundRequest.cancelRequest()
+				}
 			}
 	}
 }

@@ -11,6 +11,7 @@
 * Copyright:		(c) 2022 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	06/20/22		*	EGC	*	File creation date
+*	08/14/25		*	EGC	*	Added support for thread safety
 ********************************************************************************
 */
 
@@ -122,6 +123,38 @@ public class IoGGQLManager: IoGDataManagerDelegate
 		case Comment
 		case Rating
 		case Search
+		case Info
+		case Validate
+		case Flight
+		case Seat
+		case Date
+		case Token
+		case Authenticate
+		case Authorization
+		case Permissions
+		case Secret
+		case Settings
+		case Account
+		case Claim
+		case Resource
+		case Task
+		case Reminder
+		case Link
+		case Theme
+		case Language
+		case Policy
+		case Terms
+		case Privacy
+		case Report
+		case Post
+		case Defaults
+		case Team
+		case Member
+		case Project
+		case Book
+		case Confirmation
+		case Accessories
+		case Scheme
 	}
 
 	/// Returns the shared Data Manager instance.
@@ -131,6 +164,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	var outstandingRequests = [Int: [String: Any]]()		// Maintains a link between a GQLManager request and the corresponding DataManager request
 	var requestID = 0
 	var requestHeaders = [String: String]()
+	internal let processingQueue = DispatchQueue(label: IoGConfigurationManager.processingQueueIdentifier)
 
 	// MARK: Instance Methods
 
@@ -235,9 +269,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-			outstandingRequests[reqID] = requestInfo
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+				outstandingRequests[reqID] = requestInfo
+				}
 			return reqID
 			}
 		return -1
@@ -272,9 +308,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-			outstandingRequests[reqID] = requestInfo
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+				outstandingRequests[reqID] = requestInfo
+				}
 			return reqID
 			}
 		return -1
@@ -298,9 +336,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-			outstandingRequests[reqID] = requestInfo
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: type, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+				outstandingRequests[reqID] = requestInfo
+				}
 			return reqID
 			}
 		return -1
@@ -324,9 +364,11 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-			outstandingRequests[reqID] = requestInfo
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				let requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+				outstandingRequests[reqID] = requestInfo
+				}
 			return reqID
 			}
 		return -1
@@ -361,17 +403,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			var requestInfo:  [String : Any]
-			if let rType = returnType
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
 				}
-			else
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-				}
-			outstandingRequests[reqID] = requestInfo
 			return reqID
 			}
 		return -1
@@ -406,17 +450,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfDefaultType().registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			var requestInfo:  [String : Any]
-			if let rType = returnType
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfDefaultType().transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
 				}
-			else
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: target] as [String : Any]
-				}
-			outstandingRequests[reqID] = requestInfo
 			return reqID
 			}
 		return -1
@@ -440,17 +486,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			var requestInfo:  [String : Any]
-			if let rType = returnType
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
 				}
-			else
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: requestType, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
-				}
-			outstandingRequests[reqID] = requestInfo
 			return reqID
 			}
 		return -1
@@ -474,17 +522,19 @@ public class IoGGQLManager: IoGDataManagerDelegate
 				urlRequest.setValue(requestHeaders[nextHeaderField], forHTTPHeaderField: nextHeaderField)
 				}
 			IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).registerDelegate(delegate: self)
-			let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
-			var requestInfo:  [String : Any]
-			if let rType = returnType
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+			processingQueue.sync {
+				let dataManagerRequestID = IoGDataManager.dataManagerOfType(type: .IoGDataManagerTypeMock).transmitRequest(request: urlRequest, customTypeIdentifier: IoGConfigurationManager.gqlManagerCustomDataManagerType)
+				var requestInfo:  [String : Any]
+				if let rType = returnType
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyReturnTargetType: rType, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				else
+					{
+					requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
+					}
+				outstandingRequests[reqID] = requestInfo
 				}
-			else
-				{
-				requestInfo = [IoGConfigurationManager.gqlRequestKeyDataRequestID: dataManagerRequestID, IoGConfigurationManager.gqlRequestKeyRequestType: IoGGQLRequestType.Custom, IoGConfigurationManager.gqlRequestKeyCustomRequestType: customTypeIdentifier, IoGConfigurationManager.gqlRequestKeyTargetType: type(of: target).self, IoGConfigurationManager.gqlRequestKeyTestMutationName: name, IoGConfigurationManager.gqlRequestKeyTestMutationString: gqlMutation] as [String : Any]
-				}
-			outstandingRequests[reqID] = requestInfo
 			return reqID
 			}
 		return -1
@@ -1073,15 +1123,17 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	public func dataRequestResponseReceived(requestID: Int, requestType: IoGDataManager.IoGDataRequestType, responseData: Data?, error: Error?, response: IoGDataRequestResponse)
 	{
 		var gqlRequestID = -1
-		for nextID in outstandingRequests.keys
-			{
-			if let requestInfo = outstandingRequests[nextID]
-			{
-				let dataRequestID = requestInfo[IoGConfigurationManager.gqlRequestKeyDataRequestID] as! Int
-				if dataRequestID == requestID
+		processingQueue.sync {
+			for nextID in outstandingRequests.keys
+				{
+				if let requestInfo = outstandingRequests[nextID]
 					{
-					gqlRequestID = nextID
-					break
+					let dataRequestID = requestInfo[IoGConfigurationManager.gqlRequestKeyDataRequestID] as! Int
+					if dataRequestID == requestID
+						{
+						gqlRequestID = nextID
+						break
+						}
 					}
 				}
 			}
@@ -1262,22 +1314,26 @@ public class IoGGQLManager: IoGDataManagerDelegate
 						}
 					else
 						{
-						for nextDelegate in delegateList.allObjects
-							{
-							if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
+						processingQueue.sync {
+							for nextDelegate in delegateList.allObjects
 								{
-								delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+									if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
+										{
+										delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+										}
 								}
 							}
 						}
 					}
 				else
 					{
-					for nextDelegate in delegateList.allObjects
-						{
-						if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
+					processingQueue.sync {
+						for nextDelegate in delegateList.allObjects
 							{
-							delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+							if let delegate = nextDelegate as? IoGGQLManagerDelegate, let requestInfo = outstandingRequests[gqlRequestID]
+								{
+								delegate.gqlRequestResponseReceived(requestID: gqlRequestID, requestType: requestInfo[IoGConfigurationManager.gqlRequestKeyRequestType] as! IoGGQLManager.IoGGQLRequestType, customRequestIdentifier: customType, responseData: nil, error: NSError.init(domain: IoGConfigurationManager.requestResponseGeneralErrorDescription, code: IoGConfigurationManager.requestResponseGeneralErrorCode, userInfo: nil))
+								}
 							}
 						}
 					}

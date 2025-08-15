@@ -14,6 +14,7 @@
 *	02/16/22		*	EGC	*	Added support for custom request type
 *	06/19/22		*	EGC	*	Added DocC support
 *	12/17/24		*	EGC	*	Added support for customizing retry logic
+*	08/14/25		*	EGC	*	Added support for thread safety
 ********************************************************************************
 */
 
@@ -132,6 +133,28 @@ public class IoGDataManager
 		case Authorization
 		case Permissions
 		case Secret
+		case Settings
+		case Account
+		case Claim
+		case Resource
+		case Task
+		case Reminder
+		case Link
+		case Theme
+		case Language
+		case Policy
+		case Terms
+		case Privacy
+		case Report
+		case Post
+		case Defaults
+		case Team
+		case Member
+		case Project
+		case Book
+		case Confirmation
+		case Accessories
+		case Scheme
 	}
 
 	/// Returns the shared Data Manager instance.
@@ -142,6 +165,7 @@ public class IoGDataManager
 	var requestID = 0
 	var retryOnFailure = true
 	var numAutoRetries = IoGConfigurationManager.defaultRequestNumRetries
+	internal let processingQueue = DispatchQueue(label: IoGConfigurationManager.processingQueueIdentifier)
 
 	// MARK: Class Methods
 
@@ -300,9 +324,11 @@ public class IoGDataManager
 					}
 				}
 			}
-		if outstandingRequests[reqID] != nil
-			{
-			outstandingRequests[reqID] = nil
+		processingQueue.sync {
+			if outstandingRequests[reqID] != nil
+				{
+				outstandingRequests[reqID] = nil
+				}
 			}
 	}
 }

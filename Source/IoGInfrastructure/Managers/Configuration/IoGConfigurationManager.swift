@@ -14,6 +14,7 @@
 *	02/16/22		*	EGC	*	Added support for multiple API URLs and secure
 *								storage
 *	06/18/22		*	EGC	*	Added DocC support
+*	08/14/25		*	EGC	*	Added support for thread safety
 ********************************************************************************
 */
 
@@ -72,6 +73,7 @@ public class IoGConfigurationManager
 	static let mockGQLCallIndicator = "www.iogtests.com/graphql"
 	static let mockDataResponse1 = "{\"Generation\":\"1\", \"Computers\":[\"Color Computer 2\", \"Color Computer 3\", \"MM/1\"], \"Manufacturer\":null, \"Conventions\":\"Rainbowfest\"}"
 	static let mockDataResponse2 = "{\"Generation\":\"2\", \"Computers\":[\"Mac Performa 6400\", \"Powerbook G4\", \"Power Mac G4\", \"iMac\", \"Macbook Pro\"], \"Manufacturer\":\"Apple\"}"
+	static let processingQueueIdentifier = "com.iog.processingQueue"
 
 	// Retry Manager
 	static let retryItemFieldLifespan = "Lifespan"
