@@ -9,7 +9,7 @@
 *						requests for multi-page data) and the resulting response
 *						data
 * Author:			Eric Crichlow
-* Version:			2.0
+* Version:			3.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	11/19/18		*	EGC	*	File creation date
@@ -17,6 +17,8 @@
 *	06/19/22		*	EGC	*	Added DocC support
 *	12/17/24		*	EGC	*	Added support for customizing retry logic
 *	06/04/25		*	EGC	*	Added ability for client to get session cookies
+ *	03/15/26		*	EGC	*	Refactored to use shared URLSession (Copilot)
+*	03/15/26		*	EGC	*	Added OperationQueue to limit simulataneous calls
 ********************************************************************************
 */
 
@@ -24,27 +26,98 @@ import Foundation
 
 /// The "live" subclass of IoGDataRequestResponse that encapsulates a URL request and response, which
 /// IoGDataManagerDelegate classes can query to get raw data about the transaction
-public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate
+public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 {
 
 	private(set) var responseHeader : [AnyHashable : Any]?
 	private var timeoutTimer : Timer?
-	private var session : URLSession?
+	private weak var session : URLSession?
+	private weak var dataManager: IoGLiveDataManager?
 	private var dataTask : URLSessionDataTask?
+	private var requestOperation: Operation?
+	private weak var operationQueue: OperationQueue?
+
+	// MARK: Instance Methods
+	
+	init(withRequestID reqID: Int, type: IoGDataManager.IoGDataRequestType, request: URLRequest, session: URLSession, dataManager: IoGLiveDataManager, callback: @escaping (IoGDataRequestResponse) -> ())
+	{
+		self.session = session
+		self.dataManager = dataManager
+		self.operationQueue = dataManager.requestOperationQueue
+		super.init(withRequestID: reqID, type: type, request: request, callback: callback)
+	}
 
 	// MARK: Business Logic
 
 	override internal func processRequest()
 	{
-		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest
+		guard let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest,
+			  let currentSession = session,
+			  let queue = operationQueue
+			else
+				{
+				return
+				}
+		
+		// Wrap the request execution in an operation to manage concurrency
+		let operation = BlockOperation { [weak self] in
+			guard let self = self else { return }
+			
+			self.dataTask = currentSession.dataTask(with: request)
+			guard let newDataTask = self.dataTask
+				else
+					{
+					return
+					}
+			self.dataManager?.registerTask(newDataTask, forRequestID: self.requestID)
+			self.responseData = Data()
+			
+			// Schedule timeout timer on main run loop
+			DispatchQueue.main.async {
+				self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
+					{
+					timer in
+					self.retryNumber += 1
+					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
+						{
+						self.processRequest()
+						}
+					else
+						{
+						let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+						self.end = Date()
+						self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
+						callback(self)
+						}
+					}
+			}
+			
+			self.start = Date()
+			if let body = request.httpBody
+				{
+				self.sentDataSize = body.count
+				}
+			newDataTask.resume()
+		}
+		
+		requestOperation = operation
+		queue.addOperation(operation)
+	}
+
+	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
+	override public func continueMultiPartRequest()
+	{
+		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest,
+		   let currentSession = session
 			{
-			let newSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
-			dataTask = newSession.dataTask(with: request)
+			dataTask = currentSession.dataTask(with: request)
 			guard let newDataTask = dataTask
 				else
 					{
 					return
 					}
+			dataManager?.registerTask(newDataTask, forRequestID: requestID)
+			retryNumber = 0
 			responseData = Data()
 			timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
 				{
@@ -52,17 +125,24 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 				self.retryNumber += 1
 				if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
 					{
-					self.processRequest()
+					self.continueMultiPartRequest()
 					}
 				else
 					{
 					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 					self.end = Date()
-					self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
+					if var respInfo = self.responseInfo
+						{
+						respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
+						self.responseInfo = respInfo
+						}
+					else
+						{
+						self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
+						}
 					callback(self)
 					}
 				}
-			session = newSession
 			start = Date()
 			if let body = request.httpBody
 				{
@@ -72,105 +152,27 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
-	// When continuing a request for subsequent pages, target and callback always stay the same. Just URL changes for incrementing the page number
-	override public func continueMultiPartRequest()
-	{
-		if let request = requestInfo[IoGConfigurationManager.requestResponseKeyRequest] as? URLRequest
-			{
-			if let currentSession = session
-				{
-				dataTask = currentSession.dataTask(with: request)
-				guard let newDataTask = dataTask
-					else
-						{
-						return
-						}
-				retryNumber = 0
-				responseData = Data()
-				timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
-					{
-					timer in
-					self.retryNumber += 1
-					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
-						{
-						self.continueMultiPartRequest()
-						}
-					else
-						{
-						let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
-						self.end = Date()
-						if var respInfo = self.responseInfo
-							{
-							respInfo[IoGConfigurationManager.requestResponseKeyError] = NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)
-							self.responseInfo = respInfo
-							}
-						else
-							{
-							self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
-							}
-						callback(self)
-						}
-					}
-				start = Date()
-				if let body = request.httpBody
-					{
-					sentDataSize = body.count
-					}
-				newDataTask.resume()
-				}
-			}
-	}
-
 	override public func cancelRequest()
 	{
+		// Cancel the operation if it hasn't started yet
+		requestOperation?.cancel()
+		if let task = dataTask
+			{
+			dataManager?.unregisterTask(task)
+			}
 		dataTask?.cancel()
 	}
 
-	// MARK: URLSessionDelegate methods
+	// MARK: URLSession Callback Handlers (called by IoGSessionDelegate)
 
-	public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
-	{
-	}
-
-	public func urlSessionDidFinishEvents(forBackgroundURLSession: URLSession)
-	{
-	}
-
-	public func urlSession(_: URLSession, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
-	{
-		let authMethod = didReceive.protectionSpace.authenticationMethod
-		guard authMethod == NSURLAuthenticationMethodServerTrust
-			else
-				{
-				completionHandler(.performDefaultHandling, nil)
-				return
-				}
-		let hostToValidate = didReceive.protectionSpace.host
-		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
-		for nextURL in apiURLs
-			{
-			if nextURL.absoluteString.contains(hostToValidate)
-				{
-				if let serverTrust = didReceive.protectionSpace.serverTrust
-					{
-					let credential = URLCredential(trust: serverTrust)
-					completionHandler(.useCredential, credential)
-					return
-					}
-				}
-			}
-		completionHandler(.cancelAuthenticationChallenge, nil)
-	}
-
-	// MARK: URLSessionTaskDelegate methods
-
-	public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
+	internal func handleDidCompleteWithError(session: URLSession, task: URLSessionTask, error: Error?)
 	{
 		if let timer = timeoutTimer
 			{
 			timer.invalidate()
 			timeoutTimer = nil
 			}
+		dataManager?.unregisterTask(task)
 		end = Date()
 		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
 		if let err = error
@@ -212,53 +214,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 		callback(self)
 	}
 
-	public func urlSession(_: URLSession, task: URLSessionTask, willPerformHTTPRedirection: HTTPURLResponse, newRequest: URLRequest, completionHandler: @escaping (URLRequest?) -> Void)
-	{
-		completionHandler(newRequest)
-	}
-
-	public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
-	{
-	}
-
-	public func urlSession(_: URLSession, task: URLSessionTask, didReceive: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
-	{
-		let authMethod = didReceive.protectionSpace.authenticationMethod
-		guard authMethod == NSURLAuthenticationMethodServerTrust
-			else
-				{
-				completionHandler(.performDefaultHandling, nil)
-				return
-				}
-		let hostToValidate = didReceive.protectionSpace.host
-		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
-		for nextURL in apiURLs
-			{
-			if hostToValidate.contains(nextURL.absoluteString)
-				{
-				if let serverTrust = didReceive.protectionSpace.serverTrust
-					{
-					let credential = URLCredential(trust: serverTrust)
-					completionHandler(.useCredential, credential)
-					return
-					}
-				}
-			}
-		completionHandler(.cancelAuthenticationChallenge, nil)
-	}
-
-	public func urlSession(_: URLSession, taskIsWaitingForConnectivity: URLSessionTask)
-	{
-	}
-
-	public func urlSession(_: URLSession, task: URLSessionTask, didFinishCollecting: URLSessionTaskMetrics)
-	{
-	}
-
-	// MARK: URLSessionDataTaskDelegate
-
-	// TODO: May need to comment this one out
-	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
+	internal func handleDidReceiveResponse(session: URLSession, dataTask: URLSessionDataTask, response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
 	{
 		if let timer = timeoutTimer
 			{
@@ -286,15 +242,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			}
 	}
 
-	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionDownloadTask)
-	{
-	}
-
-	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, didBecome: URLSessionStreamTask)
-	{
-	}
-
-	public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
+	internal func handleDidReceiveData(data: Data)
 	{
 		if let timer = timeoutTimer
 			{
@@ -310,10 +258,5 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse, URLSessionDele
 			{
 			responseData = data
 			}
-	}
-
-	public func urlSession(_: URLSession, dataTask: URLSessionDataTask, willCacheResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Void)
-	{
-		completionHandler(nil)
 	}
 }
