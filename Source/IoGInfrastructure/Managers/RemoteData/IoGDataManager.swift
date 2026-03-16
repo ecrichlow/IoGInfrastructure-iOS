@@ -7,7 +7,7 @@
 *						This file contains the base class for the manager for
 *						retrieving remote data
 * Author:			Eric Crichlow
-* Version:			2.0
+* Version:			3.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	09/27/18		*	EGC	*	File creation date

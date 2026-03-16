@@ -7,7 +7,7 @@
 *						This file contains the live implementation of the class
 *						for the manager for retrieving remote data
 * Author:			Eric Crichlow
-* Version:			3.0
+* Version:			4.0
 * Copyright:		(c) 2018 Infusions of Grandeur. All rights reserved.
 ********************************************************************************
 *	10/01/18		*	EGC	*	File creation date
