@@ -73,10 +73,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 			self.responseData = Data()
 			
 			// Schedule timeout timer on main run loop
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let self = self else { return }
 				self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
-					{
-					timer in
+					{ [weak self] timer in
+					guard let self = self else { return }
 					self.retryNumber += 1
 					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
 						{
@@ -84,7 +85,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 						}
 					else
 						{
-						let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+						guard let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as? (IoGDataRequestResponse) -> () else { return }
 						self.end = Date()
 						self.responseInfo = [IoGConfigurationManager.requestResponseKeyError: NSError.init(domain: IoGConfigurationManager.requestResponseTimeoutErrorDescription, code: IoGConfigurationManager.requestResponseTimeoutErrorCode, userInfo: nil)]
 						callback(self)
@@ -120,8 +121,8 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 			retryNumber = 0
 			responseData = Data()
 			timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
-				{
-				timer in
+				{ [weak self] timer in
+				guard let self = self else { return }
 				self.retryNumber += 1
 				if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
 					{
@@ -129,7 +130,7 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 					}
 				else
 					{
-					let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+					guard let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as? (IoGDataRequestResponse) -> () else { return }
 					self.end = Date()
 					if var respInfo = self.responseInfo
 						{
@@ -154,13 +155,21 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 
 	override public func cancelRequest()
 	{
+		// Invalidate the timeout timer
+		if let timer = timeoutTimer
+			{
+			timer.invalidate()
+			timeoutTimer = nil
+			}
 		// Cancel the operation if it hasn't started yet
 		requestOperation?.cancel()
+		requestOperation = nil
 		if let task = dataTask
 			{
 			dataManager?.unregisterTask(task)
 			}
 		dataTask?.cancel()
+		dataTask = nil
 	}
 
 	// MARK: URLSession Callback Handlers (called by IoGSessionDelegate)
@@ -172,9 +181,12 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 			timer.invalidate()
 			timeoutTimer = nil
 			}
+		// Clean up references
+		requestOperation = nil
+		dataTask = nil
 		dataManager?.unregisterTask(task)
 		end = Date()
-		let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as! (IoGDataRequestResponse) -> ()
+		guard let callback = self.callbackInfo[IoGConfigurationManager.requestResponseKeyCallback] as? (IoGDataRequestResponse) -> () else { return }
 		if let err = error
 			{
 			if var respInfo = self.responseInfo
