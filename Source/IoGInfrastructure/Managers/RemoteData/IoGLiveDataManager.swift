@@ -97,7 +97,7 @@ internal class IoGSessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskD
 		let apiURLs = IoGConfigurationManager.sharedManager.getAPIURLs()
 		for nextURL in apiURLs
 			{
-			if hostToValidate.contains(nextURL.absoluteString)
+			if nextURL.absoluteString.contains(hostToValidate)
 				{
 				if let serverTrust = didReceive.protectionSpace.serverTrust
 					{
