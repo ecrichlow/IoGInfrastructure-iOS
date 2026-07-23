@@ -15,6 +15,7 @@
 *	06/19/22		*	EGC	*	Added DocC support
 *	12/17/24		*	EGC	*	Added support for customizing retry logic
 *	08/14/25		*	EGC	*	Added support for thread safety
+*	07/23/26		*	EGC	*	Replaced NSPointerArray with NSHashTable for delegate list
 ********************************************************************************
 */
 
@@ -160,7 +161,7 @@ public class IoGDataManager
 	/// Returns the shared Data Manager instance.
 	private static var sharedManager : IoGDataManager!
 
-	var delegateList = NSPointerArray.weakObjects()
+	var delegateList = NSHashTable<AnyObject>.weakObjects()
 	var outstandingRequests = [Int: IoGDataRequestResponse]()
 	var requestID = 0
 	var retryOnFailure = true
@@ -214,50 +215,25 @@ public class IoGDataManager
 	// MARK: Business Logic
 
 	/// Register a delegate to receive a callback when the data operation completes
-    /// - Parameters:
-    ///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to be called when data operations complete
+	/// - Parameters:
+	///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to be called when data operations complete
 	public func registerDelegate(delegate: IoGDataManagerDelegate)
 	{
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGDataManagerDelegate
-				{
-				if del === delegate
-					{
-					return
-					}
-				}
-			}
-		let pointer = Unmanaged.passUnretained(delegate as AnyObject).toOpaque()
-		delegateList.addPointer(pointer)
+		guard !delegateList.contains(delegate as AnyObject) else { return }
+		delegateList.add(delegate as AnyObject)
 	}
 
 	/// Unregister a delegate from receiving a callback when the data operation completes
-    /// - Parameters:
-    ///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to stop being called when data operations complete
+	/// - Parameters:
+	///   - delegate: object conforming to IoGDataManagerDelegate protocol that requests to stop being called when data operations complete
 	public func unregisterDelegate(delegate: IoGDataManagerDelegate)
 	{
-		var index = 0
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGDataManagerDelegate
-				{
-				if del === delegate
-					{
-					break
-					}
-				index += 1
-				}
-			}
-		if index < delegateList.count
-			{
-			delegateList.removePointer(at: index)
-			}
+		delegateList.remove(delegate as AnyObject)
 	}
 
 	/// Sets whether or not to automatically retry on failed requests
-    /// - Parameters:
-    ///   - retry: whether or not to attempt automatic retries
+	/// - Parameters:
+	///   - retry: whether or not to attempt automatic retries
 	public func setRetryOnFailure(retry: Bool)
 	{
 		retryOnFailure = retry
@@ -269,8 +245,8 @@ public class IoGDataManager
 	}
 
 	/// Sets the number of retries to automatically attempt on request failure
-    /// - Parameters:
-    ///   - retries: the number of times to automatically retry a failed attempt
+	/// - Parameters:
+	///   - retries: the number of times to automatically retry a failed attempt
 	public func setNumberOfRetries(retries: Int)
 	{
 		numAutoRetries = retries
@@ -308,7 +284,6 @@ public class IoGDataManager
 	func dataRequestResponse(_ response: IoGDataRequestResponse)
 	{
 		let reqID = response.requestID
-		delegateList.compact()
 		for nextDelegate in delegateList.allObjects
 			{
 			if let delegate = nextDelegate as? IoGDataManagerDelegate

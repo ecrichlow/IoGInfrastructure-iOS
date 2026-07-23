@@ -12,6 +12,7 @@
 ********************************************************************************
 *	06/20/22		*	EGC	*	File creation date
 *	08/14/25		*	EGC	*	Added support for thread safety
+*	07/23/26		*	EGC	*	Replaced NSPointerArray with NSHashTable for delegate list
 ********************************************************************************
 */
 
@@ -160,7 +161,7 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	/// Returns the shared Data Manager instance.
 	public static let sharedManager = IoGGQLManager()
 
-	var delegateList = NSPointerArray.weakObjects()
+	var delegateList = NSHashTable<AnyObject>.weakObjects()
 	var outstandingRequests = [Int: [String: Any]]()		// Maintains a link between a GQLManager request and the corresponding DataManager request
 	var requestID = 0
 	var requestHeaders = [String: String]()
@@ -177,39 +178,14 @@ public class IoGGQLManager: IoGDataManagerDelegate
 	/// Register a delegate to receive a callback when the GraphQL operation completes
 	public func registerDelegate(delegate: IoGGQLManagerDelegate)
 	{
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGGQLManagerDelegate
-				{
-				if del === delegate
-					{
-					return
-					}
-				}
-			}
-		let pointer = Unmanaged.passUnretained(delegate as AnyObject).toOpaque()
-		delegateList.addPointer(pointer)
+		guard !delegateList.contains(delegate as AnyObject) else { return }
+		delegateList.add(delegate as AnyObject)
 	}
 
 	/// Unregister a relegate from receiving a callback when the GraphQL operation completes
 	public func unregisterDelegate(delegate: IoGGQLManagerDelegate)
 	{
-		var index = 0
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGGQLManagerDelegate
-				{
-				if del === delegate
-					{
-					break
-					}
-				index += 1
-				}
-			}
-		if index < delegateList.count
-			{
-			delegateList.removePointer(at: index)
-			}
+		delegateList.remove(delegate as AnyObject)
 	}
 
 	/// Add authentication header to the URL requests that will be made to retrieve GraphQL data
@@ -1150,7 +1126,6 @@ public class IoGGQLManager: IoGDataManagerDelegate
 			var customType: CustomGQLRequestType? = nil
 			if response.getCustomRequestType() == IoGConfigurationManager.gqlManagerCustomDataManagerType
 				{
-				delegateList.compact()
 				if response.didRequestSucceed()
 					{
 					if let data = responseData, let requestInfo = outstandingRequests[gqlRequestID]

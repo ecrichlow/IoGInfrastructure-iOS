@@ -12,6 +12,7 @@
 ********************************************************************************
 *	11/26/18		*	EGC	*	File creation date
 *	06/18/22		*	EGC	*	Added DocC support
+*	07/23/26		*	EGC	*	Replaced NSPointerArray with NSHashTable for delegate list
 ********************************************************************************
 */
 
@@ -77,7 +78,7 @@ public class IoGRetryManager
 	/// Alias for closures passed into the Retry Manager for delayed execution
 	public typealias RetryRoutine = (@escaping (Int, Disposition) -> ()) -> ()
 
-	var delegateList = NSPointerArray.weakObjects()
+	var delegateList = NSHashTable<AnyObject>.weakObjects()
 
 	var requestID = 0
 
@@ -94,39 +95,14 @@ public class IoGRetryManager
 	/// Register a delegate to receive a callback when the retry operation completes
 	public func registerDelegate(delegate: IoGRetryManagerDelegate)
 	{
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGRetryManagerDelegate
-				{
-				if del === delegate
-					{
-					return
-					}
-				}
-			}
-		let pointer = Unmanaged.passUnretained(delegate as AnyObject).toOpaque()
-		delegateList.addPointer(pointer)
+		guard !delegateList.contains(delegate as AnyObject) else { return }
+		delegateList.add(delegate as AnyObject)
 	}
 
 	/// Unregister a relegate from receiving a callback when the retry operation completes
 	public func unregisterDelegate(delegate: IoGRetryManagerDelegate)
 	{
-		var index = 0
-		for nextDelegate in delegateList.allObjects
-			{
-			if let del = nextDelegate as? IoGRetryManagerDelegate
-				{
-				if del === delegate
-					{
-					break
-					}
-				index += 1
-				}
-			}
-		if index < delegateList.count
-			{
-			delegateList.removePointer(at: index)
-			}
+		delegateList.remove(delegate as AnyObject)
 	}
 
 	/// Begin attempts to execute closure
@@ -261,7 +237,6 @@ public class IoGRetryManager
 					}
 				else
 					{
-					delegateList.compact()
 					for nextDelegate in delegateList.allObjects
 						{
 						if let delegate = nextDelegate as? IoGRetryManagerDelegate
@@ -284,7 +259,6 @@ public class IoGRetryManager
 					}
 				else
 					{
-					delegateList.compact()
 					for nextDelegate in delegateList.allObjects
 						{
 						if let delegate = nextDelegate as? IoGRetryManagerDelegate
@@ -314,7 +288,6 @@ public class IoGRetryManager
 						}
 					else
 						{
-						delegateList.compact()
 						for nextDelegate in delegateList.allObjects
 							{
 							if let delegate = nextDelegate as? IoGRetryManagerDelegate
@@ -347,7 +320,6 @@ public class IoGRetryManager
 			{
 			if result == .Success
 				{
-				delegateList.compact()
 				for nextDelegate in delegateList.allObjects
 					{
 					if let delegate = nextDelegate as? IoGRetryManagerDelegate
