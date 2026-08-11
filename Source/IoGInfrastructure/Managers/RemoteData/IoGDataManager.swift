@@ -15,7 +15,9 @@
 *	06/19/22		*	EGC	*	Added DocC support
 *	12/17/24		*	EGC	*	Added support for customizing retry logic
 *	08/14/25		*	EGC	*	Added support for thread safety
-*	07/23/26		*	EGC	*	Replaced NSPointerArray with NSHashTable for delegate list
+*	07/23/26		*	EGC	*	Replaced NSPointerArray with NSHashTable for
+*								delegate list
+ *	08/10/26		*	EGC	*	Copilot added support for multipart/form-data
 ********************************************************************************
 */
 
@@ -156,6 +158,24 @@ public class IoGDataManager
 		case Confirmation
 		case Accessories
 		case Scheme
+		case Data
+		case Storage
+		case Cache
+		case Form
+		case Calendar
+		case Submit
+		case Assignment
+		case Web
+		case Page
+		case Manage
+		case Manager
+		case Dictionary
+		case App
+		case Configuration
+		case Revert
+		case Retry
+		case Build
+		case Erase
 	}
 
 	/// Returns the shared Data Manager instance.
@@ -265,6 +285,32 @@ public class IoGDataManager
 	@discardableResult public func transmitRequest(request: URLRequest, customTypeIdentifier: CustomDataRequestType) -> Int
 	{
 		return 0
+	}
+
+	/// Build and send a `multipart/form-data` POST request.
+	///
+	/// - Parameters:
+	///   - url: The endpoint URL.
+	///   - formData: An ``IoGMultipartFormData`` containing all fields and file parts.
+	///   - type: One of the pre-defined identifiers used by delegates to differentiate the kind of request.
+	///
+	/// - Returns: An identifier for the request.
+	@discardableResult public func transmitMultipartRequest(url: URL, formData: IoGMultipartFormData, type: IoGDataRequestType) -> Int
+	{
+		return transmitRequest(request: formData.buildRequest(url: url), type: type)
+	}
+
+	/// Build and send a `multipart/form-data` POST request with a custom type identifier.
+	///
+	/// - Parameters:
+	///   - url: The endpoint URL.
+	///   - formData: An ``IoGMultipartFormData`` containing all fields and file parts.
+	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request.
+	///
+	/// - Returns: An identifier for the request.
+	@discardableResult public func transmitMultipartRequest(url: URL, formData: IoGMultipartFormData, customTypeIdentifier: CustomDataRequestType) -> Int
+	{
+		return transmitRequest(request: formData.buildRequest(url: url), customTypeIdentifier: customTypeIdentifier)
 	}
 
 	public func cancelRequest(targetRequestID: Int)
