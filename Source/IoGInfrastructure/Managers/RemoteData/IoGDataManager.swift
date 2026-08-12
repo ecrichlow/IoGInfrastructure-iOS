@@ -313,6 +313,34 @@ public class IoGDataManager
 		return transmitRequest(request: formData.buildRequest(url: url), customTypeIdentifier: customTypeIdentifier)
 	}
 
+	/// Build and send a `multipart/form-data` POST request with additional HTTP headers.
+	///
+	/// - Parameters:
+	///   - url: The endpoint URL.
+	///   - formData: An ``IoGMultipartFormData`` containing all fields and file parts.
+	///   - headers: Additional HTTP header fields to set on the request (e.g. auth cookies).
+	///   - type: One of the pre-defined identifiers used by delegates to differentiate the kind of request.
+	///
+	/// - Returns: An identifier for the request.
+	@discardableResult public func transmitMultipartRequest(url: URL, formData: IoGMultipartFormData, headers: [String: String]?, type: IoGDataRequestType) -> Int
+	{
+		return transmitRequest(request: formData.buildRequest(url: url, headers: headers), type: type)
+	}
+
+	/// Build and send a `multipart/form-data` POST request with additional HTTP headers and a custom type identifier.
+	///
+	/// - Parameters:
+	///   - url: The endpoint URL.
+	///   - formData: An ``IoGMultipartFormData`` containing all fields and file parts.
+	///   - headers: Additional HTTP header fields to set on the request (e.g. auth cookies).
+	///   - customTypeIdentifier: A custom identifier used by delegates to differentiate the kind of request.
+	///
+	/// - Returns: An identifier for the request.
+	@discardableResult public func transmitMultipartRequest(url: URL, formData: IoGMultipartFormData, headers: [String: String]?, customTypeIdentifier: CustomDataRequestType) -> Int
+	{
+		return transmitRequest(request: formData.buildRequest(url: url, headers: headers), customTypeIdentifier: customTypeIdentifier)
+	}
+
 	public func cancelRequest(targetRequestID: Int)
 	{
 	}
