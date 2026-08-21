@@ -75,11 +75,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 			// Schedule timeout timer on main run loop
 			DispatchQueue.main.async { [weak self] in
 				guard let self = self else { return }
-				self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
+				self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGDataManager.dataManagerOfDefaultType().getTimeout(), repeats: false)
 					{ [weak self] timer in
 					guard let self = self else { return }
 					self.retryNumber += 1
-					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
+					if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberOfRetries()
 						{
 						self.processRequest()
 						}
@@ -120,11 +120,11 @@ public class IoGLiveDataRequestResponse : IoGDataRequestResponse
 			dataManager?.registerTask(newDataTask, forRequestID: requestID)
 			retryNumber = 0
 			responseData = Data()
-			timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGConfigurationManager.defaultRequestTimeoutDelay, repeats: false)
+			timeoutTimer = Timer.scheduledTimer(withTimeInterval: IoGDataManager.dataManagerOfDefaultType().getTimeout(), repeats: false)
 				{ [weak self] timer in
 				guard let self = self else { return }
 				self.retryNumber += 1
-				if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberofRetries()
+				if IoGDataManager.dataManagerOfDefaultType().getRetryOnFailure() && self.retryNumber <= IoGDataManager.dataManagerOfDefaultType().getNumberOfRetries()
 					{
 					self.continueMultiPartRequest()
 					}

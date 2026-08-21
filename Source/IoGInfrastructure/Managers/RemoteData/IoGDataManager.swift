@@ -186,6 +186,8 @@ public class IoGDataManager
 	var requestID = 0
 	var retryOnFailure = true
 	var numAutoRetries = IoGConfigurationManager.defaultRequestNumRetries
+	var timeoutDelay = IoGConfigurationManager.defaultRequestTimeoutDelay
+	var concurrentRequests = IoGConfigurationManager.defaultMaxConcurrentRequests
 	internal let processingQueue = DispatchQueue(label: IoGConfigurationManager.processingQueueIdentifier)
 
 	// MARK: Class Methods
@@ -259,6 +261,9 @@ public class IoGDataManager
 		retryOnFailure = retry
 	}
 
+	/// Gets flag that determines whether or not to automatically retry on failed requests
+	///
+	///	- Returns: whether or not to attempt automatic retries
 	func getRetryOnFailure() -> Bool
 	{
 		return retryOnFailure
@@ -272,9 +277,44 @@ public class IoGDataManager
 		numAutoRetries = retries
 	}
 
-	func getNumberofRetries() -> Int
+	/// Gets the number of retries to automatically attempt on request failure
+	///
+	///	- Returns: whether or not to attempt automatic retries
+	func getNumberOfRetries() -> Int
 	{
 		return numAutoRetries
+	}
+
+	/// Sets the timeout length before reporting request failure
+	/// - Parameters:
+	///   - timeout: the length of time to wait for a request to complete
+	public func setTimeout(timeout: TimeInterval)
+	{
+		timeoutDelay = timeout
+	}
+
+	/// Gets the length of time to wait before reporting request failure
+	///
+	///	- Returns: length of time to wait before reporting request failure
+	func getTimeout() -> TimeInterval
+	{
+		return timeoutDelay
+	}
+
+	/// Sets the timeout maximum number of requests that can be in-flight simultaneously
+	/// - Parameters:
+	///   - requests: the most requests that are allowed to be in-flight at the same time
+	public func setMaxConcurrentRequests(requests: Int)
+	{
+		concurrentRequests = requests
+	}
+
+	/// Gets the maximum number of requests that can be in-flight simultaneously
+	///
+	///	- Returns: maximum number of requests that can be in-flight simultaneously
+	func getMaxConcurrentRequests() -> Int
+	{
+		return concurrentRequests
 	}
 
 	@discardableResult public func transmitRequest(request: URLRequest, type: IoGDataRequestType) -> Int

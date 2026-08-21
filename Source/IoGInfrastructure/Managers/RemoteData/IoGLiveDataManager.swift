@@ -154,7 +154,6 @@ internal class IoGSessionDelegate: NSObject, URLSessionDelegate, URLSessionTaskD
 public class IoGLiveDataManager : IoGDataManager
 {
 	/// Default maximum number of concurrent requests
-	public static let defaultMaxConcurrentRequests = 4
 	
 	private var sessionDelegate: IoGSessionDelegate!
 	private(set) var sharedSession: URLSession!
@@ -166,33 +165,24 @@ public class IoGLiveDataManager : IoGDataManager
 	{
 		requestOperationQueue = OperationQueue()
 		requestOperationQueue.name = "com.iog.requestOperationQueue"
-		requestOperationQueue.maxConcurrentOperationCount = IoGLiveDataManager.defaultMaxConcurrentRequests
 		super.init()
+		requestOperationQueue.maxConcurrentOperationCount = getMaxConcurrentRequests()
 		sessionDelegate = IoGSessionDelegate(dataManager: self)
 		sharedSession = URLSession(configuration: URLSessionConfiguration.default, delegate: sessionDelegate, delegateQueue: nil)
 	}
 	
-	// MARK: Configuration
-	
-	/// Set the maximum number of concurrent requests
-	///
-	///  - Parameters:
-	///   - maxConcurrent: The maximum number of requests that can execute simultaneously
-	public func setMaxConcurrentRequests(_ maxConcurrent: Int)
+	// MARK: Business Logic
+
+	/// Sets the maximum number of requests that can be in-flight simultaneously, and
+	/// applies the new limit to the live operation queue immediately
+	/// - Parameters:
+	///   - requests: the most requests that are allowed to be in-flight at the same time
+	override public func setMaxConcurrentRequests(requests: Int)
 	{
-		requestOperationQueue.maxConcurrentOperationCount = maxConcurrent
+		super.setMaxConcurrentRequests(requests: requests)
+		requestOperationQueue.maxConcurrentOperationCount = requests
 	}
-	
-	/// Get the current maximum number of concurrent requests
-	///
-	///  - Returns: The maximum number of requests that can execute simultaneously
-	public func getMaxConcurrentRequests() -> Int
-	{
-		return requestOperationQueue.maxConcurrentOperationCount
-	}
-	
-	// MARK: Task Mapping
-	
+
 	internal func registerTask(_ task: URLSessionTask, forRequestID requestID: Int)
 	{
 		taskMappingQueue.sync {
@@ -220,8 +210,6 @@ public class IoGLiveDataManager : IoGDataManager
 		}
 		return result
 	}
-	
-	// MARK: Business Logic
 	
 	/// Send URLRequest
 	///

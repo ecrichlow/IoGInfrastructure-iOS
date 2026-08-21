@@ -43,6 +43,7 @@ public class IoGConfigurationManager
 	static let defaultDataManagerType = IoGDataManager.IoGDataManagerType.IoGDataManagerTypeLive
 	static let defaultRequestTimeoutDelay = 10 as TimeInterval
 	static let defaultRequestNumRetries = 3
+	static let defaultMaxConcurrentRequests = 4
 	static let requestResponseKeyRequest = "Request"
 	static let requestResponseKeyRequestType = "RequestType"
 	static let requestResponseKeyCallback = "Callback"
